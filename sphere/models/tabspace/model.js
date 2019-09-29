@@ -141,11 +141,15 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
             this.attributes["selected"] = "";
             this.attributes["aria-selected"] = "true";
+
+            delete this.attributes["secondary"];
         } else {
             remote.getGlobal("mainWindow").removeBrowserView(this.browserTab);
 
             delete this.attributes["selected"];
-            delete this.attributes["aria-selected"];            
+            delete this.attributes["aria-selected"];
+
+            this.attributes["secondary"] = "";
         }
 
         this._browserTabResizeInterval = setInterval(function() {
