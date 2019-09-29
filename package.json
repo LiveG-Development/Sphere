@@ -1,0 +1,22 @@
+{
+    "name": "sphere",
+    "version": "0.1.0",
+    "description": "Sphere, the web browser designed for the LiveG ecosystem.",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "repository": "https://github.com/LiveG-Development/Sphere",
+    "keywords": [
+        "Sphere",
+        "web",
+        "browser",
+        "internet",
+        "LiveG"
+    ],
+    "author": "LiveG Technologies",
+    "license": "LiveG Open-Source Licence",
+    "devDependencies": {
+        "electron": "^6.0.10"
+    }
+}

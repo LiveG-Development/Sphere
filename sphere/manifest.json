@@ -1,0 +1,12 @@
+{
+    "package": "tech.liveg.sphere",
+    "version": "0.1.0",
+    "name": {
+        "en_GB": "Sphere"
+    },
+    "description": {
+        "en_GB": "Sphere, the web browser designed for the LiveG ecosystem."
+    },
+    "defaultLocale": "en_GB",
+    "mainScript": "script.js"
+}
