@@ -14,6 +14,10 @@
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/importer/importer
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/l10n/l10n
 
+// Electron remote access
+
+const remote = require("electron").remote;
+
 // Locale integration configuration
 
 // @asset locale/en_GB.json

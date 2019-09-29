@@ -15,7 +15,7 @@
         "LiveG"
     ],
     "author": "LiveG Technologies",
-    "license": "LiveG Open-Source Licence",
+    "license": "GOSL",
     "devDependencies": {
         "electron": "^6.0.10"
     }
