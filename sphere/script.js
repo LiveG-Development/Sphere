@@ -8,11 +8,12 @@
 // Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
 
 // @import https://opensource.liveg.tech/Adapt-UI/src/ui
-// @import https://opensource.liveg.tech/Adapt-UI/src/models/applayout/model
 
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/dom/dom
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/importer/importer
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/l10n/l10n
+
+// @import models/tabspace/model
 
 // Electron remote access
 
@@ -44,6 +45,35 @@ ui.language = lang;
 core.unpack(ui.components);
 core.unpack(ui.models);
 
+tabs.push(new tabSpace.Tab("https://liveg.tech"));
+
+tabs[0].selected = true;
+
 ui.screen = [
-    new Heading(_("helloWorld"), 1)
+    // // new Heading(_("helloWorld"), 1)
+    // new Button("Google", false, {}, {}, {
+    //     click: function() {
+    //         browser.newTab("https://google.com");
+    //     }
+    // }),
+    // new Button("1", false, {}, {}, {
+    //     click: function() {
+    //         browser.tab(0).switch();
+    //     }
+    // }),
+    // new Button("2", false, {}, {}, {
+    //     click: function() {
+    //         browser.tab(1).switch();
+    //     }
+    // }),
+    // new Button("3", false, {}, {}, {
+    //     click: function() {
+    //         browser.tab(2).switch();
+    //     }
+    // })
+
+    new tabSpace.TabRow([
+        new tabSpace.TabStrip(tabs),
+        new tabSpace.NewTabButton()
+    ])
 ];

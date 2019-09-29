@@ -2,6 +2,7 @@
 
 cd sphere
 zapr build app
+zapr docgen
 
 cd ..
 
