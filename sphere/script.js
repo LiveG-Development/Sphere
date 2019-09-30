@@ -50,28 +50,6 @@ tabs.push(new tabSpace.Tab("https://liveg.tech"));
 tabs[0].selected = true;
 
 ui.screen = [
-    // // new Heading(_("helloWorld"), 1)
-    // new Button("Google", false, {}, {}, {
-    //     click: function() {
-    //         browser.newTab("https://google.com");
-    //     }
-    // }),
-    // new Button("1", false, {}, {}, {
-    //     click: function() {
-    //         browser.tab(0).switch();
-    //     }
-    // }),
-    // new Button("2", false, {}, {}, {
-    //     click: function() {
-    //         browser.tab(1).switch();
-    //     }
-    // }),
-    // new Button("3", false, {}, {}, {
-    //     click: function() {
-    //         browser.tab(2).switch();
-    //     }
-    // })
-
     new tabSpace.TabRow([
         new tabSpace.TabStrip(tabs),
         new tabSpace.NewTabButton()
