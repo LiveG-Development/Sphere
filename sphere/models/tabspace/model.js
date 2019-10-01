@@ -91,9 +91,9 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
     @shortDescription Tab class, extends `ui.models.tabSpace.Component`.
 */
 ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
-    constructor(url = "about:blank", loading = false, title = url, favicon = "", style = {}, attributes = {}, events = {}) {
+    constructor(url = "about:blank", style = {}, attributes = {}, events = {}) {
         super([
-            new ui.components.Text(title)
+            new ui.components.Text(url)
         ], style, attributes, events);
 
         this.HTMLTagName = "button";
@@ -102,12 +102,12 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         
         this.browserTab.webContents.loadURL(url);
 
-        this._browserTabResizeInterval = null;
+        this._browserTabWatcher = null;
 
         this.url = url;
-        this.loading = loading;
-        this.title = title;
-        this.favicon = favicon;
+        this.loading = true;
+        this.title = this.url;
+        this.favicon = "";
         this.selected = false;
     }
 
@@ -122,7 +122,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
     }
 
     precompute(domObject) {
-        clearInterval(this._browserTabResizeInterval);
+        clearInterval(this._browserTabWatcher);
 
         var thisScope = this;
 
@@ -152,11 +152,25 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
             this.attributes["secondary"] = "";
         }
 
-        this._browserTabResizeInterval = setInterval(function() {
+        this._browserTabWatcher = setInterval(function() {
             if (thisScope.browserTab != null && remote.getGlobal("mainWindow") != null) {
                 thisScope.browserTab.setBounds({x: 0, y: remote.getGlobal("TABSPACE_HEIGHT"), width: remote.getGlobal("mainWindow").getSize()[0], height: remote.getGlobal("mainWindow").getSize()[1] - remote.getGlobal("TABSPACE_HEIGHT")});
+            
+                if ((
+                    thisScope.url != thisScope.browserTab.webContents.getURL() ||
+                    thisScope.loading != thisScope.browserTab.webContents.isLoading() ||
+                    thisScope.title != thisScope.browserTab.webContents.getTitle()
+                ) && !focussed.isInputFocussed()) {
+                    thisScope.url = thisScope.browserTab.webContents.getURL();
+                    thisScope.loading = thisScope.browserTab.webContents.isLoading();
+                    thisScope.title = thisScope.browserTab.webContents.getTitle();
+
+                    thisScope.children[0].text = thisScope.title;
+
+                    ui.refresh();
+                }
             } else {
-                clearInterval(thisScope._browserTabResizeInterval);
+                clearInterval(thisScope._browserTabWatcher);
             }
         });
 
