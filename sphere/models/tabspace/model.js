@@ -50,6 +50,12 @@ ui.models.tabSpace.TabRow = class extends ui.models.tabSpace.Component {
 
         this.HTMLTagName = "div";
     }
+
+    precompute(domObject) {
+        this.attributes["tabrow"] = "";
+
+        return domObject;
+    }
 };
 
 /*
@@ -67,10 +73,11 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
     constructor(children = [], style = {}, attributes = {}, events = {}) {
         super(children, style, attributes, events);
 
-        this.HTMLTagName = "span";
+        this.HTMLTagName = "ol";
     }
 
     precompute(domObject) {
+        this.attributes["tabstrip"] = "";
         this.attributes["aria-role"] = "tablist";
 
         return domObject;
@@ -93,10 +100,14 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
 ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
     constructor(url = "about:blank", style = {}, attributes = {}, events = {}) {
         super([
-            new ui.components.Text(url)
+            new ui.components.Button(url, false, {}, {"title": url}),
+            new ui.components.Button([new ui.components.Icon("close")], false, {}, {
+                "aria-label": _("closeTab"),
+                "title": _("closeTab")
+            })
         ], style, attributes, events);
 
-        this.HTMLTagName = "button";
+        this.HTMLTagName = "li";
 
         this.browserTab = new remote.BrowserView();
         
@@ -121,40 +132,59 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         }
     }
 
+    close() {
+        this.browserTab.destroy();
+
+        var tabPosition = tabs.indexOf(this);
+
+        if (tabs.length == 1) {
+            remote.getCurrentWindow().close();
+        } else if (tabPosition - 1 < 0) {
+            tabs[tabPosition + 1].switch();
+        } else {
+            tabs[tabPosition - 1].switch();
+        }
+
+        tabs.splice(tabPosition, 1);
+    }
+
     precompute(domObject) {
+        this.attributes["tab"] = "";
+        this.attributes["aria-role"] = "tab";
+        
         clearInterval(this._browserTabWatcher);
 
         var thisScope = this;
 
-        this.children[0].text = this.title;
-
-        this.events["click"] = function() {
+        this.children[0].events["click"] = function() {
             thisScope.switch();
 
             ui.refresh();
         };
 
-        this.attributes["aria-role"] = "tab";
+        this.children[0].text = this.title;
+
+        this.children[1].events["click"] = function() {
+            thisScope.close();
+
+            ui.refresh();
+        };
         
         if (this.selected) {
-            remote.getGlobal("mainWindow").addBrowserView(this.browserTab);            
+            remote.getCurrentWindow().addBrowserView(this.browserTab);            
 
             this.attributes["selected"] = "";
             this.attributes["aria-selected"] = "true";
-
-            delete this.attributes["secondary"];
         } else {
-            remote.getGlobal("mainWindow").removeBrowserView(this.browserTab);
+            remote.getCurrentWindow().removeBrowserView(this.browserTab);
 
             delete this.attributes["selected"];
             delete this.attributes["aria-selected"];
-
-            this.attributes["secondary"] = "";
         }
 
         this._browserTabWatcher = setInterval(function() {
-            if (thisScope.browserTab != null && remote.getGlobal("mainWindow") != null) {
-                thisScope.browserTab.setBounds({x: 0, y: remote.getGlobal("TABSPACE_HEIGHT"), width: remote.getGlobal("mainWindow").getSize()[0], height: remote.getGlobal("mainWindow").getSize()[1] - remote.getGlobal("TABSPACE_HEIGHT")});
+            if (thisScope.browserTab != null && remote.getCurrentWindow() != null) {
+                thisScope.browserTab.setBounds({x: 0, y: remote.getGlobal("TABSPACE_HEIGHT"), width: remote.getCurrentWindow().getSize()[0], height: remote.getCurrentWindow().getSize()[1] - remote.getGlobal("TABSPACE_HEIGHT")});
             
                 if ((
                     thisScope.url != thisScope.browserTab.webContents.getURL() ||
@@ -165,7 +195,8 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
                     thisScope.loading = thisScope.browserTab.webContents.isLoading();
                     thisScope.title = thisScope.browserTab.webContents.getTitle();
 
-                    thisScope.children[0].text = thisScope.title;
+                    thisScope.children[0].children[0].text = thisScope.title;
+                    thisScope.children[0].attributes["title"] = thisScope.title;
 
                     ui.refresh();
                 }
@@ -197,6 +228,8 @@ ui.models.tabSpace.NewTabButton = class extends ui.models.tabSpace.Component {
     }
 
     precompute(domObject) {
+        this.attributes["newtab"] = "";
+
         this.events["click"] = function() {
             tabs.push(new ui.models.tabSpace.Tab("https://google.com"));
 

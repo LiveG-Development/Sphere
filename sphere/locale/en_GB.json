@@ -3,6 +3,7 @@
     "friendlyNameShort": "English",
     "direction": "ltr",
     "strings": {
-        "helloWorld": "Hello, world!"
+        "helloWorld": "Hello, world!",
+        "closeTab": "Close tab"
     }
 }
