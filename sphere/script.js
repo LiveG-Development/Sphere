@@ -13,6 +13,8 @@
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/importer/importer
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/l10n/l10n
 
+// @import funcs/focussed/script
+
 // @import models/tabspace/model
 
 // Electron remote access
