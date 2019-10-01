@@ -102,8 +102,8 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         super([
             new ui.components.Button(url, false, {}, {"title": url}),
             new ui.components.Button([new ui.components.Icon("close")], false, {}, {
-                "aria-label": _("closeTab"),
-                "title": _("closeTab")
+                "aria-label": l10n.translate("closeTab"),
+                "title": l10n.translate("closeTab")
             })
         ], style, attributes, events);
 
@@ -229,6 +229,8 @@ ui.models.tabSpace.NewTabButton = class extends ui.models.tabSpace.Component {
 
     precompute(domObject) {
         this.attributes["newtab"] = "";
+        this.attributes["title"] = l10n.translate("newTab");
+        this.attributes["aria-label"] = l10n.translate("newTab");
 
         this.events["click"] = function() {
             tabs.push(new ui.models.tabSpace.Tab("https://google.com"));

@@ -34,6 +34,7 @@ li[tab] {
 
 li[tab]:hover {
     background-color: var(--secondaryUIPress);
+    transition: 0.5s;
 }
 
 li[tab][selected] {

@@ -4,6 +4,7 @@
     "direction": "ltr",
     "strings": {
         "helloWorld": "Hello, world!",
-        "closeTab": "Close tab"
+        "closeTab": "Close tab",
+        "newTab": "New tab"
     }
 }
