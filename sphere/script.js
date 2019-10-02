@@ -55,5 +55,8 @@ ui.screen = [
     new tabSpace.TabRow([
         new tabSpace.TabStrip(tabs),
         new tabSpace.NewTabButton()
+    ]),
+    new tabSpace.ActionsRow([
+        new tabSpace.AddressBar("", _("searchUsing", ["Google"]))
     ])
 ];

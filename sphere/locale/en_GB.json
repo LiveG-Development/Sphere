@@ -3,8 +3,8 @@
     "friendlyNameShort": "English",
     "direction": "ltr",
     "strings": {
-        "helloWorld": "Hello, world!",
         "closeTab": "Close tab",
-        "newTab": "New tab"
+        "newTab": "New tab",
+        "searchUsing": "Search the web using {0}"
     }
 }

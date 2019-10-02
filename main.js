@@ -10,7 +10,7 @@
 const {app, BrowserWindow, BrowserView} = require("electron");
 
 global.VERSION_NUMBER = "0.1.0";
-global.TABSPACE_HEIGHT = 80;
+global.TABSPACE_HEIGHT = 104;
 
 global.newTab = function(url) {
     var tab = new BrowserView();
