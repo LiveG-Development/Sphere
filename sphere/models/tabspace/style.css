@@ -73,4 +73,9 @@ button[newtab] {
 div[actionsrow] {
     margin: 0;
     background-color: var(--primaryUI);
+    text-align: center;
+}
+
+input[addressbar] {
+    width: calc(100% - 200px);
 }
