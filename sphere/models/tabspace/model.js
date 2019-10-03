@@ -9,7 +9,9 @@
 
 ui.models.tabSpace = {};
 
-var tabs = [];
+var tabSpaceActiveElements = {
+    tabs: []
+};
 
 /*
     @name ui.models.tabSpace.Component
@@ -123,29 +125,31 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
     }
 
     switch() {
-        for (var i = 0; i < tabs.length; i++) {
-            if (tabs[i] != this) {
-                tabs[i].selected = false;
+        for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
+            if (tabSpaceActiveElements.tabs[i] != this) {
+                tabSpaceActiveElements.tabs[i].selected = false;
             }
-
-            this.selected = true;
         }
+
+        this.selected = true;
+
+        tabSpaceActiveElements.addressBar.value = this.url;
     }
 
     close() {
         this.browserTab.destroy();
 
-        var tabPosition = tabs.indexOf(this);
+        var tabPosition = tabSpaceActiveElements.tabs.indexOf(this);
 
-        if (tabs.length == 1) {
+        if (tabSpaceActiveElements.tabs.length == 1) {
             remote.getCurrentWindow().close();
         } else if (tabPosition - 1 < 0) {
-            tabs[tabPosition + 1].switch();
+            tabSpaceActiveElements.tabs[tabPosition + 1].switch();
         } else {
-            tabs[tabPosition - 1].switch();
+            tabSpaceActiveElements.tabs[tabPosition - 1].switch();
         }
 
-        tabs.splice(tabPosition, 1);
+        tabSpaceActiveElements.tabs.splice(tabPosition, 1);
     }
 
     precompute(domObject) {
@@ -198,6 +202,10 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
                     thisScope.children[0].children[0].text = thisScope.title;
                     thisScope.children[0].attributes["title"] = thisScope.title;
 
+                    if (thisScope.selected && !focussed.isInputFocussed()) {
+                        tabSpaceActiveElements.addressBar.value = thisScope.url;
+                    }
+
                     ui.refresh();
                 }
             } else {
@@ -233,9 +241,9 @@ ui.models.tabSpace.NewTabButton = class extends ui.models.tabSpace.Component {
         this.attributes["aria-label"] = l10n.translate("newTab");
 
         this.events["click"] = function() {
-            tabs.push(new ui.models.tabSpace.Tab("https://google.com"));
+            tabSpaceActiveElements.tabs.push(new ui.models.tabSpace.Tab("https://google.com"));
 
-            tabs[tabs.length - 1].switch();
+            tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
 
             ui.refresh();
         };
@@ -287,3 +295,5 @@ ui.models.tabSpace.AddressBar = class extends ui.components.TextInput {
         return domObject;
     }
 }
+
+tabSpaceActiveElements.addressBar = new ui.models.tabSpace.AddressBar();

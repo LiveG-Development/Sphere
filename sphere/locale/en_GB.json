@@ -3,6 +3,8 @@
     "friendlyNameShort": "English",
     "direction": "ltr",
     "strings": {
+        "sphere": "Sphere",
+
         "closeTab": "Close tab",
         "newTab": "New tab",
         "searchUsing": "Search the web using {0}..."

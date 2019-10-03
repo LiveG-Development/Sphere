@@ -47,16 +47,34 @@ ui.language = lang;
 core.unpack(ui.components);
 core.unpack(ui.models);
 
-tabs.push(new tabSpace.Tab("https://liveg.tech"));
+remote.getCurrentWindow().setTitle(_("sphere"));
 
-tabs[0].selected = true;
+tabSpaceActiveElements.tabs.push(new tabSpace.Tab("https://liveg.tech"));
+
+tabSpaceActiveElements.tabs[0].selected = true;
+
+tabSpaceActiveElements.addressBar = new tabSpace.AddressBar("", _("searchUsing", ["Google"]), {}, {}, {}, {
+    keydown: function(event) {
+        if (event.keyCode == 13) { // Enter key
+            for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
+                if (tabSpaceActiveElements.tabs[i].selected) {
+                    tabSpaceActiveElements.tabs[i].browserTab.webContents.loadURL(event.target.value);
+
+                    tabSpaceActiveElements.tabs[i].url = event.target.value;
+                }
+            }
+
+            ui.refresh();
+        }
+    }
+});
 
 ui.screen = [
     new tabSpace.TabRow([
-        new tabSpace.TabStrip(tabs),
+        new tabSpace.TabStrip(tabSpaceActiveElements.tabs),
         new tabSpace.NewTabButton()
     ]),
     new tabSpace.ActionsRow([
-        new tabSpace.AddressBar("", _("searchUsing", ["Google"]))
+        tabSpaceActiveElements.addressBar
     ])
 ];

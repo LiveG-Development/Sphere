@@ -29,6 +29,7 @@ function newWindow() {
         height: 800,
         fullscreenable: false,
         webPreferences: {
+            title: "Sphere",
             nodeIntegration: true,
             devTools: false
         }
