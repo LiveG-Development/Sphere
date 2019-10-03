@@ -44,7 +44,7 @@ li[tab][selected] {
 }
 
 li[tab][selected]:hover {
-    background-color: var(--primaryUIPress);
+    background-color: var(--primaryUI);
 }
 
 li[tab] > button {

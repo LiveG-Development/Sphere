@@ -5,6 +5,6 @@
     "strings": {
         "closeTab": "Close tab",
         "newTab": "New tab",
-        "searchUsing": "Search the web using {0}"
+        "searchUsing": "Search the web using {0}..."
     }
 }
