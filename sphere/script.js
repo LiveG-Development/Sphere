@@ -53,7 +53,7 @@ tabSpaceActiveElements.tabs.push(new tabSpace.Tab("https://liveg.tech"));
 
 tabSpaceActiveElements.tabs[0].selected = true;
 
-tabSpaceActiveElements.addressBar = new tabSpace.AddressBar("", _("searchUsing", ["Google"]), {}, {}, {}, {
+tabSpaceActiveElements.addressBar = new tabSpace.AddressBar("", _("searchUsing", ["Google"]), false, {}, {}, {
     keydown: function(event) {
         if (event.keyCode == 13) { // Enter key
             for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
@@ -69,12 +69,44 @@ tabSpaceActiveElements.addressBar = new tabSpace.AddressBar("", _("searchUsing",
     }
 });
 
+tabSpaceActiveElements.backButton = new tabSpace.ActionButton([new ui.components.Icon("arrow_back")], {}, {
+    "title": _("goBack"),
+    "aria-label": _("goBack")
+}, {
+    mousedown: function() {
+        for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
+            if (tabSpaceActiveElements.tabs[i].selected) {
+                tabSpaceActiveElements.tabs[i].browserTab.webContents.goBack();
+            }
+        }
+
+        ui.refresh();
+    }
+});
+
+tabSpaceActiveElements.forwardButton = new tabSpace.ActionButton([new ui.components.Icon("arrow_forward")], {}, {
+    "title": _("goForward"),
+    "aria-label": _("goForward")
+}, {
+    mousedown: function() {
+        for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
+            if (tabSpaceActiveElements.tabs[i].selected) {
+                tabSpaceActiveElements.tabs[i].browserTab.webContents.goForward();
+            }
+        }
+
+        ui.refresh();
+    }
+});
+
 ui.screen = [
     new tabSpace.TabRow([
         new tabSpace.TabStrip(tabSpaceActiveElements.tabs),
         new tabSpace.NewTabButton()
     ]),
     new tabSpace.ActionsRow([
+        tabSpaceActiveElements.backButton,
+        tabSpaceActiveElements.forwardButton,
         tabSpaceActiveElements.addressBar
     ])
 ];

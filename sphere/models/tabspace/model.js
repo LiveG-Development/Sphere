@@ -277,6 +277,32 @@ ui.models.tabSpace.ActionsRow = class extends ui.models.tabSpace.Component {
 };
 
 /*
+    @name ui.models.tabSpace.ActionButton
+
+    @param children any Children or content to include in component. Default: `[]`.
+    @param style object Styling to use on component. Default: `{}`.
+    @param attributes object HTML attributes to use on component. Default: `{}`.
+    @param events object Events to listen to on component. Default: `{}`.
+
+    @shortDescription ActionButton class, extends `ui.models.tabSpace.Component`.
+*/
+ui.models.tabSpace.ActionButton = class extends ui.models.tabSpace.Component {
+    constructor(children = [], style = {}, attributes = {}, events = {}) {
+        super(children, style, attributes, events);
+
+        this.HTMLTagName = "button";
+    }
+
+    precompute(domObject) {
+        domObject = super.precompute(domObject);
+
+        this.attributes["actionbutton"] = "";
+
+        return domObject;
+    }
+};
+
+/*
     @name ui.models.tabSpace.AddressBar
 
     @param children any Children or content to include in component. Default: `[]`.
@@ -284,7 +310,7 @@ ui.models.tabSpace.ActionsRow = class extends ui.models.tabSpace.Component {
     @param attributes object HTML attributes to use on component. Default: `{}`.
     @param events object Events to listen to on component. Default: `{}`.
 
-    @shortDescription AddressBar class, extends `ui.TextInput`.
+    @shortDescription AddressBar class, extends `ui.components.TextInput`.
 */
 ui.models.tabSpace.AddressBar = class extends ui.components.TextInput {
     precompute(domObject) {
@@ -294,6 +320,6 @@ ui.models.tabSpace.AddressBar = class extends ui.components.TextInput {
 
         return domObject;
     }
-}
+};
 
 tabSpaceActiveElements.addressBar = new ui.models.tabSpace.AddressBar();

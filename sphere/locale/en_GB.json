@@ -7,6 +7,8 @@
 
         "closeTab": "Close tab",
         "newTab": "New tab",
+        "goBack": "Go back",
+        "goForward": "Go forward",
         "searchUsing": "Search the web using {0}..."
     }
 }
