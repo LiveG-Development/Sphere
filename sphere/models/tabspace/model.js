@@ -82,6 +82,76 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
         this.attributes["tabstrip"] = "";
         this.attributes["aria-role"] = "tablist";
 
+        var thisScope = this;
+
+        var offset = null;
+        var draggingTab = null;
+
+        function reorderTabs() {
+            var currentTabs = domObject.children().reference;
+            var reorderedTabPositions = {};
+            var reorderedTabs = [];
+
+            for (var i = 0; i < currentTabs.length; i++) {
+                reorderedTabPositions[currentTabs[i].getBoundingClientRect().left] = currentTabs[i];
+            }
+
+            for (var i = 0; i < Object.keys(reorderedTabPositions).length; i++) {
+                reorderedTabs.push(reorderedTabPositions[Object.keys(reorderedTabPositions).sort(function(a, b) {
+                    return a - b;
+                })[i]]);
+            }
+
+            offset = null;
+            draggingTab = null;
+
+            var reorderedTabsModel = [];
+
+            for (var i = 0; i < reorderedTabs.length; i++) {
+                for (var j = 0; j < thisScope.children.length; j++) {
+                    if (thisScope.children[j]._key == dom.element("", [reorderedTabs[i]]).attribute("key").get()) {
+                        reorderedTabsModel.push(thisScope.children[j]);
+                    }
+                }
+            }
+
+            tabSpaceActiveElements.tabs = reorderedTabsModel;
+
+            rewriteScreen();
+
+            ui.refresh();
+        }
+
+        this.events["mousemove"] = function(event) {
+            var targetTab = event.target.closest("[tab]");
+
+            var elementLeft = targetTab.getBoundingClientRect() == null ? 0 : targetTab.getBoundingClientRect().left;
+            var mouseLeft = event.pageX;
+
+            if (event.which == 1 && mouseLeft > elementLeft && mouseLeft < elementLeft + targetTab.offsetWidth) {
+                if (offset == null) {
+                    offset = mouseLeft - elementLeft;
+                }
+
+                if (draggingTab == null || draggingTab == targetTab) {
+                    dom.element("", [targetTab]).style.setPush({
+                        position: "absolute",
+                        top: "8px",
+                        left: (mouseLeft - offset) + "px",
+                        opacity: "0.5"
+                    });
+
+                    draggingTab = targetTab;
+                }
+            }
+        };
+
+        this.events["mouseup"] = function() {
+            if (draggingTab != null) {
+                reorderTabs();
+            }
+        };
+
         return domObject;
     }
 };
@@ -116,6 +186,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         this.browserTab.webContents.loadURL(url);
 
         this._browserTabWatcher = null;
+        this._key = core.generateKey();
 
         this.url = url;
         this.loading = true;
@@ -139,6 +210,8 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
     close() {
         this.browserTab.destroy();
 
+        this.browserTab = null;
+
         var tabPosition = tabSpaceActiveElements.tabs.indexOf(this);
 
         if (tabSpaceActiveElements.tabs.length == 1) {
@@ -155,6 +228,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
     precompute(domObject) {
         this.attributes["tab"] = "";
         this.attributes["aria-role"] = "tab";
+        this.attributes["key"] = this._key;
         
         clearInterval(this._browserTabWatcher);
 

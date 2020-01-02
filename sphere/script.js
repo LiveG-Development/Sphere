@@ -99,14 +99,18 @@ tabSpaceActiveElements.forwardButton = new tabSpace.ActionButton([new ui.compone
     }
 });
 
-ui.screen = [
-    new tabSpace.TabRow([
-        new tabSpace.TabStrip(tabSpaceActiveElements.tabs),
-        new tabSpace.NewTabButton()
-    ]),
-    new tabSpace.ActionsRow([
-        tabSpaceActiveElements.backButton,
-        tabSpaceActiveElements.forwardButton,
-        tabSpaceActiveElements.addressBar
-    ])
-];
+function rewriteScreen() {
+    ui.screen = [
+        new tabSpace.TabRow([
+            new tabSpace.TabStrip(tabSpaceActiveElements.tabs),
+            new tabSpace.NewTabButton()
+        ]),
+        new tabSpace.ActionsRow([
+            tabSpaceActiveElements.backButton,
+            tabSpaceActiveElements.forwardButton,
+            tabSpaceActiveElements.addressBar
+        ])
+    ];
+}
+
+rewriteScreen();
