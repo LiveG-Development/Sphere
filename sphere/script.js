@@ -73,7 +73,7 @@ tabSpaceActiveElements.backButton = new tabSpace.ActionButton([new ui.components
     "title": _("goBack"),
     "aria-label": _("goBack")
 }, {
-    mousedown: function() {
+    click: function() {
         for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
             if (tabSpaceActiveElements.tabs[i].selected) {
                 tabSpaceActiveElements.tabs[i].browserTab.webContents.goBack();
@@ -88,10 +88,25 @@ tabSpaceActiveElements.forwardButton = new tabSpace.ActionButton([new ui.compone
     "title": _("goForward"),
     "aria-label": _("goForward")
 }, {
-    mousedown: function() {
+    click: function() {
         for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
             if (tabSpaceActiveElements.tabs[i].selected) {
                 tabSpaceActiveElements.tabs[i].browserTab.webContents.goForward();
+            }
+        }
+
+        ui.refresh();
+    }
+});
+
+tabSpaceActiveElements.reloadButton = new tabSpace.ActionButton([new ui.components.Icon("refresh")], {}, {
+    "title": _("reloadPage"),
+    "aria-label": _("reloadPage")
+}, {
+    click: function() {
+        for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
+            if (tabSpaceActiveElements.tabs[i].selected) {
+                tabSpaceActiveElements.tabs[i].browserTab.webContents.reload();
             }
         }
 
@@ -108,6 +123,7 @@ function rewriteScreen() {
         new tabSpace.ActionsRow([
             tabSpaceActiveElements.backButton,
             tabSpaceActiveElements.forwardButton,
+            tabSpaceActiveElements.reloadButton,
             tabSpaceActiveElements.addressBar
         ])
     ];

@@ -9,6 +9,7 @@
         "newTab": "New tab",
         "goBack": "Go back",
         "goForward": "Go forward",
+        "reloadPage": "Reload page",
         "searchUsing": "Search the web using {0}..."
     }
 }
