@@ -13,6 +13,8 @@ var tabSpaceActiveElements = {
     tabs: []
 };
 
+ui.models.tabSpace._TAB_WIDTH = 200;
+
 /*
     @name ui.models.tabSpace.Component
 
@@ -76,6 +78,11 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
         super(children, style, attributes, events);
 
         this.HTMLTagName = "ol";
+
+        this._browserTabWatcher = null;
+
+        this._previousWindowWidth = null;
+        this._previousTabCount = null;
     }
 
     precompute(domObject) {
@@ -151,6 +158,32 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
                 reorderTabs();
             }
         };
+
+        clearInterval(this._browserTabWatcher);
+
+        this._browserTabWatcher = setInterval(function() {
+            if (thisScope._previousWindowWidth != remote.getCurrentWindow().getSize()[0] || thisScope._previousTabCount != thisScope.children.length) {
+
+                if (((ui.models.tabSpace._TAB_WIDTH + 50) * thisScope.children.length) + 50 >= remote.getCurrentWindow().getSize()[0]) {
+                    // Squash tab widths to fit them all into window
+
+                    for (var i = 0; i < thisScope.children.length; i++) {
+                        thisScope.children[i].children[0].style.width = ((remote.getCurrentWindow().getSize()[0] / thisScope.children.length) - (50 / thisScope.children.length) - 50) + "px";
+                    }
+                } else {
+                    // Set a constant width of all tabs to make them unsquashed
+
+                    for (var i = 0; i < thisScope.children.length; i++) {
+                        thisScope.children[i].children[0].style.width = ui.models.tabSpace._TAB_WIDTH + "px";
+                    }
+                }
+
+                thisScope._previousWindowWidth = remote.getCurrentWindow().getSize()[0];
+                thisScope._previousTabCount = thisScope.children.length;
+
+                ui.refresh();
+            }
+        });
 
         return domObject;
     }
@@ -260,10 +293,12 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
             delete this.attributes["aria-selected"];
         }
 
+        this.browserTab.setBounds({x: 0, y: remote.getGlobal("TABSPACE_HEIGHT"), width: remote.getCurrentWindow().getSize()[0], height: remote.getCurrentWindow().getSize()[1] - remote.getGlobal("TABSPACE_HEIGHT")});
+
         this._browserTabWatcher = setInterval(function() {
             if (thisScope.browserTab != null && remote.getCurrentWindow() != null) {
                 thisScope.browserTab.setBounds({x: 0, y: remote.getGlobal("TABSPACE_HEIGHT"), width: remote.getCurrentWindow().getSize()[0], height: remote.getCurrentWindow().getSize()[1] - remote.getGlobal("TABSPACE_HEIGHT")});
-            
+
                 if ((
                     thisScope.url != thisScope.browserTab.webContents.getURL() ||
                     thisScope.loading != thisScope.browserTab.webContents.isLoading() ||

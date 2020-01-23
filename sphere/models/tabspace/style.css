@@ -11,10 +11,21 @@
     FONT_LICENCE.md.
 */
 
+body {
+    overflow: hidden;
+    user-select: none;
+}
+
+input {
+    user-select: text;
+}
+
 div[tabrow] {
     margin: 0;
     margin-top: 5px;
     margin-bottom: -2px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 ol[tabstrip] {
@@ -31,11 +42,11 @@ li[tab] {
     background-color: var(--secondaryUI);
     color: var(--secondaryUIText);
     border-radius: 10px 10px 0 0;
+    transition: 1s width, 0.5s background-color;
 }
 
 li[tab]:hover {
     background-color: var(--secondaryUIPress);
-    transition: 0.5s;
 }
 
 li[tab][selected] {
