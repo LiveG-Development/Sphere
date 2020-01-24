@@ -14,6 +14,8 @@
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/l10n/l10n
 
 // @import funcs/focussed/script
+// @import funcs/keyshorts/script
+// @import funcs/eventqueue/script
 
 // @import models/tabspace/model
 
@@ -69,6 +71,8 @@ tabSpaceActiveElements.addressBar = new tabSpace.AddressBar("", _("searchUsing",
     }
 });
 
+tabSpaceActiveElements.newTabButton = new tabSpace.NewTabButton();
+
 tabSpaceActiveElements.backButton = new tabSpace.ActionButton([new ui.components.Icon("arrow_back")], {}, {
     "title": _("goBack"),
     "aria-label": _("goBack")
@@ -118,7 +122,7 @@ function rewriteScreen() {
     ui.screen = [
         new tabSpace.TabRow([
             new tabSpace.TabStrip(tabSpaceActiveElements.tabs),
-            new tabSpace.NewTabButton()
+            tabSpaceActiveElements.newTabButton
         ]),
         new tabSpace.ActionsRow([
             tabSpaceActiveElements.backButton,
@@ -130,3 +134,8 @@ function rewriteScreen() {
 }
 
 rewriteScreen();
+
+ui.events.loaded(function() {
+    keyboardShortcuts.init();
+    eventQueue.init();
+});

@@ -230,6 +230,10 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         
         this.browserTab.webContents.loadURL(url);
 
+        this.browserTabObject = remote.getGlobal("newTab")(url);
+        this.browserTab = this.browserTabObject.tab;
+        this.browserTabID = this.browserTabObject.id;
+
         this._browserTabWatcher = null;
         this._key = core.generateKey();
 
@@ -238,6 +242,15 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         this.title = this.url;
         this.favicon = "";
         this.selected = false;
+
+        // @asset ../../injections/tab.js
+
+        this.browserTab.webContents.executeJavaScript(
+            importer
+                .getString(_assets["tab.js"])
+                .replace(/__KEY__/g, remote.getGlobal("messageSphereKey"))
+                .replace(/__ID__/g, this.browserTabID)
+        );
     }
 
     switch() {
