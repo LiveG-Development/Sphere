@@ -129,6 +129,8 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
             ui.refresh();
         }
 
+        // TODO: Add touch events
+
         this.events["mousemove"] = function(event) {
             var targetTab = event.target.closest("[tab]");
 
