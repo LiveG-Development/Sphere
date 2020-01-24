@@ -129,15 +129,19 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
             ui.refresh();
         }
 
-        // TODO: Add touch events
-
-        this.events["mousemove"] = function(event) {
+        function onMove(event) {
             var targetTab = event.target.closest("[tab]");
 
             var elementLeft = targetTab.getBoundingClientRect() == null ? 0 : targetTab.getBoundingClientRect().left;
-            var mouseLeft = event.pageX;
+            var mouseLeft;
 
-            if (event.which == 1 && mouseLeft > elementLeft && mouseLeft < elementLeft + targetTab.offsetWidth) {
+            if (event.type == "touchmove") {
+                mouseLeft = event.touches[0].pageX;
+            } else if (event.type == "mousemove") {
+                mouseLeft = event.pageX;
+            }
+
+            if ((event.which == 1 || event.type == "touchmove") && mouseLeft > elementLeft && mouseLeft < elementLeft + targetTab.offsetWidth) {
                 if (offset == null) {
                     offset = mouseLeft - elementLeft;
                 }
@@ -153,13 +157,19 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
                     draggingTab = targetTab;
                 }
             }
-        };
+        }
 
-        this.events["mouseup"] = function() {
+        function onUp() {
             if (draggingTab != null) {
                 reorderTabs();
             }
-        };
+        }
+
+        this.events["mousemove"] = onMove;
+        this.events["touchmove"] = onMove;
+
+        this.events["mouseup"] = onUp;
+        this.events["touchend"] = onUp;
 
         clearInterval(this._browserTabWatcher);
 
