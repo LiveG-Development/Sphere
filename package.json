@@ -18,5 +18,8 @@
     "license": "GOSL",
     "devDependencies": {
         "electron": "^6.0.10"
+    },
+    "dependencies": {
+        "minimist": "^1.2.0"
     }
 }

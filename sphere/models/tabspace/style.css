@@ -75,6 +75,15 @@ li[tab] > button:first-child {
     white-space: nowrap;
 }
 
+[dir="rtl"] li[tab] {
+    margin-left: unset;
+    margin-right: 5px;
+}
+
+[dir="rtl"] li[tab] > button:first-child {
+    text-align: right;
+}
+
 button[newtab] {
     width: 40px;
     height: 40px;

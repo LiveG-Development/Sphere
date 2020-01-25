@@ -8,6 +8,7 @@
 // Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
 
 const {app, BrowserWindow, BrowserView, ipcMain} = require("electron");
+const minimist = require("minimist");
 const path = require("path");
 
 function generateKey(length = 16, digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_") {
@@ -22,6 +23,8 @@ function generateKey(length = 16, digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghij
 
 global.VERSION_NUMBER = "0.1.0";
 global.TABSPACE_HEIGHT = 104;
+
+global.arguments = minimist(process.argv);
 
 global.messageSphereKey = generateKey();
 global.newTabID = -1;
@@ -58,7 +61,7 @@ function newWindow() {
         webPreferences: {
             title: "Sphere",
             nodeIntegration: true,
-            devTools: false
+            devTools: global.arguments["debug"] ? true : false
         }
     });
 
@@ -70,6 +73,10 @@ function newWindow() {
     global.mainWindow.on("closed", function() {
         global.mainWindow = null;
     });
+
+    if (global.arguments["debug"]) {
+        global.mainWindow.webContents.openDevTools();
+    }
 }
 
 app.on("ready", function() {

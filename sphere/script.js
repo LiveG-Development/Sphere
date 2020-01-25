@@ -44,6 +44,16 @@ l10n.use(lang);
 ui.mirroringDirection = l10n.languageData.direction;
 ui.language = lang;
 
+// Arguments specified can override configured locale information
+
+if (remote.getGlobal("arguments")["lang"]) {
+    ui.mirroringDirection = remote.getGlobal("arguments")["lang"];
+}
+
+if (remote.getGlobal("arguments")["mirroring-direction"]) {
+    ui.mirroringDirection = remote.getGlobal("arguments")["mirroring-direction"];
+}
+
 // UI design
 
 core.unpack(ui.components);
@@ -73,7 +83,7 @@ tabSpaceActiveElements.addressBar = new tabSpace.AddressBar("", _("searchUsing",
 
 tabSpaceActiveElements.newTabButton = new tabSpace.NewTabButton();
 
-tabSpaceActiveElements.backButton = new tabSpace.ActionButton([new ui.components.Icon("arrow_back")], {}, {
+tabSpaceActiveElements.backButton = new tabSpace.ActionButton([new ui.components.Icon(ui.mirroringDirection == "rtl" ? "arrow_forward" : "arrow_back")], {}, {
     "title": _("goBack"),
     "aria-label": _("goBack")
 }, {
@@ -88,7 +98,7 @@ tabSpaceActiveElements.backButton = new tabSpace.ActionButton([new ui.components
     }
 });
 
-tabSpaceActiveElements.forwardButton = new tabSpace.ActionButton([new ui.components.Icon("arrow_forward")], {}, {
+tabSpaceActiveElements.forwardButton = new tabSpace.ActionButton([new ui.components.Icon(ui.mirroringDirection == "rtl" ? "arrow_back" : "arrow_forward")], {}, {
     "title": _("goForward"),
     "aria-label": _("goForward")
 }, {

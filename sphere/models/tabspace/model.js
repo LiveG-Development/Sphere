@@ -109,6 +109,11 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
                 })[i]]);
             }
 
+            // When the text direction is RTL, we have to reverse the array as otherwise the tabs will be sorted in reverse
+            if (ui.mirroringDirection == "rtl") {
+                reorderedTabs = reorderedTabs.reverse();
+            }
+
             offset = null;
             draggingTab = null;
 
@@ -262,6 +267,11 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         );
     }
 
+    _formatURL(url) {
+        // When setting address bar value, we remove trailing slashes to make sure that the address displays correctly in RTL
+        return url.replace(/\/+$/, "");
+    }
+
     switch() {
         for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
             if (tabSpaceActiveElements.tabs[i] != this) {
@@ -271,7 +281,8 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
         this.selected = true;
 
-        tabSpaceActiveElements.addressBar.value = this.url;
+        
+        tabSpaceActiveElements.addressBar.value = this._formatURL(this.url);
 
         remote.getGlobal("mainWindow").webContents.focus();
     }
@@ -348,7 +359,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
                     thisScope.children[0].attributes["title"] = thisScope.title;
 
                     if (thisScope.selected && !focussed.isInputFocussed()) {
-                        tabSpaceActiveElements.addressBar.value = thisScope.url;
+                        tabSpaceActiveElements.addressBar.value = thisScope._formatURL(thisScope.url);
                     }
 
                     ui.refresh();
