@@ -44,16 +44,14 @@ global.newTab = function(url) {
         }
     });
 
-    tab.setBounds({x: 0, y: global.TABSPACE_HEIGHT, width: mainWindow.getSize()[0], height: mainWindow.getSize()[1] - global.TABSPACE_HEIGHT});
+    tab.setBounds({x: 0, y: global.TABSPACE_HEIGHT, width: global.mainWindow.getSize()[0], height: global.mainWindow.getSize()[1] - global.TABSPACE_HEIGHT});
     tab.webContents.loadURL(url);
 
     return {tab: tab, id: global.newTabID};
 };
 
-var mainWindow;
-
 function newWindow() {
-    mainWindow = new BrowserWindow({
+    global.mainWindow = new BrowserWindow({
         width: 1200,
         height: 800,
         fullscreenable: false,
@@ -64,13 +62,13 @@ function newWindow() {
         }
     });
 
-    mainWindow.removeMenu();
-    mainWindow.setMenuBarVisibility(false);
+    global.mainWindow.removeMenu();
+    global.mainWindow.setMenuBarVisibility(false);
 
-    mainWindow.loadFile(path.join("sphere", "build", "tech.liveg.sphere-" + global.VERSION_NUMBER + ".html"));
+    global.mainWindow.loadFile(path.join("sphere", "build", "tech.liveg.sphere-" + global.VERSION_NUMBER + ".html"));
 
-    mainWindow.on("closed", function() {
-        mainWindow = null;
+    global.mainWindow.on("closed", function() {
+        global.mainWindow = null;
     });
 }
 
@@ -98,7 +96,7 @@ app.on("activate", function() {
     // On macOS, a new window should be created if there already isn't a window
     // open so that the user is not confused by switching to a windowless app
     
-    if (mainWindow == null) {
+    if (global.mainWindow == null) {
         newWindow();
     }
 });

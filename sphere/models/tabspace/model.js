@@ -263,6 +263,8 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         this.selected = true;
 
         tabSpaceActiveElements.addressBar.value = this.url;
+
+        remote.getGlobal("mainWindow").webContents.focus();
     }
 
     close() {
