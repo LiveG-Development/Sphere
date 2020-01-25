@@ -243,6 +243,15 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         this.favicon = "";
         this.selected = false;
 
+        var thisScope = this;
+
+        this.browserTab.webContents.on("dom-ready", function() {
+            console.log("Event fired");
+            thisScope._injectJavaScript();
+        });
+    }
+
+    _injectJavaScript() {
         // @asset ../../injections/tab.js
 
         this.browserTab.webContents.executeJavaScript(
@@ -453,6 +462,18 @@ ui.models.tabSpace.AddressBar = class extends ui.components.TextInput {
         domObject = super.precompute(domObject);
 
         this.attributes["addressbar"] = "";
+
+        var thisScope = this;
+
+        domObject.events.listen("drop", function(event) {
+            // Make sure that any text dragged into the input replaces the current input's text
+            event.target.value = event.dataTransfer.getData("text");
+
+            // We should also fire the keypress event so that the text can be interpreted
+            event.keyCode = 13;
+
+            (thisScope.events["keypress"] || function() {})(event);
+        });
 
         return domObject;
     }

@@ -56,7 +56,7 @@ tabSpaceActiveElements.tabs.push(new tabSpace.Tab("https://liveg.tech"));
 tabSpaceActiveElements.tabs[0].selected = true;
 
 tabSpaceActiveElements.addressBar = new tabSpace.AddressBar("", _("searchUsing", ["Google"]), false, {}, {}, {
-    keydown: function(event) {
+    keypress: function(event) {
         if (event.keyCode == 13) { // Enter key
             for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
                 if (tabSpaceActiveElements.tabs[i].selected) {
