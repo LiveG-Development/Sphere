@@ -304,9 +304,9 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
         if (tabSpaceActiveElements.tabs.length == 1) {
             remote.getCurrentWindow().close();
-        } else if (tabPosition - 1 < 0) {
+        } else if (tabPosition - 1 < 0 && this.selected) {
             tabSpaceActiveElements.tabs[tabPosition + 1].switch();
-        } else {
+        } else if (this.selected) {
             tabSpaceActiveElements.tabs[tabPosition - 1].switch();
         }
 
@@ -326,6 +326,14 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
             thisScope.switch();
 
             ui.refresh();
+        };
+
+        this.children[0].events["auxclick"] = function() {
+            thisScope.close();
+
+            ui.refresh();
+
+            event.preventDefault();
         };
 
         this.children[0].text = this.title;
