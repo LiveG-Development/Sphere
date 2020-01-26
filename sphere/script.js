@@ -16,6 +16,7 @@
 // @import funcs/focussed/script
 // @import funcs/keyshorts/script
 // @import funcs/eventqueue/script
+// @import funcs/search/script
 
 // @import models/tabspace/model
 
@@ -65,14 +66,31 @@ tabSpaceActiveElements.tabs.push(new tabSpace.Tab("https://liveg.tech"));
 
 tabSpaceActiveElements.tabs[0].selected = true;
 
-tabSpaceActiveElements.addressBar = new tabSpace.AddressBar("", _("searchUsing", ["Google"]), false, {}, {}, {
+tabSpaceActiveElements.addressBar = new tabSpace.AddressBar("", _("searchUsing", [search.engines[0].name]), false, {}, {}, {
     keypress: function(event) {
         if (event.keyCode == 13) { // Enter key
+            var enteredValue = event.target.value.trim();
+
+            var addressQualities = {
+                full: !!/^[a-zA-Z]+:/g.test(enteredValue), // If has a protocol at the start, then should be a full URL
+                noProtocol: !!/^([^\s])+\.[^\s]+((\/.*.)?)$/.test(enteredValue) // If is only a domain name
+            };
+
             for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
                 if (tabSpaceActiveElements.tabs[i].selected) {
-                    tabSpaceActiveElements.tabs[i].browserTab.webContents.loadURL(event.target.value);
+                    var finalURL = "about:blank";
 
-                    tabSpaceActiveElements.tabs[i].url = event.target.value;
+                    if (addressQualities.full) {
+                        finalURL = enteredValue;
+                    } else if (addressQualities.noProtocol) {
+                        finalURL = "https://" + enteredValue;
+                    } else {
+                        finalURL = search.queryToURL(enteredValue);
+                    }
+
+                    tabSpaceActiveElements.tabs[i].browserTab.webContents.loadURL(finalURL);
+
+                    tabSpaceActiveElements.tabs[i].url = finalURL;
                 }
             }
 
