@@ -10,6 +10,7 @@
 const {app, BrowserWindow, BrowserView, ipcMain} = require("electron");
 const minimist = require("minimist");
 const path = require("path");
+const fs = require("fs");
 
 function generateKey(length = 16, digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_") {
     var key = "";
@@ -24,7 +25,9 @@ function generateKey(length = 16, digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghij
 global.VERSION_NUMBER = "0.1.0";
 global.TABSPACE_HEIGHT = 104;
 
-global.arguments = minimist(process.argv);
+global.arguments = minimist(process.argv, {
+    alias: {h: "help"}
+});
 
 global.messageSphereKey = generateKey();
 global.newTabID = -1;
@@ -79,31 +82,43 @@ function newWindow() {
     }
 }
 
-app.on("ready", function() {
-    ipcMain.on("_sphereTab", function(event, message) {
-        if (message.event != null) {
-            global.tabInformation.events.push(message);
+if (global.arguments["help"] || process.argv.indexOf("/?") > -1) {
+    fs.readFile("help.txt", "utf8", function(error, contents) {
+        console.log(
+            contents
+                .replace(/{{ version }}/g, global.VERSION_NUMBER)
+                .replace(/{{ sphereMark }}/g, "\x1b[34mSphere\x1b[39m")
+        );
+
+        process.exit();
+    });
+} else {
+    app.on("ready", function() {
+        ipcMain.on("_sphereTab", function(event, message) {
+            if (message.event != null) {
+                global.tabInformation.events.push(message);
+            }
+        });
+
+        newWindow();
+    });
+
+    // When all windows of Sphere are closed, this function is triggered
+    app.on("window-all-closed", function() {
+        // On macOS, the window should stay alive when all windows are closed for
+        // easy access from the dock and menu bar
+
+        if (process.platform != "darwin") {
+            app.quit();
         }
     });
 
-    newWindow();
-});
-
-// When all windows of Sphere are closed, this function is triggered
-app.on("window-all-closed", function() {
-    // On macOS, the window should stay alive when all windows are closed for
-    // easy access from the dock and menu bar
-
-    if (process.platform != "darwin") {
-        app.quit();
-    }
-});
-
-app.on("activate", function() {
-    // On macOS, a new window should be created if there already isn't a window
-    // open so that the user is not confused by switching to a windowless app
-    
-    if (global.mainWindow == null) {
-        newWindow();
-    }
-});
+    app.on("activate", function() {
+        // On macOS, a new window should be created if there already isn't a window
+        // open so that the user is not confused by switching to a windowless app
+        
+        if (global.mainWindow == null) {
+            newWindow();
+        }
+    });
+}

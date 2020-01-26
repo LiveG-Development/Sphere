@@ -7,4 +7,4 @@ zapr docgen
 cd ..
 
 npm install
-npm start "$@"
+npm start -- "$@"
