@@ -251,7 +251,6 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         var thisScope = this;
 
         this.browserTab.webContents.on("dom-ready", function() {
-            console.log("Event fired");
             thisScope._injectJavaScript();
         });
     }

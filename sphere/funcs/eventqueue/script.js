@@ -12,7 +12,7 @@
 var eventQueue = {};
 
 /*
-    @name keyboardShortcuts.handleQUeue
+    @name keyboardShortcuts.handleQueue
 
     @param queue object Queue to handle.
 
