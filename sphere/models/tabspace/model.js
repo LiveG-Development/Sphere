@@ -253,6 +253,15 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         this.browserTab.webContents.on("dom-ready", function() {
             thisScope._injectJavaScript();
         });
+
+        this.browserTab.webContents.on("new-window", function(event, url) {
+            tabSpaceActiveElements.tabs.push(new ui.models.tabSpace.Tab(url));
+            tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
+
+            ui.refresh();
+
+            event.preventDefault();
+        });
     }
 
     _injectJavaScript() {
@@ -397,7 +406,6 @@ ui.models.tabSpace.NewTabButton = class extends ui.models.tabSpace.Component {
 
         this.events["click"] = function() {
             tabSpaceActiveElements.tabs.push(new ui.models.tabSpace.Tab("https://google.com"));
-
             tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
 
             ui.refresh();
