@@ -1,7 +1,7 @@
 {{ sphereMark }} {{ version }}
 Copyright (C) LiveG. All Rights Reserved.
 
-usage: sphere [<args>]
+usage: sphere [--debug] [--help | -h] [--lang <locale>] [--mirroring-direction {ltr,rtl}]
 
 List of arguments used in Sphere:
     --debug     Enter debug mode for Sphere.
