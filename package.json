@@ -4,7 +4,8 @@
     "description": "Sphere, the web browser designed for the LiveG ecosystem.",
     "main": "main.js",
     "scripts": {
-        "start": "electron ."
+        "start": "electron .",
+        "dist": "electron-builder"
     },
     "repository": "https://github.com/LiveG-Development/Sphere",
     "keywords": [
@@ -17,9 +18,41 @@
     "author": "LiveG Technologies",
     "license": "GOSL",
     "devDependencies": {
-        "electron": "^6.1.7"
+        "electron": "^6.1.7",
+        "electron-builder": "^22.3.2"
     },
     "dependencies": {
         "minimist": "^1.2.0"
+    },
+    "build": {
+        "appId": "tech.liveg.sphere",
+        "productName": "Sphere",
+        "copyright": "Copyright © LiveG. All Rights Reserved.",
+        "directories": {
+            "buildResources": "res",
+            "output": "dist"
+        },
+        "mac": {
+            "target": "dmg",
+            "category": "public.app-category.utilities"
+        },
+        "dmg": {
+            "title": "LiveG Sphere V${version}"
+        },
+        "win": {
+            "target": "nsis"
+        },
+        "nsis": {
+            "uninstallDisplayName": "LiveG Sphere V${version}",
+            "artifactName": "Install LiveG Sphere V${version}.${ext}",
+            "shortcutName": "Sphere"
+        },
+        "linux": {
+            "target": "deb",
+            "executableName": "sphere",
+            "icon": "res/icon.png",
+            "synopsis": "Sphere, the web browser designed for the LiveG ecosystem.",
+            "category": "Network"
+        }
     }
 }
