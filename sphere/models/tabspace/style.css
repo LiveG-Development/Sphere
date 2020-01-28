@@ -68,11 +68,15 @@ li[tab] > button:hover {
 }
 
 li[tab] > button:first-child {
+    position: relative;
+    top: -3px;
     width: 200px;
+    height: 38px;
     text-align: left;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    vertical-align: middle;
 }
 
 [dir="rtl"] li[tab] {
