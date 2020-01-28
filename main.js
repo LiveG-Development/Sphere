@@ -10,7 +10,8 @@
 const {app, BrowserWindow, BrowserView, ipcMain} = require("electron");
 const minimist = require("minimist");
 const path = require("path");
-const fs = require("fs");
+const nodeConsole = require("console");
+const help = require("./help.js");
 
 function generateKey(length = 16, digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_") {
     var key = "";
@@ -28,6 +29,8 @@ global.TABSPACE_HEIGHT = 104;
 global.arguments = minimist(process.argv, {
     alias: {h: "help"}
 });
+
+global.console = new nodeConsole.Console(process.stdout, process.stderr);
 
 global.messageSphereKey = generateKey();
 global.newTabID = -1;
@@ -85,15 +88,13 @@ function newWindow() {
 }
 
 if (global.arguments["help"] || process.argv.indexOf("/?") > -1) {
-    fs.readFile("help.txt", "utf8", function(error, contents) {
-        console.log(
-            contents
-                .replace(/{{ version }}/g, global.VERSION_NUMBER)
-                .replace(/{{ sphereMark }}/g, "\x1b[34mSphere\x1b[39m")
-        );
+    global.console.log(
+        help()
+            .replace(/{{ version }}/g, global.VERSION_NUMBER)
+            .replace(/{{ sphereMark }}/g, "\x1b[34mSphere\x1b[39m")
+    );
 
-        process.exit();
-    });
+    process.exit();
 } else {
     app.on("ready", function() {
         ipcMain.on("_sphereTab", function(event, message) {

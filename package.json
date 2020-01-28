@@ -15,7 +15,7 @@
         "internet",
         "LiveG"
     ],
-    "author": "LiveG Technologies",
+    "author": "LiveG Technologies <hi@liveg.tech>",
     "license": "GOSL",
     "devDependencies": {
         "electron": "^6.1.7",
