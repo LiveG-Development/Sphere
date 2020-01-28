@@ -17,7 +17,7 @@
     "author": "LiveG Technologies",
     "license": "GOSL",
     "devDependencies": {
-        "electron": "^6.0.10"
+        "electron": "^6.1.7"
     },
     "dependencies": {
         "minimist": "^1.2.0"
