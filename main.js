@@ -51,7 +51,7 @@ global.newTab = function(url) {
         }
     });
 
-    tab.setBounds({x: 0, y: global.TABSPACE_HEIGHT, width: global.mainWindow.getSize()[0], height: global.mainWindow.getSize()[1] - global.TABSPACE_HEIGHT});
+    tab.setBounds({x: 0, y: global.TABSPACE_HEIGHT, width: global.mainWindow.getContentSize()[0], height: global.mainWindow.getContentSize()[1] - global.TABSPACE_HEIGHT});
     tab.webContents.loadURL(url);
 
     return {tab: tab, id: global.newTabID};

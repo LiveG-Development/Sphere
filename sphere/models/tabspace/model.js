@@ -93,6 +93,7 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
 
         var offset = null;
         var draggingTab = null;
+        var tabDropTimeout = null;
 
         function reorderTabs() {
             var currentTabs = domObject.children().reference;
@@ -160,6 +161,12 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
                     });
 
                     draggingTab = targetTab;
+
+                    // Automatically drop the tab if it gets stuck whilst dragging
+
+                    clearTimeout(tabDropTimeout);
+
+                    tabDropTimeout = setTimeout(onUp, 100);
                 }
             }
         }
@@ -179,13 +186,13 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
         clearInterval(this._browserTabWatcher);
 
         this._browserTabWatcher = setInterval(function() {
-            if (thisScope._previousWindowWidth != remote.getCurrentWindow().getSize()[0] || thisScope._previousTabCount != thisScope.children.length) {
+            if (thisScope._previousWindowWidth != remote.getCurrentWindow().getContentSize()[0] || thisScope._previousTabCount != thisScope.children.length) {
 
-                if (((ui.models.tabSpace._TAB_WIDTH + 50) * thisScope.children.length) + 50 >= remote.getCurrentWindow().getSize()[0]) {
+                if (((ui.models.tabSpace._TAB_WIDTH + 50) * thisScope.children.length) + 50 >= remote.getCurrentWindow().getContentSize()[0]) {
                     // Squash tab widths to fit them all into window
 
                     for (var i = 0; i < thisScope.children.length; i++) {
-                        thisScope.children[i].children[0].style.width = ((remote.getCurrentWindow().getSize()[0] / thisScope.children.length) - (50 / thisScope.children.length) - 50) + "px";
+                        thisScope.children[i].children[0].style.width = ((remote.getCurrentWindow().getContentSize()[0] / thisScope.children.length) - (50 / thisScope.children.length) - 50) + "px";
                     }
                 } else {
                     // Set a constant width of all tabs to make them unsquashed
@@ -195,7 +202,7 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
                     }
                 }
 
-                thisScope._previousWindowWidth = remote.getCurrentWindow().getSize()[0];
+                thisScope._previousWindowWidth = remote.getCurrentWindow().getContentSize()[0];
                 thisScope._previousTabCount = thisScope.children.length;
 
                 ui.refresh();
@@ -358,11 +365,11 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
             delete this.attributes["aria-selected"];
         }
 
-        this.browserTab.setBounds({x: 0, y: remote.getGlobal("TABSPACE_HEIGHT"), width: remote.getCurrentWindow().getSize()[0], height: remote.getCurrentWindow().getSize()[1] - remote.getGlobal("TABSPACE_HEIGHT")});
+        this.browserTab.setBounds({x: 0, y: remote.getGlobal("TABSPACE_HEIGHT"), width: remote.getCurrentWindow().getContentSize()[0], height: remote.getCurrentWindow().getContentSize()[1] - remote.getGlobal("TABSPACE_HEIGHT")});
 
         this._browserTabWatcher = setInterval(function() {
             if (thisScope.browserTab != null && remote.getCurrentWindow() != null) {
-                thisScope.browserTab.setBounds({x: 0, y: remote.getGlobal("TABSPACE_HEIGHT"), width: remote.getCurrentWindow().getSize()[0], height: remote.getCurrentWindow().getSize()[1] - remote.getGlobal("TABSPACE_HEIGHT")});
+                thisScope.browserTab.setBounds({x: 0, y: remote.getGlobal("TABSPACE_HEIGHT"), width: remote.getCurrentWindow().getContentSize()[0], height: remote.getCurrentWindow().getContentSize()[1] - remote.getGlobal("TABSPACE_HEIGHT")});
 
                 if ((
                     thisScope.url != thisScope.browserTab.webContents.getURL() ||
