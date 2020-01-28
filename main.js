@@ -66,7 +66,8 @@ function newWindow() {
             title: "Sphere",
             nodeIntegration: true,
             devTools: global.arguments["debug"] ? true : false
-        }
+        },
+        useContentSize: true
     });
 
     global.mainWindow.removeMenu();
