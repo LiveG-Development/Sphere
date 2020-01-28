@@ -233,7 +233,6 @@ keyboardShortcuts.shortcuts = {
             remote.getGlobal("mainWindow").webContents.focus();
 
             dom.element("input[addressbar]").reference[0].focus();
-            dom.element("input[addressbar]").reference[0].select();
         }
     }
 };
