@@ -3,7 +3,7 @@ Sphere, the web browser designed for the LiveG ecosystem. Bringing you power, sp
 
 This repository is licensed by the [LiveG Open-Source Licence](https://github.com/LiveG-Development/Sphere/blob/master/LICENCE.md).
 
-Sphere is a web browser which is written in JavaScript using [Adapt UI](https://github.com/LiveG-Development/Adapt-UI) and [Zapr](https://github.com/LiveG-Development/Zapr). The browser is very portable and is supported by a wide range of platforms. Sphere is built on top of [Electron](http://electronjs.org/) so that it is a standalone application which can be packaged into gDesk OS apps, Linux binaries, Windows executables, macOS apps and more.
+Sphere is a web browser which is written in JavaScript using [Adapt UI](https://github.com/LiveG-Development/Adapt-UI) and [Zapr](https://github.com/LiveG-Development/Zapr). The browser is very portable and is supported by a wide range of platforms. Sphere is built on top of [Electron](http://electronjs.org/) so that it is a standalone application which can be compiled into gDesk OS apps, Linux binaries, Windows executables, macOS apps and more.
 
 ## Prerequisites
 In order to develop Sphere (and do things such as building Sphere), you'll need the following installed:
@@ -35,6 +35,8 @@ Below is a list of command-line arguments that you can use with Sphere in order 
 ```
 
 Launch Chromium Dev Tools when Sphere runs (Sphere's debug mode) so that it can be debugged.
+
+> **Note:** This argument will not do anything if you're using a compiled version of Sphere (for example by using the Windows executable). The argument will only work when you're using the build scripts to run Sphere.
 
 ### `--help`
 ```
