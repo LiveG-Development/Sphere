@@ -128,7 +128,9 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
                 }
             }
 
-            tabSpaceActiveElements.tabs = reorderedTabsModel;
+            if (currentTabs.length == reorderedTabs.length) {
+                tabSpaceActiveElements.tabs = reorderedTabsModel;
+            }
 
             rewriteScreen();
 
@@ -138,35 +140,37 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
         function onMove(event) {
             var targetTab = event.target.closest("[tab]");
 
-            var elementLeft = targetTab.getBoundingClientRect() == null ? 0 : targetTab.getBoundingClientRect().left;
-            var mouseLeft;
+            if (targetTab != null) {
+                var elementLeft = targetTab.getBoundingClientRect().left;
+                var mouseLeft;
 
-            if (event.type == "touchmove") {
-                mouseLeft = event.touches[0].pageX;
-            } else if (event.type == "mousemove") {
-                mouseLeft = event.pageX;
-            }
-
-            if ((event.which == 1 || event.type == "touchmove") && mouseLeft > elementLeft && mouseLeft < elementLeft + targetTab.offsetWidth) {
-                if (offset == null) {
-                    offset = mouseLeft - elementLeft;
+                if (event.type == "touchmove") {
+                    mouseLeft = event.touches[0].pageX;
+                } else if (event.type == "mousemove") {
+                    mouseLeft = event.pageX;
                 }
 
-                if (draggingTab == null || draggingTab == targetTab) {
-                    dom.element("", [targetTab]).style.setPush({
-                        position: "absolute",
-                        top: "8px",
-                        left: (mouseLeft - offset) + "px",
-                        opacity: "0.5"
-                    });
+                if ((event.which == 1 || event.type == "touchmove") && mouseLeft > elementLeft && mouseLeft < elementLeft + targetTab.offsetWidth) {
+                    if (offset == null) {
+                        offset = mouseLeft - elementLeft;
+                    }
 
-                    draggingTab = targetTab;
+                    if (draggingTab == null || draggingTab == targetTab) {
+                        dom.element("", [targetTab]).style.setPush({
+                            position: "absolute",
+                            top: "8px",
+                            left: (mouseLeft - offset) + "px",
+                            opacity: "0.5"
+                        });
 
-                    // Automatically drop the tab if it gets stuck whilst dragging
+                        draggingTab = targetTab;
 
-                    clearTimeout(tabDropTimeout);
+                        // Automatically drop the tab if it gets stuck whilst dragging
 
-                    tabDropTimeout = setTimeout(onUp, 100);
+                        clearTimeout(tabDropTimeout);
+
+                        tabDropTimeout = setTimeout(onUp, 100);
+                    }
                 }
             }
         }
