@@ -338,11 +338,11 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         };
 
         this.children[0].events["auxclick"] = function() {
-            thisScope.close();
+            if (event.button == 1) {
+                thisScope.close();
 
-            ui.refresh();
-
-            event.preventDefault();
+                ui.refresh();
+            }
         };
 
         this.children[0].text = this.title;
