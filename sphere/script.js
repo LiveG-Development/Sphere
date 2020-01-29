@@ -71,7 +71,7 @@ tabSpaceActiveElements.addressBar = new tabSpace.AddressBar("", _("searchUsing",
         event.target.select();
     },
 
-    keypress: function(event) {
+    keyup: function(event) {
         if (event.keyCode == 13) { // Enter key
             var enteredValue = event.target.value.trim();
 

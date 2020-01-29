@@ -22,7 +22,7 @@ eventQueue.handleQueue = function(queue) {
     for (var i = 0; i < queue.length; i++) {
         var eventRequest = queue[i];
 
-        if (eventRequest.type == "keypress") {
+        if (eventRequest.type == "keyup") {
             keyboardShortcuts.handleEvent(eventRequest.event);
         }
     }

@@ -504,10 +504,10 @@ ui.models.tabSpace.AddressBar = class extends ui.components.TextInput {
             // Make sure that any text dragged into the input replaces the current input's text
             event.target.value = event.dataTransfer.getData("text");
 
-            // We should also fire the keypress event so that the text can be interpreted
+            // We should also fire the keyup event so that the text can be interpreted
             event.keyCode = 13;
 
-            (thisScope.events["keypress"] || function() {})(event);
+            (thisScope.events["keyup"] || function() {})(event);
         });
 
         return domObject;

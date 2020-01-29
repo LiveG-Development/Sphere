@@ -280,7 +280,7 @@ keyboardShortcuts.handleEvent = function(event) {
     @shortDescription Initialise events so that keyboard shortcuts can be detected.
 */
 keyboardShortcuts.init = function() {
-    dom.element("body").events.listen("keypress", function(event) {
+    dom.element("body").events.listen("keyup", function(event) {
         keyboardShortcuts.handleEvent(event);
     });
 };
