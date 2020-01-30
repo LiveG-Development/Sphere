@@ -26,6 +26,23 @@ build
 
 This should then build Sphere by using Zapr, build the documentation files also by using Zapr and finally run Electron via npm. If you want to specify command-line arguments that Sphere should use when it runs, just append them to the end of the command.
 
+## Distributing Sphere
+To distribute Sphere for your platform, run at the command line in the project root directory if you're using Bash (for gDesk OS, Linux and macOS):
+
+```bash
+$ ./dist.sh
+```
+
+Alternatively, run this in Command Prompt at the project root directory (for Windows):
+
+```batch
+build
+```
+
+The binary should be in the `dist` directory (which is ignored by Git due to the large file sizes).
+
+This should do the same as building Sphere, except instead of running Sphere at the end of building it, it packages Sphere into a binary for your computer's platform. In order to distribute Sphere for other platforms, you'll need to run the respective commands on said platforms to get their binaries.
+
 ## Available command-line arguments
 Below is a list of command-line arguments that you can use with Sphere in order to take full control of it.
 
