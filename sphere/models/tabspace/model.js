@@ -15,6 +15,8 @@ var tabSpaceActiveElements = {
 
 ui.models.tabSpace._TAB_WIDTH = 200;
 
+ui.models.tabSpace.tabZIndex = 10; // High enough for z-index to become effective
+
 /*
     @name ui.models.tabSpace.Component
 
@@ -160,8 +162,11 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
                             position: "absolute",
                             top: "8px",
                             left: (mouseLeft - offset) + "px",
-                            opacity: "0.5"
+                            opacity: "0.5",
+                            "z-index": ui.models.tabSpace.tabZIndex
                         });
+
+                        ui.models.tabSpace.tabZIndex++;
 
                         draggingTab = targetTab;
 
@@ -169,7 +174,7 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
 
                         clearTimeout(tabDropTimeout);
 
-                        tabDropTimeout = setTimeout(onUp, 100);
+                        tabDropTimeout = setTimeout(onUp, 1000);
                     }
                 }
             }
