@@ -25,6 +25,7 @@ function generateKey(length = 16, digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghij
 
 global.VERSION_NUMBER = "0.1.0";
 global.TABSPACE_HEIGHT = 104;
+global.CURRENT_DIRECTORY = __dirname;
 
 global.arguments = minimist(process.argv, {
     alias: {h: "help"}

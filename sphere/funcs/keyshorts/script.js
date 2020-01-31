@@ -231,7 +231,6 @@ keyboardShortcuts.shortcuts = {
         ctrl: true,
         action: function() {
             remote.getGlobal("mainWindow").webContents.focus();
-
             dom.element("input[addressbar]").reference[0].focus();
         }
     }

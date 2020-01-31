@@ -1,0 +1,12 @@
+{
+    "package": "tech.liveg.sphere.error",
+    "version": "0.1.0",
+    "name": {
+        "en_GB": "Error"
+    },
+    "description": {
+        "en_GB": "Error when visiting page."
+    },
+    "defaultLocale": "en_GB",
+    "mainScript": "script.js"
+}

@@ -7,8 +7,13 @@
 // https://liveg.tech
 // Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
 
+// Electron remote access
+
+const remote = require("electron").remote;
+
 // @import https://opensource.liveg.tech/Adapt-UI/src/ui
 
+// @import https://opensource.liveg.tech/ZaprCoreLibs/src/core/core
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/dom/dom
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/importer/importer
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/l10n/l10n
@@ -19,10 +24,6 @@
 // @import funcs/search/script
 
 // @import models/tabspace/model
-
-// Electron remote access
-
-const remote = require("electron").remote;
 
 // Locale integration configuration
 
@@ -82,7 +83,7 @@ tabSpaceActiveElements.addressBar = new tabSpace.AddressBar("", _("searchUsing",
 
             for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
                 if (tabSpaceActiveElements.tabs[i].selected) {
-                    var finalURL = "about:blank";
+                    var finalURL = "sphere://newtab";
 
                     if (addressQualities.full) {
                         finalURL = enteredValue;
@@ -92,9 +93,9 @@ tabSpaceActiveElements.addressBar = new tabSpace.AddressBar("", _("searchUsing",
                         finalURL = search.queryToURL(enteredValue);
                     }
 
-                    tabSpaceActiveElements.tabs[i].browserTab.webContents.loadURL(finalURL);
+                    tabSpaceActiveElements.tabs[i].browserTab.webContents.loadURL(tabSpaceActiveElements.tabs[i]._specialToConventionalURL(finalURL));
 
-                    tabSpaceActiveElements.tabs[i].url = finalURL;
+                    tabSpaceActiveElements.tabs[i].url = tabSpaceActiveElements.tabs[i]._specialToConventionalURL(finalURL);
                 }
             }
 

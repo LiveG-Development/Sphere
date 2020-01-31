@@ -7,6 +7,8 @@
 // https://liveg.tech
 // Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
 
+// @import ../../funcs/staticpages/script
+
 ui.models.tabSpace = {};
 
 var tabSpaceActiveElements = {
@@ -236,7 +238,7 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
     @shortDescription Tab class, extends `ui.models.tabSpace.Component`.
 */
 ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
-    constructor(url = "about:blank", style = {}, attributes = {}, events = {}) {
+    constructor(url = "sphere://newtab", style = {}, attributes = {}, events = {}) {
         super([
             new ui.components.Button(url, false, {}, {"title": url}),
             new ui.components.Button([new ui.components.Icon("close")], false, {}, {
@@ -249,16 +251,17 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
         this.browserTab = new remote.BrowserView();
         
-        this.browserTab.webContents.loadURL(url);
+        this.browserTab.webContents.loadURL(this._specialToConventionalURL(url));
 
-        this.browserTabObject = remote.getGlobal("newTab")(url);
+        this.browserTabObject = remote.getGlobal("newTab")(this._specialToConventionalURL(url));
         this.browserTab = this.browserTabObject.tab;
         this.browserTabID = this.browserTabObject.id;
 
         this._browserTabWatcher = null;
         this._key = core.generateKey();
 
-        this.url = url;
+        this.url = this._specialToConventionalURL(url);
+        this.displayedURL = url;
         this.loading = true;
         this.title = this.url;
         this.favicon = "";
@@ -268,7 +271,24 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
         this.browserTab.webContents.on("dom-ready", function() {
             thisScope._injectJavaScript();
+            
+            if (thisScope._removeProtocol(thisScope.url.split("?")[0]) == thisScope._removeProtocol(staticPages.newTab)) {
+                // Focus the address bar if we're on a new tab
+
+                remote.getGlobal("mainWindow").webContents.focus();
+                dom.element("input[addressbar]").reference[0].focus();
+            }
         });
+
+        function unconventionalLoad(event, errorCode) {
+            // Handle loads that may be erroneous destinations.
+
+            thisScope.browserTab.webContents.stop();
+            thisScope.browserTab.webContents.loadURL(staticPages.error + "?lang=" + encodeURIComponent(ui.language) + "&code=" + encodeURIComponent(errorCode));
+        }
+
+        this.browserTab.webContents.on("did-fail-load", unconventionalLoad);
+        this.browserTab.webContents.on("did-fail-provisional-load", unconventionalLoad);
 
         this.browserTab.webContents.on("new-window", function(event, url) {
             tabSpaceActiveElements.tabs.push(new ui.models.tabSpace.Tab(url));
@@ -278,6 +298,17 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
             event.preventDefault();
         });
+    }
+
+    _specialToConventionalURL(url) {
+        // Convert a special sphere:// URL to a conventional one
+
+        if (url == "sphere://newtab") {
+            console.warn(staticPages.newTab + "?lang=" + encodeURIComponent(ui.language));
+            return staticPages.newTab + "?lang=" + encodeURIComponent(ui.language);
+        } else {
+            return url;
+        }
     }
 
     _injectJavaScript() {
@@ -291,9 +322,27 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         );
     }
 
+    _removeProtocol(url) {
+        return url.replace(/.*:(\/)*/g, "");
+    }
+
     _formatURL(url) {
         // When setting address bar value, we remove trailing slashes to make sure that the address displays correctly in RTL
         return url.replace(/\/+$/, "");
+    }
+
+    _setAddressBar(url = this.url) {
+        url = this._formatURL(url);
+
+        var urlWithoutQuery = url.split("?")[0];
+
+        if (this._removeProtocol(urlWithoutQuery) == this._removeProtocol(staticPages.newTab)) {
+            this.displayedURL = "";
+        } else if (this._removeProtocol(urlWithoutQuery) != this._removeProtocol(staticPages.error)) {
+            this.displayedURL = this._formatURL(url);
+        }
+
+        tabSpaceActiveElements.addressBar.value = this.displayedURL;
     }
 
     switch() {
@@ -305,8 +354,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
         this.selected = true;
 
-        
-        tabSpaceActiveElements.addressBar.value = this._formatURL(this.url);
+        this._setAddressBar();
 
         remote.getGlobal("mainWindow").webContents.focus();
     }
@@ -393,7 +441,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
                     thisScope.children[0].attributes["title"] = thisScope.title;
 
                     if (thisScope.selected && !focussed.isInputFocussed()) {
-                        tabSpaceActiveElements.addressBar.value = thisScope._formatURL(thisScope.url);
+                        thisScope._setAddressBar();
                     }
 
                     ui.refresh();
@@ -431,7 +479,7 @@ ui.models.tabSpace.NewTabButton = class extends ui.models.tabSpace.Component {
         this.attributes["aria-label"] = l10n.translate("newTab");
 
         this.events["click"] = function() {
-            tabSpaceActiveElements.tabs.push(new ui.models.tabSpace.Tab("https://google.com"));
+            tabSpaceActiveElements.tabs.push(new ui.models.tabSpace.Tab());
             tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
 
             ui.refresh();

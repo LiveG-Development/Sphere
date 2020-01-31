@@ -1,0 +1,12 @@
+{
+    "package": "tech.liveg.sphere.newTab",
+    "version": "0.1.0",
+    "name": {
+        "en_GB": "New Tab"
+    },
+    "description": {
+        "en_GB": "Starting page when a new tab is created."
+    },
+    "defaultLocale": "en_GB",
+    "mainScript": "script.js"
+}
