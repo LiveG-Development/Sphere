@@ -304,7 +304,6 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         // Convert a special sphere:// URL to a conventional one
 
         if (url == "sphere://newtab") {
-            console.warn(staticPages.newTab + "?lang=" + encodeURIComponent(ui.language));
             return staticPages.newTab + "?lang=" + encodeURIComponent(ui.language);
         } else {
             return url;

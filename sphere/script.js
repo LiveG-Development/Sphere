@@ -63,7 +63,7 @@ core.unpack(ui.models);
 
 remote.getCurrentWindow().setTitle(_("sphere"));
 
-tabSpaceActiveElements.tabs.push(new tabSpace.Tab("https://liveg.tech"));
+tabSpaceActiveElements.tabs.push(new tabSpace.Tab());
 
 tabSpaceActiveElements.tabs[0].selected = true;
 
