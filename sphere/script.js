@@ -10,6 +10,7 @@
 // Electron remote access
 
 const remote = require("electron").remote;
+const ipcRenderer = require("electron").ipcRenderer;
 
 // @import https://opensource.liveg.tech/Adapt-UI/src/ui
 

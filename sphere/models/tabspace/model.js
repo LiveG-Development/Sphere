@@ -319,6 +319,17 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
                 .replace(/__KEY__/g, remote.getGlobal("messageSphereKey"))
                 .replace(/__ID__/g, this.browserTabID)
         );
+
+        if (this._removeProtocol(this.url.split("?")[0]) == this._removeProtocol(staticPages.newTab)) {
+            // @asset ../../injections/newtab.js
+
+            this.browserTab.webContents.executeJavaScript(
+                importer
+                    .getString(_assets["newtab.js"])
+                    .replace(/__KEY__/g, remote.getGlobal("messageSphereKey"))
+                    .replace(/__ID__/g, this.browserTabID)
+            );
+        }
     }
 
     _removeProtocol(url) {

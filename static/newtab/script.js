@@ -11,13 +11,41 @@
 
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/core/core
 
-core.unpack(ui.components);
+// @import models/bookmarks/model
 
-ui.screen = [
-    new Container([
-        new Heading("New Tab"),
-        new Paragraph("The New Tab page is still work-in-progress!")
-    ], 12, {
-        "text-align": "center"
-    })
-];
+core.unpack(ui.components);
+core.unpack(ui.models);
+
+var userBookmarks = [];
+
+function showBookmarks() {
+    var bookmarkIcons = [];
+
+    for (var i = 0; i < userBookmarks.length; i++) {
+        bookmarkIcons.push(new bookmarks.BookmarkIcon(
+            userBookmarks[i].url,
+            userBookmarks[i].siteTitle,
+            userBookmarks[i].siteFavicon
+        ))
+    }
+
+    ui.screen = [
+        new Container([
+            new Heading("New Tab"),
+            new Container(bookmarkIcons)
+        ], 12, {
+            "text-align": "center"
+        })
+    ];
+}
+
+window.addEventListener("message", function(event) {
+    if (event.data.type == "_sphereBookmarks") {
+        userBookmarks = event.data.data;
+    }
+
+    showBookmarks();
+    ui.refresh();
+});
+
+showBookmarks();
