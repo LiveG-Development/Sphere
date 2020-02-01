@@ -17,6 +17,7 @@ core.unpack(ui.components);
 core.unpack(ui.models);
 
 var userBookmarks = [];
+var userFavicons = {};
 
 function showBookmarks() {
     var bookmarkIcons = [];
@@ -25,23 +26,32 @@ function showBookmarks() {
         bookmarkIcons.push(new bookmarks.BookmarkIcon(
             userBookmarks[i].url,
             userBookmarks[i].siteTitle,
-            userBookmarks[i].siteFavicon
+            userFavicons[userBookmarks[i].url.split("?")[0].replace(/\/+$/, "")]
         ))
     }
+
+    var bookmarkNameInput = new TextInput("", "Bookmark name");
+    var bookmarkURLInput = new TextInput("", "Bookmark URL");
 
     ui.screen = [
         new Container([
             new Heading("New Tab"),
             new Container(bookmarkIcons),
-            new Button("Add bookmark", true, {}, {}, {
-                click: function() {
-                    _newBookmark({
-                        url: "https://liveg.tech",
-                        siteTitle: "LiveG Technologies",
-                        siteFavicon: "https://liveg.tech/logo.png"
-                    });
-                }
-            })
+            new Container([
+                bookmarkNameInput,
+                bookmarkURLInput,
+                new Button("Add bookmark", false, {}, {}, {
+                    click: function() {
+                        _newBookmark({
+                            url: bookmarkURLInput.value,
+                            siteTitle: bookmarkNameInput.value
+                        });
+    
+                        _requestBookmarks();
+                        _requestFavicons();
+                    }
+                })
+            ])
         ], 12, {
             "text-align": "center"
         })
@@ -51,6 +61,8 @@ function showBookmarks() {
 window.addEventListener("message", function(event) {
     if (event.data.type == "_sphereBookmarks") {
         userBookmarks = event.data.data;
+    } else if (event.data.type == "_sphereFavicons") {
+        userFavicons = event.data.data;
     }
 
     showBookmarks();

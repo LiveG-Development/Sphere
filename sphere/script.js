@@ -11,6 +11,8 @@
 
 const remote = require("electron").remote;
 const ipcRenderer = require("electron").ipcRenderer;
+const path = require("path");
+const fs = require("fs");
 
 // @import https://opensource.liveg.tech/Adapt-UI/src/ui
 
@@ -25,6 +27,11 @@ const ipcRenderer = require("electron").ipcRenderer;
 // @import funcs/search/script
 
 // @import models/tabspace/model
+
+// Useful data to keep across files
+
+var storagePath = "";
+var userData = {};
 
 // Locale integration configuration
 
@@ -152,6 +159,14 @@ tabSpaceActiveElements.reloadButton = new tabSpace.ActionButton([new ui.componen
     }
 });
 
+function getUserData() {
+    userData = JSON.parse(fs.readFileSync(storagePath));
+}
+
+function saveUserData() {
+    fs.writeFileSync(storagePath, JSON.stringify(userData));
+}
+
 function rewriteScreen() {
     ui.screen = [
         new tabSpace.TabRow([
@@ -168,6 +183,10 @@ function rewriteScreen() {
 }
 
 rewriteScreen();
+
+storagePath = path.join(remote.app.getPath("userData"), "userData.json");
+
+getUserData();
 
 ui.events.loaded(function() {
     keyboardShortcuts.init();

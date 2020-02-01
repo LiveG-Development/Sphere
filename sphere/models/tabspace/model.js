@@ -272,16 +272,37 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         this.browserTab.webContents.on("dom-ready", function() {
             thisScope._injectJavaScript();
             
+            thisScope.title = "";
+
+            ui.refresh();
+
             if (thisScope._removeProtocol(thisScope.url.split("?")[0]) == thisScope._removeProtocol(staticPages.newTab)) {
                 // Focus the address bar if we're on a new tab
 
                 remote.getGlobal("mainWindow").webContents.focus();
                 dom.element("input[addressbar]").reference[0].focus();
             }
+
+            if (thisScope._removeProtocol(thisScope.browserTab.webContents.getURL().split("?")[0]) != thisScope._removeProtocol(staticPages.newTab)) {
+                // Remove focus if we're loading a non-new tab so that we can update the tab information
+
+                dom.element("input[addressbar]").reference[0].blur();
+            }
+        });
+
+        this.browserTab.webContents.on("page-favicon-updated", function(event, favicons) {
+            getUserData();
+
+            var faviconStorage = userData.favicons || {};
+
+            faviconStorage[thisScope.browserTab.webContents.getURL().split("?")[0].replace(/\/+$/, "")] = favicons[0];
+            userData.favicons = faviconStorage;
+
+            saveUserData();
         });
 
         function unconventionalLoad(event, errorCode) {
-            // Handle loads that may be erroneous destinations.
+            // Handle loads that may be erroneous destinations
 
             thisScope.browserTab.webContents.stop();
             thisScope.browserTab.webContents.loadURL(staticPages.error + "?lang=" + encodeURIComponent(ui.language) + "&code=" + encodeURIComponent(errorCode));

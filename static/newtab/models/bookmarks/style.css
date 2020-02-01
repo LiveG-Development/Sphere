@@ -1,0 +1,38 @@
+/*
+    Sphere
+    
+    Copyright (C) LiveG. All Rights Reserved.
+    Copying is not a victimless crime. Anyone caught copying LiveG software may
+    face sanctions.
+    
+    https://liveg.tech
+    Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
+*/
+
+button[bookmarkicon] {
+    background-color: transparent;
+    color: var(--primaryText);
+}
+
+button[bookmarkicon]:hover {
+    background-color: var(--secondaryBackground);
+    cursor: pointer;
+}
+
+button[bookmarkicon] img {
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+    object-fit: contain;
+}
+
+button[bookmarkicon] span {
+    display: block;
+    width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

@@ -33,8 +33,16 @@ ui.models.bookmarks.BookmarkIcon = class extends ui.components.Button {
             }
         });
 
-        // // @asset style.css
+        // @asset style.css
                 
-        // dom.element("head").newChild(importer.generateLinkDOMElement(_assets["style.css"]));
+        dom.element("head").newChild(importer.generateLinkDOMElement(_assets["style.css"]));
+    }
+
+    precompute(domObject) {
+        domObject = super.precompute(domObject);
+
+        this.attributes["bookmarkicon"] = "";
+
+        return domObject;
     }
 };

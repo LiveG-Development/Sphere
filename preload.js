@@ -16,6 +16,14 @@ const id = remote.getGlobal("newTabID");
 var storagePath = "";
 var userData = {};
 
+function getUserData() {
+    userData = JSON.parse(fs.readFileSync(storagePath));
+}
+
+function saveUserData() {
+    fs.writeFileSync(storagePath, JSON.stringify(userData));
+}
+
 process.once("loaded", function() {
     // Sending messages from Sphere to the tab
 
@@ -32,10 +40,17 @@ contextBridge.exposeInMainWorld("_sphere", {
                     type: "_sphereBookmarks",
                     data: userData.bookmarks || []
                 }, "*");
+            } else if (data.type == "favicons") {
+                window.postMessage({
+                    type: "_sphereFavicons",
+                    data: userData.favicons || {}
+                });
             } else if (data.type == "newBookmark") {
+                getUserData();
+
                 userData.bookmarks = [...(userData.bookmarks || []), data.bookmark];
 
-                fs.writeFileSync(storagePath, JSON.stringify(userData));
+                saveUserData();
             } else {
                 ipcRenderer.send("_sphereTab", data);
             }
@@ -44,4 +59,5 @@ contextBridge.exposeInMainWorld("_sphere", {
 });
 
 storagePath = path.join(remote.app.getPath("userData"), "userData.json");
-userData = JSON.parse(fs.readFileSync(storagePath));
+
+getUserData();
