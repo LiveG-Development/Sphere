@@ -12,9 +12,9 @@ const path = require("path");
 const fs = require("fs");
 
 const id = remote.getGlobal("newTabID");
-const storagePath = path.join(remote.app.getPath("userData"), "userData.json");
 
-var userData = JSON.parse(fs.readFileSync(storagePath));
+var storagePath = "";
+var userData = {};
 
 process.once("loaded", function() {
     // Sending messages from Sphere to the tab
@@ -32,9 +32,16 @@ contextBridge.exposeInMainWorld("_sphere", {
                     type: "_sphereBookmarks",
                     data: userData.bookmarks || []
                 }, "*");
+            } else if (data.type == "newBookmark") {
+                userData.bookmarks = [...(userData.bookmarks || []), data.bookmark];
+
+                fs.writeFileSync(storagePath, JSON.stringify(userData));
             } else {
                 ipcRenderer.send("_sphereTab", data);
             }
         }
     }
 });
+
+storagePath = path.join(remote.app.getPath("userData"), "userData.json");
+userData = JSON.parse(fs.readFileSync(storagePath));

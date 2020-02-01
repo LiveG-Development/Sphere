@@ -32,7 +32,16 @@ function showBookmarks() {
     ui.screen = [
         new Container([
             new Heading("New Tab"),
-            new Container(bookmarkIcons)
+            new Container(bookmarkIcons),
+            new Button("Add bookmark", true, {}, {}, {
+                click: function() {
+                    _newBookmark({
+                        url: "https://liveg.tech",
+                        siteTitle: "LiveG Technologies",
+                        siteFavicon: "https://liveg.tech/logo.png"
+                    });
+                }
+            })
         ], 12, {
             "text-align": "center"
         })
