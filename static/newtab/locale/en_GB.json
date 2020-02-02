@@ -1,0 +1,21 @@
+{
+    "friendlyName": "English (United Kingdom)",
+    "friendlyNameShort": "English",
+    "direction": "ltr",
+    "strings": {
+        "yes": "Yes",
+        "no": "No",
+        "add": "Add",
+        "ok": "OK",
+        "cancel": "Cancel",
+        "bookmarkName": "Bookmark name",
+        "bookmarkAddress": "Bookmark address",
+        "deleteBookmark": "Delete bookmark",
+        "deleteBookmarkConfirmationStart": "Do you really want to delete ",
+        "deleteBookmarkConfirmationEnd": "?",
+        "addBookmark": "Add bookmark",
+        "addBookmarkDescription": "Enter the bookmark's details so that you can easily access the bookmark later.",
+        "invalidBookmark": "Invalid bookmark",
+        "invalidBookmarkDescription": "It looks like you've entered an invalid address. Please check the address and try again."
+    }
+}

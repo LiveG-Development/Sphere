@@ -16,6 +16,15 @@ function _newBookmark(bookmark) {
     });
 }
 
+function _deleteBookmark(bookmarkID) {
+    window._sphere.send({
+        _sphereKey: "__KEY__", // The Sphere key will be injected here so that we know the message is genuine
+        id: __ID__, // The ID will be injected here so that we know which tab is sending the message
+        type: "deleteBookmark",
+        bookmarkID: bookmarkID
+    })
+}
+
 function _requestBookmarks() {
     window._sphere.send({
         _sphereKey: "__KEY__", // The Sphere key will be injected here so that we know the message is genuine

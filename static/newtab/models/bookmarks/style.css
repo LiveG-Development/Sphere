@@ -9,17 +9,65 @@
     Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
 */
 
-button[bookmarkicon] {
-    background-color: transparent;
-    color: var(--primaryText);
+div[bookmarkcontainer] {
+    max-width: calc(160px * 6);
+    margin-top: 25vh;
+    margin-bottom: 25vh;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
-button[bookmarkicon]:hover {
+div[bookmarkicon] {
+    display: inline-block;
+    position: relative;
+    padding: 10px;
+    background-color: transparent;
+    color: var(--primaryText);
+    border-radius: 10px;
+    transition: 0.5s;
+}
+
+div[bookmarkicon]:hover {
     background-color: var(--secondaryBackground);
     cursor: pointer;
 }
 
-button[bookmarkicon] img {
+div[bookmarkicon] button {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    color: inherit;
+}
+
+div[bookmarkicon] button:hover {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+div[bookmarkicon] button:nth-child(2) {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    color: transparent;
+    font-size: 20px;
+}
+
+[dir="rtl"] div[bookmarkicon] button:nth-child(2) {
+    left: 0;
+    right: unset;
+}
+
+div[bookmarkicon]:hover button:nth-child(2) {
+    color: var(--scrollbar);
+}
+
+div[bookmarkicon] button:nth-child(2):hover {
+    color: var(--scrollbarHover);
+}
+
+div[bookmarkicon] img {
     display: block;
     width: 80px;
     height: 80px;
@@ -29,9 +77,9 @@ button[bookmarkicon] img {
     object-fit: contain;
 }
 
-button[bookmarkicon] span {
+div[bookmarkicon] span {
     display: block;
-    width: 100px;
+    width: 120px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

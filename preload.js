@@ -51,6 +51,12 @@ contextBridge.exposeInMainWorld("_sphere", {
                 userData.bookmarks = [...(userData.bookmarks || []), data.bookmark];
 
                 saveUserData();
+            } else if (data.type == "deleteBookmark") {
+                getUserData();
+
+                userData.bookmarks.splice(data.bookmarkID, 1);
+
+                saveUserData();
             } else {
                 ipcRenderer.send("_sphereTab", data);
             }

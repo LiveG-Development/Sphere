@@ -304,8 +304,10 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         function unconventionalLoad(event, errorCode) {
             // Handle loads that may be erroneous destinations
 
-            thisScope.browserTab.webContents.stop();
-            thisScope.browserTab.webContents.loadURL(staticPages.error + "?lang=" + encodeURIComponent(ui.language) + "&code=" + encodeURIComponent(errorCode));
+            if (errorCode != -3) { // Some pages end up causing error -3 so we ignore it
+                thisScope.browserTab.webContents.stop();
+                thisScope.browserTab.webContents.loadURL(staticPages.error + "?lang=" + encodeURIComponent(ui.language) + "&code=" + encodeURIComponent(errorCode));
+            }
         }
 
         this.browserTab.webContents.on("did-fail-load", unconventionalLoad);
@@ -585,6 +587,7 @@ ui.models.tabSpace.AddressBar = class extends ui.components.TextInput {
         domObject = super.precompute(domObject);
 
         this.attributes["addressbar"] = "";
+        this.attributes["type"] = "url";
 
         var thisScope = this;
 
