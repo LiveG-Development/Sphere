@@ -186,6 +186,13 @@ rewriteScreen();
 
 storagePath = path.join(remote.app.getPath("userData"), "userData.json");
 
+// Create the user storage file if it doesn't exist yet
+fs.open(storagePath, "r", function(error) {
+    if (error) {
+        fs.writeFile(storagePath, "{}", function() {});
+    }
+});
+
 getUserData();
 
 ui.events.loaded(function() {
