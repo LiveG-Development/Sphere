@@ -36,7 +36,7 @@ $ ./dist.sh
 Alternatively, run this in Command Prompt at the project root directory (for Windows):
 
 ```batch
-build
+dist
 ```
 
 The binary should be in the `dist` directory (which is ignored by Git due to the large file sizes).
