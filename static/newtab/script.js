@@ -234,7 +234,9 @@ function showBookmarks() {
                 })
             ])
         ])
-    ]);
+    ], {
+        height: "320px"
+    });
 
     ui.screen = [
         new bookmarks.BookmarkContainer(bookmarkIcons),
