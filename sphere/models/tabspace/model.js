@@ -287,10 +287,12 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
             ui.refresh();
 
             if (thisScope._removeProtocol(thisScope.url.split("?")[0]) == thisScope._removeProtocol(staticPages.newTab)) {
-                // Focus the address bar if we're on a new tab
+                // Focus the address bar if we're on a new tab, but allow time for page to load etc.
 
-                remote.getGlobal("mainWindow").webContents.focus();
-                dom.element("input[addressbar]").reference[0].focus();
+                setTimeout(function() {
+                    remote.getGlobal("mainWindow").webContents.focus();
+                    dom.element("input[addressbar]").reference[0].focus();
+                }, 1000);
             }
 
             if (thisScope._removeProtocol(thisScope.browserTab.webContents.getURL().split("?")[0]) != thisScope._removeProtocol(staticPages.newTab)) {
