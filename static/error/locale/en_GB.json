@@ -1,0 +1,10 @@
+{
+    "friendlyName": "English (United Kingdom)",
+    "friendlyNameShort": "English",
+    "direction": "ltr",
+    "strings": {
+        "pageNotLoaded": "This page cannot be loaded",
+        "pageNotLoadedDescription": "Check your connection to the internet and try again.",
+        "reload": "Reload"
+    }
+}

@@ -27,6 +27,12 @@ ui.models.bookmarks._styleAsset = _assets["style.css"];
     @shortDescription BookmarkContainer class, extends `ui.components.Container`.
 */
 ui.models.bookmarks.BookmarkContainer = class extends ui.components.Container {
+    constructor(children = [], split = 12, style = {}, attributes = {}, events = {}) {
+        super(children, split, style, attributes, events);
+
+        dom.element("head").newChild(importer.generateLinkDOMElement(ui.models.bookmarks._styleAsset));
+    }
+    
     precompute(domObject) {
         domObject = super.precompute(domObject);
 

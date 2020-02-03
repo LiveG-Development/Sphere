@@ -11,13 +11,53 @@
 
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/core/core
 
+// Locale integration configuration
+
+// @asset locale/en_GB.json
+
+l10n.load("en_GB", importer.getString(_assets["en_GB.json"]));
+
+var lang = l10n.getBrowserLocale();
+
+function _() {
+    return l10n.translate(...arguments);
+}
+
+if (core.parameter("lang") != null) {
+    lang = core.parameter("lang");
+}
+
+if (!(lang in l10n.locales)) {
+    lang = "en_GB";
+}
+
+l10n.use(lang);
+
+ui.mirroringDirection = l10n.languageData.direction;
+ui.language = lang;
+
+// UI design
+
 core.unpack(ui.components);
+
+// @asset style.css
+
+dom.element("head").newChild(importer.generateLinkDOMElement(_assets["style.css"]));
 
 ui.screen = [
     new Container([
-        new Heading("The page could not be loaded (" + core.parameter("code") + ")"),
-        new Paragraph("The Error page is still work-in-progress!")
-    ], 12, {
-        "text-align": "center"
+        new Heading(_("pageNotLoaded")),
+        new Paragraph(_("pageNotLoadedDescription")),
+        new Container([
+            new Button(_("reload"), false, {}, {}, {
+                click: function() {
+                    window.location.replace(core.parameter("url"));
+                }
+            })
+        ], 12, {},{
+            id: "errorButtons"
+        })
+    ], 12, {}, {
+        id: "errorInformation"
     })
 ];

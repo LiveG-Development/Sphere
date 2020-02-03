@@ -316,7 +316,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
             if (errorCode != -3) { // Some pages end up causing error -3 so we ignore it
                 thisScope.browserTab.webContents.stop();
-                thisScope.browserTab.webContents.loadURL(staticPages.error + "?lang=" + encodeURIComponent(ui.language) + "&code=" + encodeURIComponent(errorCode));
+                thisScope.browserTab.webContents.loadURL(staticPages.error + "?lang=" + encodeURIComponent(ui.language) + "&url=" + encodeURIComponent(thisScope.browserTab.webContents.getURL()) + "&code=" + encodeURIComponent(errorCode));
             }
         }
 
