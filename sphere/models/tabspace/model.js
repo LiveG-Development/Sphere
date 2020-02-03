@@ -253,7 +253,17 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         
         this.browserTab.webContents.loadURL(this._specialToConventionalURL(url));
 
-        this.browserTabObject = remote.getGlobal("newTab")(this._specialToConventionalURL(url));
+        this.browserTabObject = remote.getGlobal("newTab")(this._specialToConventionalURL(url), function(event, url) {
+            var newTab = new ui.models.tabSpace.Tab(url);
+
+            event.newGuest = newTab.browserTab;
+
+            tabSpaceActiveElements.tabs.push(newTab);
+            tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
+
+            ui.refresh();
+        });
+
         this.browserTab = this.browserTabObject.tab;
         this.browserTabID = this.browserTabObject.id;
 
@@ -312,15 +322,6 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
         this.browserTab.webContents.on("did-fail-load", unconventionalLoad);
         this.browserTab.webContents.on("did-fail-provisional-load", unconventionalLoad);
-
-        this.browserTab.webContents.on("new-window", function(event, url) {
-            tabSpaceActiveElements.tabs.push(new ui.models.tabSpace.Tab(url));
-            tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
-
-            ui.refresh();
-
-            event.preventDefault();
-        });
     }
 
     _specialToConventionalURL(url) {

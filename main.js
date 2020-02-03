@@ -40,7 +40,7 @@ global.tabInformation = {
     events: []
 };
 
-global.newTab = function(url) {
+global.newTab = function(url, newTabCallback = function() {}) {
     global.newTabID++;
 
     var tab = new BrowserView({
@@ -53,6 +53,12 @@ global.newTab = function(url) {
             devTools: false,
             nativeWindowOpen: false
         }
+    });
+
+    tab.webContents.on("new-window", function(event, url) {
+        event.preventDefault();
+
+        newTabCallback(event, url);
     });
 
     tab.setBounds({x: 0, y: global.TABSPACE_HEIGHT, width: global.mainWindow.getContentSize()[0], height: global.mainWindow.getContentSize()[1] - global.TABSPACE_HEIGHT});
