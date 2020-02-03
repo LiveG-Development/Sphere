@@ -73,9 +73,11 @@ function showBookmarks() {
                         click: function() {
                             _deleteBookmark(deleteBookmarkDialogTarget);
 
-                            bookmarkIcons.splice(deleteBookmarkDialogTarget, 1);
+                            userBookmarks.splice(deleteBookmarkDialogTarget, 1);
 
                             deleteBookmarkDialog.isOpen = false;
+
+                            showBookmarks();
 
                             ui.refresh();
                         }
