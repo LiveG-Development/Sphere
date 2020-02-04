@@ -80,4 +80,4 @@ Force the UI language to be the locale (in the format `xx_XX` where the first tw
             rtl                 Use the right-to-left (RTL) text mirroring direction.
 ```
 
-Force the UI text mirroring direction to be the direction (either `ltr` for left-to-right mirroring or `rtl` for right-to-left mirroring) specified.
+Force the UI text mirroring direction to be the direction (either `ltr` for left-to-right mirroring or `rtl` for right-to-left mirroring) specified. This does not affect the direction of static pages as that is specified by the `--lang` argument.
