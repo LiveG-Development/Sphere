@@ -40,14 +40,15 @@ ui.language = lang;
 
 core.unpack(ui.components);
 
+// @import errors
+
 // @asset style.css
 
 dom.element("head").newChild(importer.generateLinkDOMElement(_assets["style.css"]));
 
 ui.screen = [
     new Container([
-        new Heading(_("pageNotLoaded")),
-        new Paragraph(_("pageNotLoadedDescription")),
+        ...errors.getErrorInformation(core.parameter("code")),
         new Container([
             new Button(_("reload"), false, {}, {}, {
                 click: function() {

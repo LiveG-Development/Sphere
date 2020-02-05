@@ -9,6 +9,10 @@
     Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
 */
 
+.errorCode {
+    color: var(--scrollbar);
+}
+
 #errorInformation {
     width: 80vw;
     margin-left: auto;

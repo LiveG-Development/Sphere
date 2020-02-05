@@ -3,8 +3,13 @@
     "friendlyNameShort": "English",
     "direction": "ltr",
     "strings": {
-        "pageNotLoaded": "This page cannot be loaded",
-        "pageNotLoadedDescription": "Check your connection to the internet and try again.",
-        "reload": "Reload"
+        "reload": "Reload",
+        "solutions": "Things to try:",
+        "errorCode": "Error {0} (in case you were wondering)",
+        "pageNotLoaded": "This page could not be loaded",
+        "pageNotLoadedDescription": "There seems to be a problem with loading this page.",
+        "pageNotLoadedSolution1": "Check your connection to the internet.",
+        "pageNotLoadedSolution2": "Reload the page to try again.",
+        "pageNotLoadedSolution3": "Check with your internet service provider (ISP) for any service problems."
     }
 }
