@@ -53,8 +53,6 @@ Below is a list of command-line arguments that you can use with Sphere in order 
 
 Launch Chromium Dev Tools when Sphere runs (Sphere's debug mode) so that it can be debugged.
 
-> **Note:** This argument will not do anything if you're using a compiled version of Sphere (for example by using the Windows executable). The argument will only work when you're using the build scripts to run Sphere.
-
 ### `--help`
 ```
 --help      Display this help screen.
@@ -80,4 +78,6 @@ Force the UI language to be the locale (in the format `xx_XX` where the first tw
             rtl                 Use the right-to-left (RTL) text mirroring direction.
 ```
 
-Force the UI text mirroring direction to be the direction (either `ltr` for left-to-right mirroring or `rtl` for right-to-left mirroring) specified. This does not affect the direction of static pages as that is specified by the [`--lang`](#--lang) argument.
+Force the UI text mirroring direction to be the direction (either `ltr` for left-to-right mirroring or `rtl` for right-to-left mirroring) specified.
+
+> **Note:** This does not affect the direction of static pages as that is specified by the [`--lang`](#--lang) argument.
