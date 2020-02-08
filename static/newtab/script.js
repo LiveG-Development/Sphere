@@ -13,6 +13,7 @@
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/core/core
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/dom/dom
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/l10n/l10n
+// @import https://opensource.liveg.tech/ZaprCoreLibs/src/importer/importer
 
 // @import models/bookmarks/model
 
@@ -40,6 +41,12 @@ l10n.use(lang);
 
 ui.mirroringDirection = l10n.languageData.direction;
 ui.language = lang;
+
+// Favicon link generation
+
+// @asset assets/favicon.png
+
+dom.element("head").newChild(importer.generateLinkDOMElement(_assets["favicon.png"], "image/png", "shortcut icon"));
 
 // UI design
 

@@ -54,14 +54,14 @@ ui.models.bookmarks.BookmarkContainer = class extends ui.components.Container {
     @shortDescription BookmarkIcon class, extends `ui.components.Component`.
 */
 ui.models.bookmarks.BookmarkIcon = class extends ui.components.Component {
-    constructor(url, siteTitle = url, siteFavicon = importer.generateLink(_assets["public.png"], "image/png"), style = {}, attributes = {}, events = {}, deleteButtonEvents = {}) {
-        // @asset ../../assets/public.png
+    constructor(url, siteTitle = url, siteFavicon = importer.generateLink(_assets["defaultFavicon.png"], "image/png"), style = {}, attributes = {}, events = {}, deleteButtonEvents = {}) {
+        // @asset ../../assets/defaultFavicon.png
                 
         super([
             new ui.components.Button([
                 new ui.components.Image(siteFavicon, siteTitle, {}, {}, {
                     error: function(event) {
-                        event.target.src = importer.generateLink(_assets["public.png"], "image/png");
+                        event.target.src = importer.generateLink(_assets["defaultFavicon.png"], "image/png");
                     }
                 }),
                 new ui.components.Text(siteTitle)

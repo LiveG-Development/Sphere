@@ -15,7 +15,7 @@ var tabSpaceActiveElements = {
     tabs: []
 };
 
-ui.models.tabSpace._TAB_WIDTH = 200;
+ui.models.tabSpace._TAB_WIDTH = 220;
 
 ui.models.tabSpace.tabZIndex = 10; // High enough for z-index to become effective
 
@@ -228,9 +228,6 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
     @name ui.models.tabSpace.Tab
 
     @param url string URL of tab body. Default: `"about:blank"`.
-    @param loading boolean Whether the tab body is loading. Default: `false`.
-    @param title string Document title of tab body. Default: `url`.
-    @param favicon string Document favicon URL of tab body. Default: `""`.
     @param style object Styling to use on component. Default: `{}`.
     @param attributes object HTML attributes to use on component. Default: `{}`.
     @param events object Events to listen to on component. Default: `{}`.
@@ -239,8 +236,20 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
 */
 ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
     constructor(url = "sphere://newtab", style = {}, attributes = {}, events = {}) {
+        // @asset ../../assets/defaultFavicon.png
+
         super([
-            new ui.components.Button(url, false, {}, {"title": url}),
+            new ui.components.Button([
+                new ui.components.Image(importer.generateLink(_assets["defaultFavicon.png"], "image/png"), "", {}, {
+                    "aria-hidden": "true",
+                    "draggable": "false"
+                }, {
+                    error: function(event) {
+                        event.target.src = importer.generateLink(_assets["defaultFavicon.png"], "image/png");
+                    }
+                }),
+                new ui.components.Text(url)
+            ], false, {}, {"title": url}),
             new ui.components.Button([new ui.components.Icon("close")], false, {}, {
                 "aria-label": l10n.translate("closeTab"),
                 "title": l10n.translate("closeTab")
@@ -303,6 +312,8 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         });
 
         this.browserTab.webContents.on("page-favicon-updated", function(event, favicons) {
+            thisScope.children[0].children[0].source = favicons[0];
+
             getUserData();
 
             var faviconStorage = userData.favicons || {};
@@ -311,6 +322,10 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
             userData.favicons = faviconStorage;
 
             saveUserData();
+
+            if (!focussed.isInputFocussed()) {
+                ui.refresh();
+            }
         });
 
         function unconventionalLoad(event, errorCode) {
@@ -438,7 +453,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
             }
         };
 
-        this.children[0].text = this.title;
+        this.children[0].children[1].text = this.title;
 
         this.children[1].events["click"] = function() {
             thisScope.close();
@@ -473,7 +488,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
                     thisScope.loading = thisScope.browserTab.webContents.isLoading();
                     thisScope.title = thisScope.browserTab.webContents.getTitle();
 
-                    thisScope.children[0].children[0].text = thisScope.title;
+                    thisScope.children[0].children[1].text = thisScope.title;
                     thisScope.children[0].attributes["title"] = thisScope.title;
 
                     if (thisScope.selected && !focussed.isInputFocussed()) {

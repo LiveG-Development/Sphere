@@ -68,13 +68,23 @@ li[tab] > button:hover {
 li[tab] > button:first-child {
     position: relative;
     top: -3px;
-    width: 200px;
+    width: 220px;
     height: 38px;
     text-align: left;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     vertical-align: middle;
+}
+
+li[tab] > button:first-child > img {
+    width: 25px;
+    height: 25px;
+    margin-top: -5px;
+    margin-right: 10px;
+    border-radius: 2px;
+    vertical-align: middle;
+    object-fit: contain;
 }
 
 [dir="rtl"] li[tab] {
@@ -84,6 +94,11 @@ li[tab] > button:first-child {
 
 [dir="rtl"] li[tab] > button:first-child {
     text-align: right;
+}
+
+[dir="rtl"] li[tab] > button:first-child > img {
+    margin-right: unset;
+    margin-left: 10px;
 }
 
 button[newtab] {
