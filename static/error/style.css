@@ -10,7 +10,7 @@
 */
 
 .errorCode {
-    color: var(--scrollbar);
+    color: var(--extra);
 }
 
 #errorInformation {
