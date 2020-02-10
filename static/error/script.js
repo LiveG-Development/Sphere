@@ -36,6 +36,12 @@ l10n.use(lang);
 ui.mirroringDirection = l10n.languageData.direction;
 ui.language = lang;
 
+// Favicon link generation
+
+// @asset assets/favicon.png
+
+dom.element("head").newChild(importer.generateLinkDOMElement(_assets["favicon.png"], "image/png", "shortcut icon"));
+
 // UI design
 
 core.unpack(ui.components);
