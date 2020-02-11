@@ -13,6 +13,7 @@ const remote = require("electron").remote;
 const ipcRenderer = require("electron").ipcRenderer;
 const path = require("path");
 const fs = require("fs");
+const os = require("os");
 
 // @import https://opensource.liveg.tech/Adapt-UI/src/ui
 

@@ -9,6 +9,8 @@
 
 // @import https://opensource.liveg.tech/ZaprCoreLibs/src/dom/dom
 
+// @import ../platform/script
+
 var keyboardShortcuts = {};
 
 keyboardShortcuts.shortcuts = {
@@ -270,7 +272,11 @@ keyboardShortcuts.handleShortcut = function(keyCode, ctrl = false, alt = false, 
     @shortDescription Handle the event as a keyboard shortcut.
 */
 keyboardShortcuts.handleEvent = function(event) {
-    return keyboardShortcuts.handleShortcut(event.code, event.ctrlKey, event.altKey, event.shiftKey);
+    if (platform.os = platform.osTypes.MACOS) {
+        return keyboardShortcuts.handleShortcut(event.code, event.metaKey, event.altKey, event.shiftKey);
+    } else {
+        return keyboardShortcuts.handleShortcut(event.code, event.ctrlKey, event.altKey, event.shiftKey);
+    }
 };
 
 /*
@@ -282,4 +288,112 @@ keyboardShortcuts.init = function() {
     dom.element("body").events.listen("keyup", function(event) {
         keyboardShortcuts.handleEvent(event);
     });
+};
+
+/*
+    @name keyboardShortcuts.getRepresentation
+
+    @param keyCode string String-based key code of main key in shortcut.
+    @param ctrl boolean Whether the Ctrl key is being pressed in the shortcut. Default: `false`.
+    @param alt boolean Whether the Alt key is being pressed in the shortcut. Default: `false`.
+    @param shift boolean Whether the Shift key is being pressed in the shortcut. Default: `false`.
+
+    @shortDescription Get the textual representation of a keyboard shortcut.
+    @longDescription For example, the default copy command would become `Ctrl + C`.
+*/
+keyboardShortcuts.getRepresentation = function(keyCode, ctrl = false, alt = false, shift = false) {
+    var ctrlName = _("keys_ctrl");
+    var altName = _("keys_alt");
+    var shiftName = _("keys_shift");
+    var metaName = _("keys_meta");
+    var printScreenName = _("keys_printScreen");
+
+    var keyName = keyCode;
+
+    if (platform.os == platform.osTypes.LIVEG) {
+        metaName = _("keys_liveg");
+        printScreenName = _("keys_screenshot");
+    }
+
+    if (platform.os == platform.osTypes.WINDOWS) {
+        metaName = _("keys_windows");
+    }
+
+    if (platform.os == platform.osTypes.MACOS) {
+        ctrlName = _("keys_command");
+        altName = _("keys_option");
+        metaName = _("keys_command");
+    }
+
+    if (platform.os == platform.osTypes.ANDROID) {
+        metaName = _("keys_android");
+    }
+
+    var specialKeyNames = {
+        "Backquote": "`",
+        "Backslash": "\\",
+        "BracketLeft": "[",
+        "BracketRight": "]",
+        "Comma": ",",
+        "Equal": "=",
+        "Minus": "-",
+        "Period": ".",
+        "Quote": "'",
+        "Semicolon": ";",
+        "Slash": "/",
+        "AltLeft": altName,
+        "AltRight": _("keys_rightAlt"),
+        "CapsLock": _("keys_capsLock"),
+        "ContextMenu": _("keys_menu"),
+        "ControlLeft": ctrlName,
+        "ControlRight": _("keys_rightCtrl"),
+        "Enter": _("keys_enter"),
+        "MetaLeft": metaName,
+        "MetaRight": _("keys_rightMeta", [metaName]),
+        "ShiftLeft": shiftName,
+        "ShiftRight": _("keys_rightShift"),
+        "Backspace": _("keys_backspace"),
+        "Delete": _("keys_delete"),
+        "Space": _("keys_space"),
+        "Tab": _("keys_tab"),
+        "ArrowUp": _("keys_up"),
+        "ArrowDown": _("keys_down"),
+        "ArrowLeft": _("keys_left"),
+        "ArrowRight": _("keys_right"),
+        "Home": _("keys_home"),
+        "End": _("keys_end"),
+        "PageUp": _("keys_pageUp"),
+        "PageDown": _("keys_pageDown"),
+        "Escape": _("keys_esc"),
+        "PrintScreen": printScreenName,
+        "Pause": _("keys_pause")
+    };
+
+    if (/Key./.test(keyCode)) {
+        keyName = keyCode[3];
+    } else if (/Digit./.test(keyCode)) {
+        keyName = keyCode[5];
+    } else if (/Numpad./.test(keyCode)) {
+        keyName = _("keys_numpad", [keyCode[6]]);
+    } else if (keyCode in specialKeyNames) {
+        keyName = specialKeyNames[keyCode];
+    }
+
+    var finalShortcut = "";
+
+    if (ctrl) {
+        finalShortcut += ctrlName + " + ";
+    }
+
+    if (alt) {
+        finalShortcut += altName + " + ";
+    }
+
+    if (shift) {
+        finalShortcut += shiftName + " + ";
+    }
+
+    finalShortcut += keyName;
+
+    return finalShortcut;
 };

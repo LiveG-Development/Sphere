@@ -8,6 +8,8 @@
 // Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
 
 // @import ../../funcs/staticpages/script
+// @import ../../funcs/menu/script
+// @import ../../funcs/keyshorts/script
 
 ui.models.tabSpace = {};
 
@@ -336,6 +338,39 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
                 thisScope.browserTab.webContents.loadURL(staticPages.error + "?lang=" + encodeURIComponent(ui.language) + "&url=" + encodeURIComponent(thisScope.browserTab.webContents.getURL()) + "&code=" + encodeURIComponent(errorCode));
             }
         }
+
+        this.browserTab.webContents.on("context-menu", function(event) {
+            var menuItems = [];
+
+            menuItems.push(
+                {
+                    label: _("goBack"),
+                    tooltip: keyboardShortcuts.getRepresentation(
+                        keyboardShortcuts.shortcuts.goBack.keyCode,
+                        keyboardShortcuts.shortcuts.goBack.ctrl,
+                        keyboardShortcuts.shortcuts.goBack.alt,
+                        keyboardShortcuts.shortcuts.goBack.shift
+                    ),
+                    click: function() {
+                        thisScope.browserTab.webContents.goBack();
+                    }
+                },
+                {
+                    label: _("goForward"),
+                    tooltip: keyboardShortcuts.getRepresentation(
+                        keyboardShortcuts.shortcuts.goForward.keyCode,
+                        keyboardShortcuts.shortcuts.goForward.ctrl,
+                        keyboardShortcuts.shortcuts.goForward.alt,
+                        keyboardShortcuts.shortcuts.goForward.shift
+                    ),
+                    click: function() {
+                        thisScope.browserTab.webContents.goForward();
+                    }
+                }
+            );
+
+            menu.show(menuItems, new ui.Vector(event.x, event.y));
+        });
 
         this.browserTab.webContents.on("did-fail-load", unconventionalLoad);
         this.browserTab.webContents.on("did-fail-provisional-load", unconventionalLoad);
