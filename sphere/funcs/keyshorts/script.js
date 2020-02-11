@@ -272,7 +272,7 @@ keyboardShortcuts.handleShortcut = function(keyCode, ctrl = false, alt = false, 
     @shortDescription Handle the event as a keyboard shortcut.
 */
 keyboardShortcuts.handleEvent = function(event) {
-    if (platform.os = platform.osTypes.MACOS) {
+    if (platform.os == platform.osTypes.MACOS) {
         return keyboardShortcuts.handleShortcut(event.code, event.metaKey, event.altKey, event.shiftKey);
     } else {
         return keyboardShortcuts.handleShortcut(event.code, event.ctrlKey, event.altKey, event.shiftKey);
