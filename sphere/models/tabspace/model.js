@@ -10,6 +10,7 @@
 // @import ../../funcs/staticpages/script
 // @import ../../funcs/menu/script
 // @import ../../funcs/keyshorts/script
+// @import ../../funcs/search/script
 
 ui.models.tabSpace = {};
 
@@ -339,13 +340,149 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
             }
         }
 
-        this.browserTab.webContents.on("context-menu", function(event) {
+        this.browserTab.webContents.on("context-menu", function(event, params) {
             var menuItems = [];
+
+            if (params.linkURL != "") { // If is a link
+                menuItems.push(
+                    {
+                        label: _("openLinkInNewTab"),
+                        click: function() {
+                            var newTab = new ui.models.tabSpace.Tab(params.linkURL);
+
+                            tabSpaceActiveElements.tabs.push(newTab);
+                            tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
+                        }
+                    },
+                    {
+                        label: _("copyLinkAddress"),
+                        click: function() {
+                            remote.clipboard.writeText(params.linkURL);
+                        }
+                    },
+                    {type: "separator"}
+                );
+            }
+
+            if (
+                params.editFlags.canCut ||
+                params.editFlags.canCopy ||
+                params.editFlags.canPaste ||
+                params.editFlags.canSelectAll ||
+                params.editFlags.canDelete ||
+                params.mediaType == "image") { // If can do basic editing commands such as copy and paste
+                if (params.editFlags.canCut) {
+                    menuItems.push({
+                        label: _("cut"),
+                        toolTip: keyboardShortcuts.getRepresentation("KeyX", true),
+                        role: "cut"
+                    });
+                }
+
+                if (params.editFlags.canCopy) {
+                    if (params.mediaType == "image") {
+                        menuItems.push({
+                            label: _("copyImage"),
+                            toolTip: keyboardShortcuts.getRepresentation("KeyC", true),
+                            role: "copy"
+                        });
+                    } else {
+                        menuItems.push({
+                            label: _("copy"),
+                            toolTip: keyboardShortcuts.getRepresentation("KeyC", true),
+                            role: "copy"
+                        });
+
+                        if (params.titleText != "") {
+                            menuItems.push({
+                                label: _("copyDescription"),
+                                click: function() {
+                                    remote.clipboard.writeText(params.titleText);
+                                }
+                            });
+                        }
+                    }
+                }
+
+                if (params.mediaType == "image" && params.hasImageContents) {
+                    menuItems.push({
+                        label: _("copyImageAddress"),
+                        click: function() {
+                            remote.clipboard.writeText(params.srcURL);
+                        }
+                    });
+                }
+
+                if (params.editFlags.canPaste) {
+                    menuItems.push({
+                        label: _("paste"),
+                        toolTip: keyboardShortcuts.getRepresentation("KeyV", true),
+                        role: "paste"
+                    });
+
+                    menuItems.push({
+                        label: _("pasteWithoutFormatting"),
+                        role: "pasteAndMatchStyle"
+                    });
+                }
+
+                if (params.editFlags.canSelectAll) {
+                    menuItems.push({
+                        label: _("selectAll"),
+                        toolTip: keyboardShortcuts.getRepresentation("KeyA", true),
+                        role: "selectAll"
+                    });
+                }
+
+                if (params.editFlags.canDelete) {
+                    menuItems.push({
+                        label: _("delete"),
+                        toolTip: keyboardShortcuts.getRepresentation("Delete"),
+                        role: "delete"
+                    });
+                }
+
+                menuItems.push({type: "separator"});
+            }
+
+            if (params.editFlags.canCopy && params.selectionText.trim() != "") { // If can do special browser actions
+                menuItems.push({
+                    label: _("searchForOn", [params.selectionText, search.engines[0].name]),
+                    click: function() {
+                        var newTab = new ui.models.tabSpace.Tab(search.queryToURL(params.selectionText.trim()));
+
+                        tabSpaceActiveElements.tabs.push(newTab);
+                        tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
+                    }
+                });
+
+                menuItems.push({type: "separator"});
+            }
+
+            if (params.editFlags.canUndo || params.editFlags.canRedo) { // If can undo and redo
+                if (params.editFlags.canUndo) {
+                    menuItems.push({
+                        label: _("undo"),
+                        toolTip: keyboardShortcuts.getRepresentation("KeyZ", true),
+                        role: "undo"
+                    });
+                }
+
+                if (params.editFlags.canRedo) {
+                    menuItems.push({
+                        label: _("redo"),
+                        toolTip: keyboardShortcuts.getRepresentation("KeyZ", true, false, true),
+                        role: "redo"
+                    });
+                }
+
+                menuItems.push({type: "separator"});
+            }
 
             menuItems.push(
                 {
                     label: _("goBack"),
-                    tooltip: keyboardShortcuts.getRepresentation(
+                    toolTip: keyboardShortcuts.getRepresentation(
                         keyboardShortcuts.shortcuts.goBack.keyCode,
                         keyboardShortcuts.shortcuts.goBack.ctrl,
                         keyboardShortcuts.shortcuts.goBack.alt,
@@ -357,7 +494,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
                 },
                 {
                     label: _("goForward"),
-                    tooltip: keyboardShortcuts.getRepresentation(
+                    toolTip: keyboardShortcuts.getRepresentation(
                         keyboardShortcuts.shortcuts.goForward.keyCode,
                         keyboardShortcuts.shortcuts.goForward.ctrl,
                         keyboardShortcuts.shortcuts.goForward.alt,
@@ -365,6 +502,18 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
                     ),
                     click: function() {
                         thisScope.browserTab.webContents.goForward();
+                    }
+                },
+                {
+                    label: _("reloadPage"),
+                    toolTip: keyboardShortcuts.getRepresentation(
+                        keyboardShortcuts.shortcuts.reload.keyCode,
+                        keyboardShortcuts.shortcuts.reload.ctrl,
+                        keyboardShortcuts.shortcuts.reload.alt,
+                        keyboardShortcuts.shortcuts.reload.shift
+                    ),
+                    click: function() {
+                        thisScope.browserTab.webContents.reload();
                     }
                 }
             );
