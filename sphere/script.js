@@ -26,6 +26,7 @@ const os = require("os");
 // @import funcs/keyshorts/script
 // @import funcs/eventqueue/script
 // @import funcs/search/script
+// @import funcs/menu/script
 
 // @import models/tabspace/model
 
@@ -160,6 +161,45 @@ tabSpaceActiveElements.reloadButton = new tabSpace.ActionButton([new ui.componen
     }
 });
 
+tabSpaceActiveElements.menuButton = new tabSpace.ActionButton([new ui.components.Icon("menu")], {}, {
+    "title": _("menu"),
+    "aria-label": _("menu")
+}, {
+    click: function() {
+        var menuItems = [];
+
+        menuItems.push(
+            {
+                label: _("newTab"),
+                toolTip: keyboardShortcuts.getRepresentation(
+                    keyboardShortcuts.shortcuts.newTab.keyCode,
+                    keyboardShortcuts.shortcuts.newTab.ctrl,
+                    keyboardShortcuts.shortcuts.newTab.alt,
+                    keyboardShortcuts.shortcuts.newTab.shift
+                ),
+                click: function() {
+                    tabSpaceActiveElements.tabs.push(new ui.models.tabSpace.Tab());
+                    tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
+
+                    ui.refresh();
+                }
+            },
+            {type: "separator"},
+            {
+                label: _("exit"),
+                click: function() {
+                    remote.getCurrentWindow().close();
+                }
+            }
+        );
+
+        menu.show(menuItems, new ui.Vector(
+            ui.mirroringDirection == "rtl" ? 0 : remote.getCurrentWindow().getContentSize()[0] - 50, // Subtract 50px to make the menu show more on the inside of the browser
+            remote.getGlobal("TABSPACE_HEIGHT")
+        ));
+    }
+});
+
 function getUserData() {
     userData = JSON.parse(fs.readFileSync(storagePath));
 }
@@ -178,7 +218,8 @@ function rewriteScreen() {
             tabSpaceActiveElements.backButton,
             tabSpaceActiveElements.forwardButton,
             tabSpaceActiveElements.reloadButton,
-            tabSpaceActiveElements.addressBar
+            tabSpaceActiveElements.addressBar,
+            tabSpaceActiveElements.menuButton
         ])
     ];
 }

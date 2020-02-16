@@ -10,6 +10,8 @@
         "goBack": "Go back",
         "goForward": "Go forward",
         "reloadPage": "Reload page",
+        "menu": "Menu",
+        "exit": "Exit",
         "searchUsing": "Search the web using {0}...",
         "searchForOn": "Search for '{0}' on {1}",
         "openLinkInNewTab": "Open link in new tab",

@@ -114,5 +114,5 @@ div[actionsrow] {
 }
 
 input[addressbar] {
-    width: calc(100% - 200px);
+    width: calc(100% - 240px);
 }
