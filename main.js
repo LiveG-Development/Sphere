@@ -24,7 +24,6 @@ function generateKey(length = 16, digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghij
 }
 
 global.VERSION_NUMBER = "0.1.0";
-global.TABSPACE_HEIGHT = 104;
 global.CURRENT_DIRECTORY = __dirname;
 
 global.arguments = minimist(process.argv, {
@@ -34,6 +33,7 @@ global.arguments = minimist(process.argv, {
 global.console = new nodeConsole.Console(process.stdout, process.stderr);
 
 global.messageSphereKey = generateKey();
+global.tabspaceHeight = 104;
 global.newTabID = -1;
 
 global.tabInformation = {
@@ -61,11 +61,16 @@ global.newTab = function(url, newTabCallback = function() {}) {
         newTabCallback(event, url);
     });
 
-    tab.setBounds({x: 0, y: global.TABSPACE_HEIGHT, width: global.mainWindow.getContentSize()[0], height: global.mainWindow.getContentSize()[1] - global.TABSPACE_HEIGHT});
+    tab.setBounds({x: 0, y: global.tabspaceHeight, width: global.mainWindow.getContentSize()[0], height: global.mainWindow.getContentSize()[1] - global.tabspaceHeight});
+    tab.setBackgroundColor("#ffffff");
     tab.webContents.loadURL(url);
 
     return {tab: tab, id: global.newTabID};
 };
+
+global.setTabspaceHeight = function(height) {
+    global.tabspaceHeight = height;
+}
 
 function newWindow() {
     global.mainWindow = new BrowserWindow({

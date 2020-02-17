@@ -27,6 +27,7 @@ const os = require("os");
 // @import funcs/eventqueue/script
 // @import funcs/search/script
 // @import funcs/menu/script
+// @import funcs/fullscreen/script
 
 // @import models/tabspace/model
 
@@ -201,7 +202,7 @@ tabSpaceActiveElements.menuButton = new tabSpace.ActionButton([new ui.components
 
         menu.show(menuItems, new ui.Vector(
             ui.mirroringDirection == "rtl" ? 0 : remote.getCurrentWindow().getContentSize()[0] - 50, // Subtract 50px to make the menu show more on the inside of the browser
-            remote.getGlobal("TABSPACE_HEIGHT")
+            remote.getGlobal("tabspaceHeight")
         ));
     }
 });
@@ -215,19 +216,23 @@ function saveUserData() {
 }
 
 function rewriteScreen() {
-    ui.screen = [
-        new tabSpace.TabRow([
-            new tabSpace.TabStrip(tabSpaceActiveElements.tabs),
-            tabSpaceActiveElements.newTabButton
-        ]),
-        new tabSpace.ActionsRow([
-            tabSpaceActiveElements.backButton,
-            tabSpaceActiveElements.forwardButton,
-            tabSpaceActiveElements.reloadButton,
-            tabSpaceActiveElements.addressBar,
-            tabSpaceActiveElements.menuButton
-        ])
-    ];
+    if (!fullscreen.isFullscreen) {
+        ui.screen = [
+            new tabSpace.TabRow([
+                new tabSpace.TabStrip(tabSpaceActiveElements.tabs),
+                tabSpaceActiveElements.newTabButton
+            ]),
+            new tabSpace.ActionsRow([
+                tabSpaceActiveElements.backButton,
+                tabSpaceActiveElements.forwardButton,
+                tabSpaceActiveElements.reloadButton,
+                tabSpaceActiveElements.addressBar,
+                tabSpaceActiveElements.menuButton
+            ])
+        ];
+    } else {
+        ui.screen = [];
+    }
 }
 
 rewriteScreen();

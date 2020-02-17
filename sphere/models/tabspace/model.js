@@ -11,6 +11,7 @@
 // @import ../../funcs/menu/script
 // @import ../../funcs/keyshorts/script
 // @import ../../funcs/search/script
+// @import ../../funcs/fullscreen/script
 
 ui.models.tabSpace = {};
 
@@ -521,6 +522,22 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
             menu.show(menuItems, new ui.Vector(event.x, event.y));
         });
 
+        var timesFullscreenCalled = 0;
+        var lastTimeFullscreenCalled = new Date().getTime();
+
+        this.browserTab.webContents.on("enter-html-full-screen", function() {
+            if (timesFullscreenCalled > 3 || lastTimeFullscreenCalled < new Date().getTime() - (10 * 1000)) { // To prevent abuse of the fullscreen API, we impose a 10-second cooldown period after 3 fullscreen calls.
+                fullscreen.enter();
+            }
+
+            timesFullscreenCalled++;
+            lastTimeFullscreenCalled = new Date().getTime();
+        });
+
+        this.browserTab.webContents.on("leave-html-full-screen", function() {
+            fullscreen.leave();
+        });
+
         this.browserTab.webContents.on("did-fail-load", unconventionalLoad);
         this.browserTab.webContents.on("did-fail-provisional-load", unconventionalLoad);
     }
@@ -657,11 +674,11 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
             delete this.attributes["aria-selected"];
         }
 
-        this.browserTab.setBounds({x: 0, y: remote.getGlobal("TABSPACE_HEIGHT"), width: remote.getCurrentWindow().getContentSize()[0], height: remote.getCurrentWindow().getContentSize()[1] - remote.getGlobal("TABSPACE_HEIGHT")});
+        this.browserTab.setBounds({x: 0, y: remote.getGlobal("tabspaceHeight"), width: remote.getCurrentWindow().getContentSize()[0], height: remote.getCurrentWindow().getContentSize()[1] - remote.getGlobal("tabspaceHeight")});
 
         this._browserTabWatcher = setInterval(function() {
             if (thisScope.browserTab != null && remote.getCurrentWindow() != null) {
-                thisScope.browserTab.setBounds({x: 0, y: remote.getGlobal("TABSPACE_HEIGHT"), width: remote.getCurrentWindow().getContentSize()[0], height: remote.getCurrentWindow().getContentSize()[1] - remote.getGlobal("TABSPACE_HEIGHT")});
+                thisScope.browserTab.setBounds({x: 0, y: remote.getGlobal("tabspaceHeight"), width: remote.getCurrentWindow().getContentSize()[0], height: remote.getCurrentWindow().getContentSize()[1] - remote.getGlobal("tabspaceHeight")});
 
                 if ((
                     thisScope.url != thisScope.browserTab.webContents.getURL() ||

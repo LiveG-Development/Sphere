@@ -256,6 +256,17 @@ keyboardShortcuts.shortcuts = {
         }
     },
 
+    toggleFullscreen: {
+        keyCode: "F11",
+        action: function() {
+            if (fullscreen.isFullscreen) {
+                fullscreen.leave();
+            } else {
+                fullscreen.enter();
+            }
+        }
+    },
+
     exit: {
         keyCode: "KeyW",
         ctrl: true,
