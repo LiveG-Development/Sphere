@@ -187,6 +187,23 @@ tabSpaceActiveElements.menuButton = new tabSpace.ActionButton([new ui.components
             },
             {type: "separator"},
             {
+                label: !fullscreen.isFullscreen ? _("enterFullscreen") : _("leaveFullscreen"),
+                toolTip: keyboardShortcuts.getRepresentation(
+                    keyboardShortcuts.shortcuts.toggleFullscreen.keyCode,
+                    keyboardShortcuts.shortcuts.toggleFullscreen.ctrl,
+                    keyboardShortcuts.shortcuts.toggleFullscreen.alt,
+                    keyboardShortcuts.shortcuts.toggleFullscreen.shift
+                ),
+                click: function() {
+                    if (fullscreen.isFullscreen) {
+                        fullscreen.leave();
+                    } else {
+                        fullscreen.enter();
+                    }
+                }
+            },
+            {type: "separator"},
+            {
                 label: _("exit"),
                 toolTip: keyboardShortcuts.getRepresentation(
                     keyboardShortcuts.shortcuts.exit.keyCode,

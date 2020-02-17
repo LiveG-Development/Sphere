@@ -11,6 +11,8 @@
         "goForward": "Go forward",
         "reloadPage": "Reload page",
         "menu": "Menu",
+        "enterFullscreen": "Enter fullscreen",
+        "leaveFullscreen": "Leave fullscreen",
         "exit": "Exit",
         "searchUsing": "Search the web using {0}...",
         "searchForOn": "Search for '{0}' on {1}",
