@@ -235,6 +235,34 @@ keyboardShortcuts.shortcuts = {
             remote.getGlobal("mainWindow").webContents.focus();
             dom.element("input[addressbar]").reference[0].focus();
         }
+    },
+
+    focusPage: {
+        keyCode: "F10",
+        action: function() {
+            for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
+                if (tabSpaceActiveElements.tabs[i].selected) {
+                    tabSpaceActiveElements.tabs[i].browserTab.webContents.focus();
+                }
+            }
+        }
+    },
+
+    menu: {
+        keyCode: "KeyF",
+        alt: true,
+        action: function() {
+            tabSpaceActiveElements.menuButton.events.click();
+        }
+    },
+
+    exit: {
+        keyCode: "KeyW",
+        ctrl: true,
+        shift: true,
+        action: function() {
+            remote.getCurrentWindow().close();
+        }
     }
 };
 

@@ -1,1 +1,1 @@
-{"focussed.isInputFocussed": {"shortDescription": "Check if an input is currently focussed.", "longDescription": "", "return": {"type": "boolean", "description": "Whether an input is focussed."}, "params": []}}
+{"focussed.isInputFocussed": {"shortDescription": "Check if an input is currently focussed.", "longDescription": "", "params": [], "return": {"type": "boolean", "description": "Whether an input is focussed."}}}

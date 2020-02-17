@@ -187,6 +187,12 @@ tabSpaceActiveElements.menuButton = new tabSpace.ActionButton([new ui.components
             {type: "separator"},
             {
                 label: _("exit"),
+                toolTip: keyboardShortcuts.getRepresentation(
+                    keyboardShortcuts.shortcuts.exit.keyCode,
+                    keyboardShortcuts.shortcuts.exit.ctrl,
+                    keyboardShortcuts.shortcuts.exit.alt,
+                    keyboardShortcuts.shortcuts.exit.shift
+                ),
                 click: function() {
                     remote.getCurrentWindow().close();
                 }
