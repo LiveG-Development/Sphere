@@ -12,6 +12,7 @@
 // @import ../../funcs/keyshorts/script
 // @import ../../funcs/search/script
 // @import ../../funcs/fullscreen/script
+// @import ../../funcs/zoom/script
 
 ui.models.tabSpace = {};
 

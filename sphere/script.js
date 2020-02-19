@@ -28,6 +28,7 @@ const os = require("os");
 // @import funcs/search/script
 // @import funcs/menu/script
 // @import funcs/fullscreen/script
+// @import funcs/zoom/script
 
 // @import models/tabspace/model
 
@@ -169,6 +170,14 @@ tabSpaceActiveElements.menuButton = new tabSpace.ActionButton([new ui.components
     click: function() {
         var menuItems = [];
 
+        var currentSelectedTab = null;
+
+        for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
+            if (tabSpaceActiveElements.tabs[i].selected) {
+                currentSelectedTab = tabSpaceActiveElements.tabs[i];
+            }
+        }
+
         menuItems.push(
             {
                 label: _("newTab"),
@@ -185,7 +194,63 @@ tabSpaceActiveElements.menuButton = new tabSpace.ActionButton([new ui.components
                     ui.refresh();
                 }
             },
-            {type: "separator"},
+            {type: "separator"}
+        );
+
+        if (zoom.getFactor(currentSelectedTab) != 1) {
+            menuItems.push({
+                label: _("zoomIsAtPercent", [Math.round(zoom.getFactor(currentSelectedTab) * 100)]),
+                enabled: false
+            });
+        }
+
+        menuItems.push(
+            {
+                label: _("zoomIn"),
+                toolTip: keyboardShortcuts.getRepresentation(
+                    keyboardShortcuts.shortcuts.zoomIn.keyCode,
+                    keyboardShortcuts.shortcuts.zoomIn.ctrl,
+                    keyboardShortcuts.shortcuts.zoomIn.alt,
+                    keyboardShortcuts.shortcuts.zoomIn.shift
+                ),
+                click: function() {
+                    if (zoom.getFactor(currentSelectedTab) < 3) { // Max zoom level is 300%
+                        zoom.setFactor(currentSelectedTab, Number(Number(zoom.getFactor(currentSelectedTab) + 0.25).toFixed(2))); // We fix floating-point numbers to prevent artifacting
+                    }
+                }
+            },
+            {
+                label: _("zoomOut"),
+                toolTip: keyboardShortcuts.getRepresentation(
+                    keyboardShortcuts.shortcuts.zoomOut.keyCode,
+                    keyboardShortcuts.shortcuts.zoomOut.ctrl,
+                    keyboardShortcuts.shortcuts.zoomOut.alt,
+                    keyboardShortcuts.shortcuts.zoomOut.shift
+                ),
+                click: function() {
+                    if (zoom.getFactor(currentSelectedTab) > 0.5) { // Min zoom level is 50%
+                        zoom.setFactor(currentSelectedTab, Number(Number(zoom.getFactor(currentSelectedTab) - 0.25).toFixed(2))); // We fix floating-point numbers to prevent artifacting
+                    }
+                }
+            }
+        );
+
+        if (zoom.getFactor(currentSelectedTab) != 1) {
+            menuItems.push({
+                label: _("resetZoom"),
+                toolTip: keyboardShortcuts.getRepresentation(
+                    keyboardShortcuts.shortcuts.resetZoom.keyCode,
+                    keyboardShortcuts.shortcuts.resetZoom.ctrl,
+                    keyboardShortcuts.shortcuts.resetZoom.alt,
+                    keyboardShortcuts.shortcuts.resetZoom.shift
+                ),
+                click: function() {
+                    zoom.setFactor(currentSelectedTab, 1);
+                }
+            });
+        }
+
+        menuItems.push(
             {
                 label: !fullscreen.isFullscreen ? _("enterFullscreen") : _("leaveFullscreen"),
                 toolTip: keyboardShortcuts.getRepresentation(
@@ -202,20 +267,21 @@ tabSpaceActiveElements.menuButton = new tabSpace.ActionButton([new ui.components
                     }
                 }
             },
-            {type: "separator"},
-            {
-                label: _("exit"),
-                toolTip: keyboardShortcuts.getRepresentation(
-                    keyboardShortcuts.shortcuts.exit.keyCode,
-                    keyboardShortcuts.shortcuts.exit.ctrl,
-                    keyboardShortcuts.shortcuts.exit.alt,
-                    keyboardShortcuts.shortcuts.exit.shift
-                ),
-                click: function() {
-                    remote.getCurrentWindow().close();
-                }
-            }
+            {type: "separator"}
         );
+
+        menuItems.push({
+            label: _("exit"),
+            toolTip: keyboardShortcuts.getRepresentation(
+                keyboardShortcuts.shortcuts.exit.keyCode,
+                keyboardShortcuts.shortcuts.exit.ctrl,
+                keyboardShortcuts.shortcuts.exit.alt,
+                keyboardShortcuts.shortcuts.exit.shift
+            ),
+            click: function() {
+                remote.getCurrentWindow().close();
+            }
+        });
 
         menu.show(menuItems, new ui.Vector(
             ui.mirroringDirection == "rtl" ? 0 : remote.getCurrentWindow().getContentSize()[0] - 50, // Subtract 50px to make the menu show more on the inside of the browser

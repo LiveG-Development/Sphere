@@ -256,6 +256,46 @@ keyboardShortcuts.shortcuts = {
         }
     },
 
+    zoomIn: {
+        keyCode: "Equal",
+        ctrl: true,
+        action: function() {
+            for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
+                if (tabSpaceActiveElements.tabs[i].selected) {
+                    if (zoom.getFactor(tabSpaceActiveElements.tabs[i]) < 3) { // Max zoom level is 300%
+                        zoom.setFactor(tabSpaceActiveElements.tabs[i], Number(Number(zoom.getFactor(tabSpaceActiveElements.tabs[i]) + 0.25).toFixed(2))); // We fix floating-point numbers to prevent artifacting
+                    }
+                }
+            }
+        }
+    },
+
+    zoomOut: {
+        keyCode: "Minus",
+        ctrl: true,
+        action: function() {
+            for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
+                if (tabSpaceActiveElements.tabs[i].selected) {
+                    if (zoom.getFactor(tabSpaceActiveElements.tabs[i]) > 0.5) { // Min zoom level is 50%
+                        zoom.setFactor(tabSpaceActiveElements.tabs[i], Number(Number(zoom.getFactor(tabSpaceActiveElements.tabs[i]) - 0.25).toFixed(2))); // We fix floating-point numbers to prevent artifacting
+                    }
+                }
+            }
+        }
+    },
+
+    resetZoom: {
+        keyCode: "Digit0",
+        ctrl: true,
+        action: function() {
+            for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
+                if (tabSpaceActiveElements.tabs[i].selected) {
+                    zoom.setFactor(tabSpaceActiveElements.tabs[i], 1);
+                }
+            }
+        }
+    },
+
     toggleFullscreen: {
         keyCode: "F11",
         action: function() {
