@@ -72,13 +72,17 @@ global.newTab = function(url, newTabCallback = function() {}) {
 
 global.setTabspaceHeight = function(height) {
     global.tabspaceHeight = height;
-}
+};
+
+global.setFullscreen = function(state = true) {
+    global.mainWindow.setFullScreen(state);
+};
 
 function newWindow() {
     global.mainWindow = new BrowserWindow({
         width: 1200,
         height: 800,
-        fullscreenable: false,
+        fullscreenable: true,
         webPreferences: {
             title: "Sphere",
             nodeIntegration: true,
