@@ -34,6 +34,8 @@
         "undo": "Undo",
         "redo": "Redo",
 
+        "settings": "Settings",
+
         "keys_ctrl": "Ctrl",
         "keys_rightCtrl": "Right Ctrl",
         "keys_alt": "Alt",

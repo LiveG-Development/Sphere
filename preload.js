@@ -57,6 +57,17 @@ contextBridge.exposeInMainWorld("_sphere", {
                 userData.bookmarks.splice(data.bookmarkID, 1);
 
                 saveUserData();
+            } else if (data.type == "setUserData") {
+                getUserData();
+
+                userData = [...(userData || {}), ...(data.userData)];
+
+                saveUserData();
+            } else if (data.type == "getUserData") {
+                window.postMessage({
+                    type: "_sphereUserData",
+                    data: userData || {}
+                });
             } else {
                 ipcRenderer.send("_sphereTab", data);
             }

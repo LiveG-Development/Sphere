@@ -270,6 +270,18 @@ tabSpaceActiveElements.menuButton = new tabSpace.ActionButton([new ui.components
             {type: "separator"}
         );
 
+        menuItems.push(
+            {
+                label: _("settings"),
+                click: function() {
+                    tabSpaceActiveElements.tabs.push(new ui.models.tabSpace.Tab("sphere://settings"));
+                    tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
+
+                    ui.refresh();
+                }
+            }
+        );
+
         menuItems.push({
             label: _("exit"),
             toolTip: keyboardShortcuts.getRepresentation(

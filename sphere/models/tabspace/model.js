@@ -548,6 +548,8 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
         if (url == "sphere://newtab") {
             return staticPages.newTab + "?lang=" + encodeURIComponent(ui.language);
+        } else if (url == "sphere://settings") {
+            return staticPages.settings + "?lang=" + encodeURIComponent(ui.language);
         } else {
             return url;
         }
@@ -572,6 +574,15 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
                     .replace(/__KEY__/g, remote.getGlobal("messageSphereKey"))
                     .replace(/__ID__/g, this.browserTabID)
             );
+        } else if (this._removeProtocol(this.url.split("?")[0]) == this._removeProtocol(staticPages.settings)) {
+            // @asset ../../injections/settings.js
+
+            this.browserTab.webContents.executeJavaScript(
+                importer
+                    .getString(_assets["settings.js"])
+                    .replace(/__KEY__/g, remote.getGlobal("messageSphereKey"))
+                    .replace(/__ID__/g, this.browserTabID)
+            );
         }
     }
 
@@ -591,6 +602,8 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
         if (this._removeProtocol(urlWithoutQuery) == this._removeProtocol(staticPages.newTab)) {
             this.displayedURL = "";
+        } else if (this._removeProtocol(urlWithoutQuery) == this._removeProtocol(staticPages.settings)) {
+            this.displayedURL = "sphere://settings";
         } else if (this._removeProtocol(urlWithoutQuery) != this._removeProtocol(staticPages.error)) {
             this.displayedURL = this._formatURL(url);
         }

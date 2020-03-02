@@ -1,0 +1,12 @@
+{
+    "package": "tech.liveg.sphere.settings",
+    "version": "0.1.0",
+    "name": {
+        "en_GB": "Settings"
+    },
+    "description": {
+        "en_GB": "Control your Sphere experience on the Settings page."
+    },
+    "defaultLocale": "en_GB",
+    "mainScript": "script.js"
+}

@@ -17,6 +17,10 @@ cd static/error
 call zapr build app
 cd ../..
 
+cd static/settings
+call zapr build app
+cd ../..
+
 cd sphere
 call zapr build app
 call zapr docgen

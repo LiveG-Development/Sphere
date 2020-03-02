@@ -11,5 +11,6 @@ var _currentDirectory = remote.getGlobal("CURRENT_DIRECTORY").replace(/\\/g, "/"
 
 var staticPages = {
     newTab: "file:///" + _currentDirectory + "/static/newtab/build/tech.liveg.sphere.newTab-0.1.0.html",
-    error: "file:///" + _currentDirectory + "/static/error/build/tech.liveg.sphere.error-0.1.0.html"
+    error: "file:///" + _currentDirectory + "/static/error/build/tech.liveg.sphere.error-0.1.0.html",
+    settings: "file:///" + _currentDirectory + "/static/settings/build/tech.liveg.sphere.settings-0.1.0.html"
 };
