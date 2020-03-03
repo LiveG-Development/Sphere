@@ -5,6 +5,8 @@ This repository is licensed by the [LiveG Open-Source Licence](https://github.co
 
 Sphere is a web browser which is written in JavaScript using [Adapt UI](https://github.com/LiveG-Development/Adapt-UI) and [Zapr](https://github.com/LiveG-Development/Zapr). The browser is very portable and is supported by a wide range of platforms. Sphere is built on top of [Electron](http://electronjs.org/) so that it is a standalone application which can be compiled into gDesk OS apps, Linux binaries, Windows executables, macOS apps and more.
 
+Sphere is also going to be the app runtime for LiveG gDesk OS apps, allowing for web apps to be integrated into the system, with APIs available to control it.
+
 ## Prerequisites
 In order to develop Sphere (and do things such as building Sphere), you'll need the following installed:
 * [Zapr](https://github.com/LiveG-Development/Zapr) (with Zapr added to your PATH)
