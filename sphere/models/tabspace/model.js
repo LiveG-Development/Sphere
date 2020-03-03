@@ -549,7 +549,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         if (url == "sphere://newtab") {
             return staticPages.newTab + "?lang=" + encodeURIComponent(ui.language);
         } else if (url == "sphere://settings") {
-            return staticPages.settings + "?lang=" + encodeURIComponent(ui.language);
+            return staticPages.settings + "?lang=" + encodeURIComponent(ui.language) + "&version=" + encodeURIComponent(remote.getGlobal("VERSION_NUMBER"));
         } else {
             return url;
         }
@@ -608,6 +608,9 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
             this.displayedURL = this._formatURL(url);
         }
 
+        search.load();
+
+        tabSpaceActiveElements.addressBar.placeholder = _("searchUsing", [search.engines[search.selectedEngine].name]);
         tabSpaceActiveElements.addressBar.value = this.displayedURL;
     }
 

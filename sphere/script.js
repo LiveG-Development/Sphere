@@ -79,7 +79,7 @@ tabSpaceActiveElements.tabs.push(new tabSpace.Tab());
 
 tabSpaceActiveElements.tabs[0].selected = true;
 
-tabSpaceActiveElements.addressBar = new tabSpace.AddressBar("", _("searchUsing", [search.engines[0].name]), false, {}, {}, {
+tabSpaceActiveElements.addressBar = new tabSpace.AddressBar("", _("searchUsing", [search.engines[search.selectedEngine].name]), false, {}, {}, {
     focus: function(event) {
         event.target.select();
     },
@@ -303,6 +303,15 @@ tabSpaceActiveElements.menuButton = new tabSpace.ActionButton([new ui.components
 });
 
 function getUserData() {
+    storagePath = path.join(remote.app.getPath("userData"), "userData.json");
+
+    // Create the user storage file if it doesn't exist yet
+    fs.open(storagePath, "r", function(error) {
+        if (error) {
+            fs.writeFile(storagePath, "{}", function() {});
+        }
+    });
+
     userData = JSON.parse(fs.readFileSync(storagePath));
 }
 
@@ -331,15 +340,6 @@ function rewriteScreen() {
 }
 
 rewriteScreen();
-
-storagePath = path.join(remote.app.getPath("userData"), "userData.json");
-
-// Create the user storage file if it doesn't exist yet
-fs.open(storagePath, "r", function(error) {
-    if (error) {
-        fs.writeFile(storagePath, "{}", function() {});
-    }
-});
 
 getUserData();
 

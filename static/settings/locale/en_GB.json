@@ -3,6 +3,18 @@
     "friendlyNameShort": "English",
     "direction": "ltr",
     "strings": {
-        "settings": "Settings"
+        "settings": "Settings",
+
+        "general": "General",
+
+        "about": "About",
+        "aboutLogo": "Sphere logo",
+        "aboutName": "LiveG Sphere",
+        "aboutVersion": "LiveG Sphere V{0}",
+        "aboutDescription": "The web browser designed for the LiveG ecosystem.",
+        "aboutCopyright": "Copyright © LiveG. All Rights Reserved.",
+        "aboutCopyrightExtra": "Copying is not a victimless crime. Anyone caught copying LiveG software may face sanctions.",
+        "aboutLicence": "The use of Sphere is governed by the LiveG Open-Source Licence.",
+        "aboutOpenSource": "Sphere is made possible through the use of many open-source projects and libraries, such as Chromium and Electron. Copyrights and licence terms from these open-source projects are also in effect, and LiveG acknowledges that the projects' copyrights belong to their respective owners."
     }
 }
