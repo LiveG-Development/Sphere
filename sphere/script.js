@@ -302,20 +302,24 @@ tabSpaceActiveElements.menuButton = new tabSpace.ActionButton([new ui.components
     }
 });
 
-function getUserData() {
+function initialiseUserData() {
     storagePath = path.join(remote.app.getPath("userData"), "userData.json");
 
     // Create the user storage file if it doesn't exist yet
-    fs.open(storagePath, "r", function(error) {
-        if (error) {
-            fs.writeFile(storagePath, "{}", function() {});
-        }
-    });
+    if (!fs.existsSync(storagePath)) {
+        fs.writeFileSync(storagePath, "{}");
+    }
+}
+
+function getUserData() {
+    initialiseUserData();
 
     userData = JSON.parse(fs.readFileSync(storagePath));
 }
 
 function saveUserData() {
+    initialiseUserData();
+
     fs.writeFileSync(storagePath, JSON.stringify(userData));
 }
 

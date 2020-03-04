@@ -60,10 +60,12 @@ contextBridge.exposeInMainWorld("_sphere", {
             } else if (data.type == "setUserData") {
                 getUserData();
 
-                userData = [...(userData || {}), ...(data.userData)];
+                userData = data.userData;
 
                 saveUserData();
             } else if (data.type == "getUserData") {
+                getUserData();
+
                 window.postMessage({
                     type: "_sphereUserData",
                     data: userData || {}

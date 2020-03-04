@@ -6,6 +6,8 @@
         "settings": "Settings",
 
         "general": "General",
+        "generalSearchEngine": "Search engine",
+        "generalDefaultSearchEngine": "Default search engine",
 
         "about": "About",
         "aboutLogo": "Sphere logo",

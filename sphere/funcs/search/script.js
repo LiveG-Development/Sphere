@@ -17,14 +17,38 @@ var search = {};
 search.load = function() {
     getUserData();
 
-    if (userData.search == null || userData.search.engines == null || userData.search.engines.length == 0) {
+    if (userData.search == undefined || userData.search.engines == undefined || userData.search.engines.length == 0) {
         search = {
             engines: [
                 {
                     name: "Google",
-                    fullName: "Google (United Kingdom)",
-                    website: "https://www.google.co.uk",
-                    queryURL: "https://www.google.co.uk/search?q=%s"
+                    fullName: "Google",
+                    website: "https://www.google.com",
+                    queryURL: "https://www.google.com/search?q=%s"
+                },
+                {
+                    name: "Bing",
+                    fullName: "Bing",
+                    website: "https://bing.com",
+                    queryURL: "https://bing.com/search?q=%s"
+                },
+                {
+                    name: "Yahoo!",
+                    fullName: "Yahoo!",
+                    website: "https://search.yahoo.com",
+                    queryURL: "https://search.yahoo.com/search?q=%s"
+                },
+                {
+                    name: "DuckDuckGo",
+                    fullName: "DuckDuckGo",
+                    website: "https://duckduckgo.com",
+                    queryURL: "https://duckduckgo.com/?q=%s"
+                },
+                {
+                    name: "Ecosia",
+                    fullName: "Ecosia",
+                    website: "https://ecosia.org",
+                    queryURL: "https://ecosia.org/search?q=%s"
                 }
             ],
         
@@ -32,6 +56,10 @@ search.load = function() {
         };
 
         getUserData();
+
+        if (userData.search == undefined) {
+            userData.search = {};
+        }
 
         userData.search.engines = search.engines;
         userData.search.selectedEngine = search.selectedEngine;

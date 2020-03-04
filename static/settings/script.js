@@ -51,12 +51,20 @@ dom.element("head").newChild(importer.generateLinkDOMElement(_assets["favicon.pn
 core.unpack(ui.components);
 core.unpack(ui.models);
 
+var userData = {};
+var settingsInitialised = false;
+
 const SETTINGS_PAGES = {
     GENERAL: 0,
     ABOUT: 1
 };
 
 var selectedSettingsPage = SETTINGS_PAGES.GENERAL;
+
+ui.screen = [
+    new appLayout.Sidebar(),
+    new appLayout.Content()
+];
 
 function getSidebarContents() {
     var settingsPageInformation = [
@@ -87,11 +95,27 @@ function showSettings() {
     // @asset assets/logo.png
 
     if (selectedSettingsPage == SETTINGS_PAGES.GENERAL) {
-        // TODO: Add more parts to Settings page, such as ability to change search engine
+        var searchEngineCandidates = [];
+
+        for (var i = 0; i < userData.search.engines.length; i++) {
+            searchEngineCandidates.push(userData.search.engines[i].fullName);
+        }
+
+        var searchEngineSelectionInput = new SelectionInput(searchEngineCandidates, userData.search.selectedEngine, false, {}, {}, {
+            change: function() {
+                userData.search.selectedEngine = searchEngineSelectionInput.selected;
+
+                _setUserData(userData);
+            }
+        });
 
         settingsPageContents = [
             new Heading(_("settings")),
-            new Paragraph("Coming soon! Expect some new features coming your way, such as changing your search engine and configuring keyboard shortcuts.")
+            new Heading(_("generalSearchEngine"), 2),
+            new Label([
+                new Text(_("generalDefaultSearchEngine")),
+                searchEngineSelectionInput
+            ])
         ];
     }
 
@@ -128,4 +152,19 @@ function showSettings() {
     ui.refresh();
 }
 
-showSettings();
+window.addEventListener("message", function(event) {
+    if (event.data.type == "_sphereUserData") {
+        userData = event.data.data;
+    }
+
+    if (!settingsInitialised) {
+        showSettings();
+
+        settingsInitialised = true;
+    }
+});
+
+// Get the latest user data so that there is less overwrite collisions
+setInterval(function() {
+    _getUserData();
+}, 3000);
