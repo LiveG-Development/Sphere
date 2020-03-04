@@ -449,7 +449,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
             if (params.editFlags.canCopy && params.selectionText.trim() != "") { // If can do special browser actions
                 menuItems.push({
-                    label: _("searchForOn", [params.selectionText, search.engines[0].name]),
+                    label: _("searchForOn", [params.selectionText, search.engines[search.selectedEngine].name]),
                     click: function() {
                         var newTab = new ui.models.tabSpace.Tab(search.queryToURL(params.selectionText.trim()));
 
