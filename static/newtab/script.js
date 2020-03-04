@@ -198,11 +198,15 @@ function showBookmarks() {
         }
     });
 
-    function changeAddBookmarkDialogOKButtonState() {
+    function changeAddBookmarkDialogOKButtonState(event) {
         if (dom.element("#bookmarkName").reference[0].value.trim() != "" && dom.element("#bookmarkURL").reference[0].value.trim() != "") {
             dom.element("#addBookmarkDialogOKButton").attribute("disabled").delete();
         } else {
             dom.element("#addBookmarkDialogOKButton").attribute("disabled").set("");
+        }
+
+        if (event.code == "Enter") {
+            addBookmarkDialogOKButton.events.click();
         }
     }
 
