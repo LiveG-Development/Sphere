@@ -76,6 +76,7 @@ global.setTabspaceHeight = function(height) {
 
 global.setFullscreen = function(state = true) {
     global.mainWindow.setFullScreen(state);
+    global.mainWindow.setMenuBarVisibility(false); // Force menu bar to hide, especially when exiting fullscreen
 };
 
 function newWindow() {
