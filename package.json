@@ -18,11 +18,11 @@
     "author": "LiveG Technologies <hi@liveg.tech>",
     "license": "GOSL",
     "devDependencies": {
-        "electron": "^6.1.7",
-        "electron-builder": "^22.3.2"
+        "electron": "^6.1.9",
+        "electron-builder": "^22.4.1"
     },
     "dependencies": {
-        "minimist": "^1.2.2"
+        "minimist": "^1.2.5"
     },
     "build": {
         "appId": "tech.liveg.sphere",
