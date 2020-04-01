@@ -7,6 +7,7 @@
 
         "closeTab": "Close tab",
         "newTab": "New tab",
+        "newWindow": "New window",
         "goBack": "Go back",
         "goForward": "Go forward",
         "reloadPage": "Reload page",

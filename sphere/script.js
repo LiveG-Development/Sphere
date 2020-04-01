@@ -194,6 +194,18 @@ tabSpaceActiveElements.menuButton = new tabSpace.ActionButton([new ui.components
                     ui.refresh();
                 }
             },
+            {
+                label: _("newWindow"),
+                toolTip: keyboardShortcuts.getRepresentation(
+                    keyboardShortcuts.shortcuts.newWindow.keyCode,
+                    keyboardShortcuts.shortcuts.newWindow.ctrl,
+                    keyboardShortcuts.shortcuts.newWindow.alt,
+                    keyboardShortcuts.shortcuts.newWindow.shift
+                ),
+                click: function() {
+                    remote.getGlobal("newWindow")();
+                }
+            },
             {type: "separator"}
         );
 

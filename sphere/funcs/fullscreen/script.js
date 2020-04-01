@@ -17,7 +17,7 @@ var fullscreen = {
 
         fullscreen._normalTabspaceHeight = remote.getGlobal("tabspaceHeight");
 
-        remote.getGlobal("setFullscreen")(true);
+        remote.getGlobal("setFullscreen")(remote.getCurrentWindow(), true);
         remote.getGlobal("setTabspaceHeight")(0);
 
         rewriteScreen();
@@ -27,7 +27,7 @@ var fullscreen = {
     leave: function() {
         fullscreen.isFullscreen = false;
 
-        remote.getGlobal("setFullscreen")(false);
+        remote.getGlobal("setFullscreen")(remote.getCurrentWindow(), false);
         remote.getGlobal("setTabspaceHeight")(fullscreen._normalTabspaceHeight);
     
         rewriteScreen();

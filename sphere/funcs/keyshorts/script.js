@@ -22,6 +22,14 @@ keyboardShortcuts.shortcuts = {
         }
     },
 
+    newWindow: {
+        keyCode: "KeyN",
+        ctrl: true,
+        action: function() {
+            remote.getGlobal("newWindow")();
+        }
+    },
+
     closeTab: {
         keyCode: "KeyW",
         ctrl: true,
@@ -232,7 +240,7 @@ keyboardShortcuts.shortcuts = {
         keyCode: "KeyL",
         ctrl: true,
         action: function() {
-            remote.getGlobal("mainWindow").webContents.focus();
+            remote.getCurrentWindow().webContents.focus();
             dom.element("input[addressbar]").reference[0].focus();
         }
     },

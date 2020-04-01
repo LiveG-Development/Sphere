@@ -22,8 +22,12 @@ eventQueue.handleQueue = function(queue) {
     for (var i = 0; i < queue.length; i++) {
         var eventRequest = queue[i];
 
-        if (eventRequest.type == "keyup") {
-            keyboardShortcuts.handleEvent(eventRequest.event);
+        for (var t = 0; t < tabSpaceActiveElements.tabs.length; t++) {
+            if (eventRequest.id == tabSpaceActiveElements.tabs[t].browserTabID) { // Events from this tab should be fired in the tab's parent window only
+                if (eventRequest.type == "keyup") {
+                    keyboardShortcuts.handleEvent(eventRequest.event);
+                }
+            }
         }
     }
 };

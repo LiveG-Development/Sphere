@@ -40,7 +40,7 @@ global.tabInformation = {
     events: []
 };
 
-global.newTab = function(url, newTabCallback = function() {}) {
+global.newTab = function(window, url, newTabCallback = function() {}) {
     global.newTabID++;
 
     var tab = new BrowserView({
@@ -61,7 +61,7 @@ global.newTab = function(url, newTabCallback = function() {}) {
         newTabCallback(event, url);
     });
 
-    tab.setBounds({x: 0, y: global.tabspaceHeight, width: global.mainWindow.getContentSize()[0], height: global.mainWindow.getContentSize()[1] - global.tabspaceHeight});
+    tab.setBounds({x: 0, y: global.tabspaceHeight, width: window.getContentSize()[0], height: window.getContentSize()[1] - global.tabspaceHeight});
     tab.setBackgroundColor("#ffffff");
     tab.webContents.setVisualZoomLevelLimits(1, 3);
     tab.webContents.setZoomFactor(1);
@@ -74,12 +74,12 @@ global.setTabspaceHeight = function(height) {
     global.tabspaceHeight = height;
 };
 
-global.setFullscreen = function(state = true) {
-    global.mainWindow.setFullScreen(state);
-    global.mainWindow.setMenuBarVisibility(false); // Force menu bar to hide, especially when exiting fullscreen
+global.setFullscreen = function(window, state = true) {
+    window.setFullScreen(state);
+    window.setMenuBarVisibility(false); // Force menu bar to hide, especially when exiting fullscreen
 };
 
-function newWindow() {
+global.newWindow = function() {
     global.mainWindow = new BrowserWindow({
         width: 1200,
         height: 800,
@@ -122,7 +122,7 @@ if (global.arguments["help"] || process.argv.indexOf("/?") > -1) {
             }
         });
 
-        newWindow();
+        global.newWindow();
     });
 
     // When all windows of Sphere are closed, this function is triggered
@@ -140,7 +140,7 @@ if (global.arguments["help"] || process.argv.indexOf("/?") > -1) {
         // open so that the user is not confused by switching to a windowless app
         
         if (global.mainWindow == null) {
-            newWindow();
+            global.newWindow();
         }
     });
 }
