@@ -264,7 +264,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         this.HTMLTagName = "li";
 
         this.browserTab = new remote.BrowserView();
-        
+
         this.browserTab.webContents.loadURL(this._specialToConventionalURL(url));
 
         this.browserTabObject = remote.getGlobal("newTab")(remote.getCurrentWindow(), this._specialToConventionalURL(url), function(event, url) {
@@ -294,7 +294,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         var thisScope = this;
 
         this.browserTab.webContents.on("dom-ready", function() {
-            thisScope._injectJavaScript();
+            thisScope._injectTabCode();
             
             thisScope.title = "";
 
@@ -555,7 +555,14 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         }
     }
 
-    _injectJavaScript() {
+    _injectTabCode() {
+        // @asset ../../injections/tab.css
+
+        this.browserTab.webContents.insertCSS(
+            importer
+                .getString(_assets["tab.css"])
+        );
+
         // @asset ../../injections/tab.js
 
         this.browserTab.webContents.executeJavaScript(

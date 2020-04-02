@@ -1,0 +1,267 @@
+/*
+    Sphere
+    
+    Copyright (C) LiveG. All Rights Reserved.
+    Copying is not a victimless crime. Anyone caught copying LiveG software may
+    face sanctions.
+    
+    https://liveg.tech
+    Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
+*/
+
+/*
+    Designed to be a lighter version of Adapt UI, with extra features for
+    websites to enjoy (such as the CSS variables we offer) and more specific
+    improvements that work across many websites.
+*/
+
+:root {
+    --sphere-assetDropdownIcon: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBkPSJNNyAxMGw1IDUgNS01eiIvPjxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48L3N2Zz4=");
+    --sphere-assetCheckmarkIcon: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CgogPGc+CiAgPHRpdGxlPmJhY2tncm91bmQ8L3RpdGxlPgogIDxyZWN0IGZpbGw9Im5vbmUiIGlkPSJjYW52YXNfYmFja2dyb3VuZCIgaGVpZ2h0PSI0MDIiIHdpZHRoPSI1ODIiIHk9Ii0xIiB4PSItMSIvPgogPC9nPgogPGc+CiAgPHRpdGxlPkxheWVyIDE8L3RpdGxlPgogIDxwYXRoIGlkPSJzdmdfMSIgZD0ibTAsMGwyNCwwbDAsMjRsLTI0LDBsMCwtMjR6IiBmaWxsPSJub25lIi8+CiAgPHBhdGggZmlsbD0iI2ZmZmZmZiIgaWQ9InN2Z18yIiBkPSJtOSwxNi4xN2wtMy40NywtMy40N2MtMC4zOSwtMC4zOSAtMS4wMiwtMC4zOSAtMS40MSwwYy0wLjM5LDAuMzkgLTAuMzksMS4wMiAwLDEuNDFsNC4xOCw0LjE4YzAuMzksMC4zOSAxLjAyLDAuMzkgMS40MSwwbDEwLjU4LC0xMC41OGMwLjM5LC0wLjM5IDAuMzksLTEuMDIgMCwtMS40MWMtMC4zOSwtMC4zOSAtMS4wMiwtMC4zOSAtMS40MSwwbC05Ljg4LDkuODd6Ii8+CiA8L2c+Cjwvc3ZnPg==");
+    --sphere-assetIndeterminateIcon: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CgogPGc+CiAgPHRpdGxlPmJhY2tncm91bmQ8L3RpdGxlPgogIDxyZWN0IGZpbGw9Im5vbmUiIGlkPSJjYW52YXNfYmFja2dyb3VuZCIgaGVpZ2h0PSI0MDIiIHdpZHRoPSI1ODIiIHk9Ii0xIiB4PSItMSIvPgogPC9nPgogPGc+CiAgPHRpdGxlPkxheWVyIDE8L3RpdGxlPgogIDxwYXRoIGlkPSJzdmdfMSIgZD0ibTI1LjIzOTc3OSwxMC45NTQwNjNsMjQsMGwwLDI0bC0yNCwwbDAsLTI0eiIgZmlsbD0ibm9uZSIvPgogIDxyZWN0IHN0cm9rZT0iIzAwMCIgcng9IjEiIGlkPSJzdmdfMyIgaGVpZ2h0PSIxLjk2ODcwMyIgd2lkdGg9IjExLjc2MTczNyIgeT0iMTEuMDM5ODM3IiB4PSI1LjkzNDEyNyIgc3Ryb2tlLXdpZHRoPSIwIiBmaWxsPSIjZmZmIi8+CiA8L2c+Cjwvc3ZnPg==");
+    --sphere-assetRadioButtonIcon: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CgogPGc+CiAgPHRpdGxlPmJhY2tncm91bmQ8L3RpdGxlPgogIDxyZWN0IGZpbGw9Im5vbmUiIGlkPSJjYW52YXNfYmFja2dyb3VuZCIgaGVpZ2h0PSI0MDIiIHdpZHRoPSI1ODIiIHk9Ii0xIiB4PSItMSIvPgogPC9nPgogPGc+CiAgPHRpdGxlPkxheWVyIDE8L3RpdGxlPgogIDxwYXRoIGlkPSJzdmdfMSIgZD0ibTAsMGwyNCwwbDAsMjRsLTI0LDBsMCwtMjR6IiBmaWxsPSJub25lIi8+CiAgPGNpcmNsZSBmaWxsPSIjZmZmZmZmIiBpZD0ic3ZnXzMiIHI9IjUiIGN5PSIxMiIgY3g9IjEyIi8+CiA8L2c+Cjwvc3ZnPg==");
+    --sphere-sizeH1: 36px;
+    --sphere-sizeH2: 30px;
+    --sphere-sizeH3: 24px;
+    --sphere-sizeH4: 18px;
+    --sphere-sizeH5: 16px;
+    --sphere-sizeH6: 14px;
+    --sphere-sizeP: 16px;
+    --sphere-primaryBackground: rgb(255, 255, 255);
+    --sphere-primaryText: rgb(0, 0, 0);
+    --sphere-primaryUI: rgb(80, 145, 247);
+    --sphere-primaryUIText: rgb(255, 255, 255);
+    --sphere-primaryUIPress: rgb(150, 186, 243);
+    --sphere-secondaryBackground: rgb(229, 229, 229);
+    --sphere-secondaryText: rgb(0, 0, 0);
+    --sphere-secondaryUI: rgb(150, 184, 247);
+    --sphere-secondaryUIText: rgb(255, 255, 255);
+    --sphere-secondaryUIPress: rgb(191, 217, 245);
+    --sphere-scrollbar: rgba(0, 0, 0, 0.5);
+    --sphere-scrollbarHover: rgba(0, 0, 0, 0.6);
+    --sphere-scrollbarPress: rgba(0, 0, 0, 0.8);
+}
+
+html, body {
+    background-color: var(--sphere-primaryBackground);
+    color: var(--sphere-primaryText);
+    font-size: 16px;
+}
+
+h1 {
+    font-size: var(--sphere-sizeH1);
+    font-weight: 700;
+}
+
+h2 {
+    font-size: var(--sphere-sizeH2);
+    font-weight: 700;
+}
+
+h3 {
+    font-size: var(--sphere-sizeH3);
+    font-weight: 700;
+}
+
+h4 {
+    font-size: var(--sphere-sizeH4);
+}
+
+h5 {
+    font-size: var(--sphere-sizeH5);
+}
+
+h6 {
+    font-size: var(--sphere-sizeH6);
+}
+
+p {
+    font-size: var(--sphere-sizeP);
+}
+
+button {
+    padding: 5px;
+    font-size: var(--sphere-sizeP);
+    background-color: var(--sphere-primaryUI);
+    color: var(--sphere-primaryUIText);
+    border: none;
+    border-radius: 10px;
+    transition: 0.5s;
+}
+
+button:hover {
+    background-color: var(--sphere-primaryUIPress);
+}
+
+input, select, progress {
+    width: 200px;
+    padding: 5px;
+    font-size: var(--sphere-sizeP);
+    background-color: var(--sphere-secondaryBackground);
+    color: var(--sphere-secondaryText);
+    border: none;
+    border-radius: 10px;
+    transition: 0.5s;
+}
+
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="checkbox"], input[type="radio"] {
+    position: relative;
+    display: inline-block;
+    top: 8px;
+    width: unset;
+    -webkit-appearance: none;
+    padding: 10px;
+    background-color: var(--sphere-secondaryBackground);
+    border-radius: 5px;
+    cursor: default;
+}
+
+input[type="checkbox"]:checked, input[type="radio"]:checked, input[type="checkbox"]:not([role="switch"]):not([role="pill"]):indeterminate {
+    background-color: var(--sphere-primaryUI);
+}
+
+input[type="checkbox"]:checked::after {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    font-size: 16px;
+    content: var(--sphere-assetCheckmarkIcon);
+}
+
+input[type="checkbox"]:not([role="switch"]):indeterminate::after {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    font-size: 16px;
+    content: var(--sphere-assetIndeterminateIcon);
+}
+
+[dir="rtl"] input[type="checkbox"]:not([role="switch"]):indeterminate::after {
+    left: unset;
+    right: -2px;
+}
+
+input[type="radio"] {
+    border-radius: 10px;
+}
+
+input[type="radio"]:checked::after {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    font-size: 16px;
+    content: var(--sphere-assetRadioButtonIcon);
+}
+
+[dir="rtl"] input[type="radio"]:checked::after {
+    left: unset;
+    right: -2px;
+}
+
+input[type="range"] {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--sphere-secondaryBackground);
+    height: 0;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: var(--sphere-primaryUI);
+    border-radius: 10px;
+    transition: 0.5s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    background-color: var(--sphere-primaryUIPress);
+}
+
+textarea {
+    height: 5em;
+    padding: 5px;
+    background-color: var(--sphere-secondaryBackground);
+    color: var(--sphere-secondaryText);
+    font-size: var(--sphere-sizeP);
+    border: none;
+    border-radius: 10px;
+    overflow-x: none;
+    overflow-y: auto;
+}
+
+progress {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    padding: 0;
+    background-color: var(--sphere-secondaryBackground);
+    border: none;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+progress::-webkit-progress-bar {
+    background-color: var(--sphere-secondaryBackground);
+    border-radius: 10px;
+}
+
+progress::-webkit-progress-value {
+    background-color: var(--sphere-primaryUI);
+    border-radius: 10px;
+    transition: width 0.5s;
+}
+
+select {
+    width: 220px;
+    background: var(--sphere-assetDropdownIcon) no-repeat right var(--sphere-secondaryBackground);
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+[dir="rtl"] select {
+    background: var(--sphere-assetDropdownIcon) no-repeat left var(--sphere-secondaryBackground);
+}
+
+/* Custom scrollbars */
+
+::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+}
+
+::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--sphere-scrollbar);
+    border: 4px solid transparent;
+    border-radius: 8px;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--sphere-scrollbarHover);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: var(--sphere-scrollbarPress);
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
