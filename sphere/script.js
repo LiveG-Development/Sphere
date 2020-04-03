@@ -355,11 +355,11 @@ function rewriteScreen() {
     }
 }
 
-rewriteScreen();
-
 getUserData();
 
 ui.events.loaded(function() {
     keyboardShortcuts.init();
     eventQueue.init();
+
+    rewriteScreen();
 });

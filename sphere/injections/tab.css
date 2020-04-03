@@ -79,20 +79,6 @@ p {
     font-size: var(--sphere-sizeP);
 }
 
-button {
-    padding: 5px;
-    font-size: var(--sphere-sizeP);
-    background-color: var(--sphere-primaryUI);
-    color: var(--sphere-primaryUIText);
-    border: none;
-    border-radius: 10px;
-    transition: 0.5s;
-}
-
-button:hover {
-    background-color: var(--sphere-primaryUIPress);
-}
-
 input, select, progress {
     width: 200px;
     padding: 5px;
@@ -112,7 +98,6 @@ input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-o
 input[type="checkbox"], input[type="radio"] {
     position: relative;
     display: inline-block;
-    top: 8px;
     width: unset;
     -webkit-appearance: none;
     padding: 10px;
@@ -190,8 +175,22 @@ input[type="range"]::-webkit-slider-thumb:hover {
     background-color: var(--sphere-primaryUIPress);
 }
 
+button, input[type="button"], input[type="submit"], input[type="reset"] {
+    width: unset;
+    padding: 5px;
+    font-size: var(--sphere-sizeP);
+    background-color: var(--sphere-primaryUI);
+    color: var(--sphere-primaryUIText);
+    border: none;
+    border-radius: 10px;
+    transition: 0.5s;
+}
+
+button:hover, input[type="button"]:hover, input[type="submit"]:hover, input[type="reset"]:hover {
+    background-color: var(--sphere-primaryUIPress);
+}
+
 textarea {
-    height: 5em;
     padding: 5px;
     background-color: var(--sphere-secondaryBackground);
     color: var(--sphere-secondaryText);

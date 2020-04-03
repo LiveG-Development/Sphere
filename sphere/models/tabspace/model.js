@@ -293,7 +293,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
         var thisScope = this;
 
-        this.browserTab.webContents.on("dom-ready", function() {
+        this.browserTab.webContents.on("did-navigate", function() {
             thisScope._injectTabCode();
             
             thisScope.title = "";
@@ -314,6 +314,10 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
                 dom.element("input[addressbar]").reference[0].blur();
             }
+        });
+
+        this.browserTab.webContents.on("dom-ready", function() {
+            thisScope._injectTabCSS();
         });
 
         this.browserTab.webContents.on("page-favicon-updated", function(event, favicons) {
@@ -555,14 +559,16 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         }
     }
 
-    _injectTabCode() {
+    _injectTabCSS() {
         // @asset ../../injections/tab.css
 
         this.browserTab.webContents.insertCSS(
             importer
                 .getString(_assets["tab.css"])
         );
+    }
 
+    _injectTabJS() {
         // @asset ../../injections/tab.js
 
         this.browserTab.webContents.executeJavaScript(
@@ -591,6 +597,11 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
                     .replace(/__ID__/g, this.browserTabID)
             );
         }
+    }
+
+    _injectTabCode() {
+        this._injectTabCSS();
+        this._injectTabJS();
     }
 
     _removeProtocol(url) {
