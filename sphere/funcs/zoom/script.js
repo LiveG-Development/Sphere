@@ -20,7 +20,7 @@ var zoom = {};
     @longDescription For example, factor 0.5 would be a zoom factor at 50%, 1 would be 100% and 2 would be 200%.
 */
 zoom.getFactor = function(tab) {
-    return tab.browserTab.webContents.getZoomFactor();
+    return tab.browserTab.webContents.zoomFactor;
 };
 
 /*
@@ -33,5 +33,5 @@ zoom.getFactor = function(tab) {
     @longDescription For example, factor 0.5 would set the zoom factor to 50%, 1 would be 100% and 2 would be 200%.
 */
 zoom.setFactor = function(tab, factor) {
-    tab.browserTab.webContents.setZoomFactor(factor);
+    tab.browserTab.webContents.zoomFactor = factor;
 };

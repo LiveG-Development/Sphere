@@ -64,7 +64,7 @@ global.newTab = function(window, url, newTabCallback = function() {}) {
     tab.setBounds({x: 0, y: global.tabspaceHeight, width: window.getContentSize()[0], height: window.getContentSize()[1] - global.tabspaceHeight});
     tab.setBackgroundColor("#ffffff");
     tab.webContents.setVisualZoomLevelLimits(1, 3);
-    tab.webContents.setZoomFactor(1);
+    tab.webContents.zoomFactor = 1;
     tab.webContents.loadURL(url);
 
     return {tab: tab, id: global.newTabID};
