@@ -55,6 +55,14 @@ Below is a list of command-line arguments that you can use with Sphere in order 
 
 Launch Chromium Dev Tools when Sphere runs (Sphere's debug mode) so that it can be debugged.
 
+### `--fullscreen`
+```
+--fullscreen
+            Display the page in fullscreen, without Sphere's UI.
+```
+
+Display the page in fullscreen when Sphere has loaded, in the exact way that fullscreen mode in Sphere works. You can exit fullscreen afterwards with keyboard shortcuts.
+
 ### `--help`
 ```
 --help      Display this help screen.
@@ -83,3 +91,20 @@ Force the UI language to be the locale (in the format `xx_XX` where the first tw
 Force the UI text mirroring direction to be the direction (either `ltr` for left-to-right mirroring or `rtl` for right-to-left mirroring) specified.
 
 > **Note:** This does not affect the direction of static pages as that is specified by the [`--lang`](#--lang) argument.
+
+### `--url`
+```
+--url       Load the page from the URL specified when Sphere has loaded.
+            <url>               The URL to load.
+```
+
+Set the first tab to be the URL specified (instead of being `sphere://newtab` as normal) when Sphere has loaded.
+
+> **Note:** Use this in conjunction with `--fullscreen` or `--window` to automatically set up Sphere to be the browser of a kiosk system. Beware that users could close or otherwise maliciously use Sphere by using keyboard shortcuts.
+
+### `--window`
+```
+--window    Display the specified page in a window, without Sphere's UI.
+```
+
+Display the page in a window, hiding Sphere's main browser UI ─ tabs and other features will be disabled.

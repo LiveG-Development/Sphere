@@ -29,6 +29,7 @@ const os = require("os");
 // @import funcs/menu/script
 // @import funcs/fullscreen/script
 // @import funcs/zoom/script
+// @import funcs/windowing/script
 
 // @import models/tabspace/model
 
@@ -75,7 +76,7 @@ core.unpack(ui.models);
 
 remote.getCurrentWindow().setTitle(_("sphere"));
 
-tabSpaceActiveElements.tabs.push(new tabSpace.Tab());
+tabSpaceActiveElements.tabs.push(new tabSpace.Tab(remote.getGlobal("arguments")["url"] || "sphere://newtab"));
 
 tabSpaceActiveElements.tabs[0].selected = true;
 
@@ -336,7 +337,7 @@ function saveUserData() {
 }
 
 function rewriteScreen() {
-    if (!fullscreen.isFullscreen) {
+    if (!fullscreen.isFullscreen && !windowing.isWindowed) {
         ui.screen = [
             new tabSpace.TabRow([
                 new tabSpace.TabStrip(tabSpaceActiveElements.tabs),
@@ -362,4 +363,12 @@ ui.events.loaded(function() {
     eventQueue.init();
 
     rewriteScreen();
+
+    setTimeout(function() {
+        windowing.init();
+
+        if (remote.getGlobal("arguments")["fullscreen"]) {
+            fullscreen.enter();
+        }
+    }, 500);
 });

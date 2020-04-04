@@ -232,7 +232,7 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
 /*
     @name ui.models.tabSpace.Tab
 
-    @param url string URL of tab body. Default: `"about:blank"`.
+    @param url string URL of tab body. Default: `"sphere://newtab"`.
     @param style object Styling to use on component. Default: `{}`.
     @param attributes object HTML attributes to use on component. Default: `{}`.
     @param events object Events to listen to on component. Default: `{}`.
@@ -305,14 +305,19 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
                 setTimeout(function() {
                     remote.getCurrentWindow().webContents.focus();
-                    dom.element("input[addressbar]").reference[0].focus();
+
+                    if (dom.element("input[addressbar]").reference.length > 0) {
+                        dom.element("input[addressbar]").reference[0].focus();
+                    }
                 }, 1000);
             }
 
             if (thisScope._removeProtocol(thisScope.browserTab.webContents.getURL().split("?")[0]) != thisScope._removeProtocol(staticPages.newTab)) {
                 // Remove focus if we're loading a non-new tab so that we can update the tab information
 
-                dom.element("input[addressbar]").reference[0].blur();
+                if (dom.element("input[addressbar]").reference.length > 0) {
+                    dom.element("input[addressbar]").reference[0].blur();
+                }
             }
         });
 
@@ -350,8 +355,8 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
             var menuItems = [];
 
             if (params.linkURL != "") { // If is a link
-                menuItems.push(
-                    {
+                if (!windowing.isWindowed) {
+                    menuItems.push({
                         label: _("openLinkInNewTab"),
                         click: function() {
                             var newTab = new ui.models.tabSpace.Tab(params.linkURL);
@@ -359,7 +364,10 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
                             tabSpaceActiveElements.tabs.push(newTab);
                             tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
                         }
-                    },
+                    });
+                }
+
+                menuItems.push(
                     {
                         label: _("copyLinkAddress"),
                         click: function() {
@@ -702,6 +710,10 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
             this.attributes["selected"] = "";
             this.attributes["aria-selected"] = "true";
+
+            if (windowing.isWindowed) {
+                remote.getCurrentWindow().setTitle(this.title);
+            }
         } else {
             remote.getCurrentWindow().removeBrowserView(this.browserTab);
 

@@ -19,7 +19,8 @@ keyboardShortcuts.shortcuts = {
         ctrl: true,
         action: function() {
             tabSpaceActiveElements.newTabButton.events.click();
-        }
+        },
+        availableInWindowedMode: false
     },
 
     newWindow: {
@@ -27,7 +28,8 @@ keyboardShortcuts.shortcuts = {
         ctrl: true,
         action: function() {
             remote.getGlobal("newWindow")();
-        }
+        },
+        availableInWindowedMode: false
     },
 
     closeTab: {
@@ -60,7 +62,8 @@ keyboardShortcuts.shortcuts = {
                     break;
                 }
             }
-        }
+        },
+        availableInWindowedMode: false
     },
 
     nextTab: {
@@ -80,7 +83,8 @@ keyboardShortcuts.shortcuts = {
                     break;
                 }
             }
-        }
+        },
+        availableInWindowedMode: false
     },
 
     tab1: {
@@ -94,7 +98,8 @@ keyboardShortcuts.shortcuts = {
             }
 
             ui.refresh();
-        }
+        },
+        availableInWindowedMode: false
     },
 
     tab2: {
@@ -108,7 +113,8 @@ keyboardShortcuts.shortcuts = {
             }
 
             ui.refresh();
-        }
+        },
+        availableInWindowedMode: false
     },
 
     tab3: {
@@ -122,7 +128,8 @@ keyboardShortcuts.shortcuts = {
             }
 
             ui.refresh();
-        }
+        },
+        availableInWindowedMode: false
     },
 
     tab4: {
@@ -136,7 +143,8 @@ keyboardShortcuts.shortcuts = {
             }
 
             ui.refresh();
-        }
+        },
+        availableInWindowedMode: false
     },
 
     tab5: {
@@ -150,7 +158,8 @@ keyboardShortcuts.shortcuts = {
             }
 
             ui.refresh();
-        }
+        },
+        availableInWindowedMode: false
     },
 
     tab6: {
@@ -164,7 +173,8 @@ keyboardShortcuts.shortcuts = {
             }
 
             ui.refresh();
-        }
+        },
+        availableInWindowedMode: false
     },
 
     tab7: {
@@ -178,7 +188,8 @@ keyboardShortcuts.shortcuts = {
             }
 
             ui.refresh();
-        }
+        },
+        availableInWindowedMode: false
     },
 
     tab8: {
@@ -192,7 +203,8 @@ keyboardShortcuts.shortcuts = {
             }
 
             ui.refresh();
-        }
+        },
+        availableInWindowedMode: false
     },
 
     lastTab: {
@@ -202,7 +214,8 @@ keyboardShortcuts.shortcuts = {
             tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
 
             ui.refresh();
-        }
+        },
+        availableInWindowedMode: false
     },
 
     goBack: {
@@ -242,7 +255,8 @@ keyboardShortcuts.shortcuts = {
         action: function() {
             remote.getCurrentWindow().webContents.focus();
             dom.element("input[addressbar]").reference[0].focus();
-        }
+        },
+        availableInWindowedMode: false
     },
 
     focusPage: {
@@ -261,7 +275,8 @@ keyboardShortcuts.shortcuts = {
         alt: true,
         action: function() {
             tabSpaceActiveElements.menuButton.events.click();
-        }
+        },
+        availableInWindowedMode: false
     },
 
     zoomIn: {
@@ -341,7 +356,13 @@ keyboardShortcuts.handleShortcut = function(keyCode, ctrl = false, alt = false, 
     for (var i = 0; i < Object.keys(keyboardShortcuts.shortcuts).length; i++) {
         var shortcut = keyboardShortcuts.shortcuts[Object.keys(keyboardShortcuts.shortcuts)[i]];
 
-        if (shortcut.keyCode == keyCode && (shortcut.ctrl || false) == ctrl && (shortcut.alt || false) == alt && (shortcut.shift || false) == shift) {
+        if (
+            shortcut.keyCode == keyCode &&
+            (shortcut.ctrl || false) == ctrl &&
+            (shortcut.alt || false) == alt &&
+            (shortcut.shift || false) == shift &&
+            (shortcut.availableInWindowedMode != false || windowing.isWindowed == false)
+        ) {
             shortcut.action();
 
             return false;

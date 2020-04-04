@@ -10,27 +10,37 @@
 var fullscreen = {
     _normalTabspaceHeight: remote.getGlobal("tabspaceHeight"),
 
-    isFullscreen: false,
+    isFullscreen: false
+};
 
-    enter: function() {
-        fullscreen.isFullscreen = true;
+/*
+    @name fullscreen.enter
 
-        fullscreen._normalTabspaceHeight = remote.getGlobal("tabspaceHeight");
+    @shortDescription Enter fullscreen, hiding Sphere's main UI.
+*/
+fullscreen.enter = function() {
+    fullscreen.isFullscreen = true;
 
-        remote.getGlobal("setFullscreen")(remote.getCurrentWindow(), true);
-        remote.getGlobal("setTabspaceHeight")(0);
+    fullscreen._normalTabspaceHeight = remote.getGlobal("tabspaceHeight");
 
-        rewriteScreen();
-        ui.refresh();
-    },
+    remote.getGlobal("setFullscreen")(remote.getCurrentWindow(), true);
+    remote.getGlobal("setTabspaceHeight")(0);
 
-    leave: function() {
-        fullscreen.isFullscreen = false;
+    rewriteScreen();
+    ui.refresh();
+};
 
-        remote.getGlobal("setFullscreen")(remote.getCurrentWindow(), false);
-        remote.getGlobal("setTabspaceHeight")(fullscreen._normalTabspaceHeight);
-    
-        rewriteScreen();
-        ui.refresh();
-    }
+/*
+    @name fullscreen.leave
+
+    @shortDescription Leave fullscreen, showing Sphere's main UI.
+*/
+fullscreen.leave = function() {
+    fullscreen.isFullscreen = false;
+
+    remote.getGlobal("setFullscreen")(remote.getCurrentWindow(), false);
+    remote.getGlobal("setTabspaceHeight")(fullscreen._normalTabspaceHeight);
+
+    rewriteScreen();
+    ui.refresh();
 };
