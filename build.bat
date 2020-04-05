@@ -27,4 +27,4 @@ call zapr docgen
 cd ..
 
 call npm install
-call npm start -- "%*"
+call npm start -- %*

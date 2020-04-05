@@ -14,6 +14,7 @@ const ipcRenderer = require("electron").ipcRenderer;
 const path = require("path");
 const fs = require("fs");
 const os = require("os");
+const https = require("https");
 
 // @import https://opensource.liveg.tech/Adapt-UI/src/ui
 

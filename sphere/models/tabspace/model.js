@@ -340,6 +340,23 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
             if (!focussed.isInputFocussed()) {
                 ui.refresh();
             }
+
+            if (windowing.isWindowed) {
+                var faviconStoragePath = path.join(remote.app.getPath("userData"), "Favicons");
+                var faviconFilename = favicons[0].replace(/\//g, "-").replace(/:/g, "-");
+
+                // Create the favicon storage directory if it doesn't exist yet
+                if (!fs.existsSync(faviconStoragePath)) {
+                    fs.mkdirSync(faviconStoragePath);
+                }
+
+                // Get the favicon and save it, then use it as the app icon
+                https.get(favicons[0], function(response) {
+                    response.pipe(fs.createWriteStream(path.join(faviconStoragePath, faviconFilename))).on("close", function() {
+                        remote.getCurrentWindow().setIcon(path.join(faviconStoragePath, faviconFilename));
+                    });
+                });
+            }
         });
 
         function unconventionalLoad(event, errorCode) {
@@ -727,6 +744,10 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
             if (thisScope.browserTab != null && remote.getCurrentWindow() != null) {
                 thisScope.browserTab.setBounds({x: 0, y: remote.getGlobal("tabspaceHeight"), width: remote.getCurrentWindow().getContentSize()[0], height: remote.getCurrentWindow().getContentSize()[1] - remote.getGlobal("tabspaceHeight")});
 
+                if (windowing.isWindowed) {
+                    remote.getCurrentWindow().setTitle(thisScope.title);
+                }
+                
                 if ((
                     thisScope.url != thisScope.browserTab.webContents.getURL() ||
                     thisScope.loading != thisScope.browserTab.webContents.isLoading() ||
