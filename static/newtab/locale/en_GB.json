@@ -8,6 +8,9 @@
         "add": "Add",
         "ok": "OK",
         "cancel": "Cancel",
+
+        "message_inPrivasphere": "This tab is a Privasphere tab! Be careful; Privasphere cannot guarantee complete privacy.",
+
         "bookmarkName": "Bookmark name",
         "bookmarkAddress": "Bookmark address",
         "deleteBookmark": "Delete bookmark",

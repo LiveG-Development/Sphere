@@ -18,7 +18,23 @@ keyboardShortcuts.shortcuts = {
         keyCode: "KeyT",
         ctrl: true,
         action: function() {
-            tabSpaceActiveElements.newTabButton.events.click();
+            tabSpaceActiveElements.tabs.push(new ui.models.tabSpace.Tab());
+            tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
+
+            ui.refresh();
+        },
+        availableInWindowedMode: false
+    },
+
+    newPrivasphereTab: {
+        keyCode: "KeyT",
+        ctrl: true,
+        shift: true,
+        action: function() {
+            tabSpaceActiveElements.tabs.push(new ui.models.tabSpace.Tab("sphere://newtab", true));
+            tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
+
+            ui.refresh();
         },
         availableInWindowedMode: false
     },

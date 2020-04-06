@@ -77,7 +77,7 @@ core.unpack(ui.models);
 
 remote.getCurrentWindow().setTitle(_("sphere"));
 
-tabSpaceActiveElements.tabs.push(new tabSpace.Tab(remote.getGlobal("arguments")["url"] || "sphere://newtab"));
+tabSpaceActiveElements.tabs.push(new tabSpace.Tab(remote.getGlobal("arguments")["url"] || "sphere://newtab", !!remote.getGlobal("arguments")["privasphere"]));
 
 tabSpaceActiveElements.tabs[0].selected = true;
 
@@ -191,6 +191,21 @@ tabSpaceActiveElements.menuButton = new tabSpace.ActionButton([new ui.components
                 ),
                 click: function() {
                     tabSpaceActiveElements.tabs.push(new ui.models.tabSpace.Tab());
+                    tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
+
+                    ui.refresh();
+                }
+            },
+            {
+                label: _("newPrivasphereTab"),
+                toolTip: keyboardShortcuts.getRepresentation(
+                    keyboardShortcuts.shortcuts.newPrivasphereTab.keyCode,
+                    keyboardShortcuts.shortcuts.newPrivasphereTab.ctrl,
+                    keyboardShortcuts.shortcuts.newPrivasphereTab.alt,
+                    keyboardShortcuts.shortcuts.newPrivasphereTab.shift
+                ),
+                click: function() {
+                    tabSpaceActiveElements.tabs.push(new ui.models.tabSpace.Tab("sphere://newtab", true));
                     tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
 
                     ui.refresh();

@@ -9,6 +9,15 @@
     Licensed by the LiveG Open-Source Licence, which can be found at LICENCE.md.
 */
 
+:root {
+    --privasphereTabSelected: #363636;
+    --privasphereTabSelectedText: white;
+    --privasphereTabDeselected: #666666;
+    --privasphereTabDeselectedText: white;
+    --privasphereTabPress: #757575;
+    --privasphereTabPressText: white;
+}
+
 body {
     overflow: hidden;
     user-select: none;
@@ -101,6 +110,26 @@ li[tab] > button:first-child > img {
     margin-left: 10px;
 }
 
+li[tab][privasphere] {
+    background-color: var(--privasphereTabDeselected);
+    color: var(--privasphereTabDeselectedText);
+}
+
+li[tab][privasphere][selected] {
+    background-color: var(--privasphereTabSelected);
+    color: var(--privasphereTabSelectedText);
+}
+
+li[tab][privasphere]:hover {
+    background-color: var(--privasphereTabPress);
+    color: var(--privasphereTabPressText);
+}
+
+li[tab][privasphere][selected]:hover {
+    background-color: var(--privasphereTabSelected);
+    color: var(--privasphereTabSelectedText);
+}
+
 button[newtab] {
     width: 40px;
     height: 40px;
@@ -111,6 +140,21 @@ div[actionsrow] {
     margin: 0;
     background-color: var(--primaryUI);
     text-align: center;
+}
+
+div[tabrow][psstyle] ~ div[actionsrow] {
+    background-color: var(--privasphereTabSelected);
+    color: var(--privasphereTabSelectedText);
+}
+
+div[tabrow][psstyle] ~ div[actionsrow] button {
+    background-color: var(--privasphereTabSelected);
+    color: var(--privasphereTabSelectedText);
+}
+
+div[tabrow][psstyle] ~ div[actionsrow] button:hover {
+    background-color: var(--privasphereTabPress);
+    color: var(--privasphereTabPressText);
 }
 
 input[addressbar] {

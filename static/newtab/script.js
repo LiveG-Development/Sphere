@@ -56,6 +56,23 @@ core.unpack(ui.models);
 var userBookmarks = [];
 var userFavicons = {};
 
+var isPrivasphere = core.parameter("privasphere") == "true";
+
+function createMessageContainer() {
+    var messageContainer = new Container([], 12, {
+        "padding": "10px",
+        "text-align": "center"
+    });
+
+    if (isPrivasphere) {
+        messageContainer.children = [
+            new Text(_("message_inPrivasphere"))
+        ];
+    }
+
+    return messageContainer;
+}
+
 function showBookmarks() {
     var bookmarkIcons = [];
 
@@ -252,6 +269,7 @@ function showBookmarks() {
     });
 
     ui.screen = [
+        createMessageContainer(),
         new bookmarks.BookmarkContainer(bookmarkIcons),
         addBookmarkDialog,
         invalidBookmarkDialog,

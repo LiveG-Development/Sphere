@@ -66,6 +66,14 @@ ui.models.tabSpace.TabRow = class extends ui.models.tabSpace.Component {
 
     precompute(domObject) {
         this.attributes["tabrow"] = "";
+        
+        delete this.attributes["psstyle"];
+
+        for (var i = 0; i < tabSpaceActiveElements.tabs.length; i++) {
+            if (tabSpaceActiveElements.tabs[i].selected && tabSpaceActiveElements.tabs[i].privasphere) {
+                this.attributes["psstyle"] = "";
+            }
+        }
 
         return domObject;
     }
@@ -233,6 +241,7 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
     @name ui.models.tabSpace.Tab
 
     @param url string URL of tab body. Default: `"sphere://newtab"`.
+    @param privasphere boolean Whether the tab is a Privasphere tab. Default: `false`.
     @param style object Styling to use on component. Default: `{}`.
     @param attributes object HTML attributes to use on component. Default: `{}`.
     @param events object Events to listen to on component. Default: `{}`.
@@ -240,7 +249,7 @@ ui.models.tabSpace.TabStrip = class extends ui.models.tabSpace.Component {
     @shortDescription Tab class, extends `ui.models.tabSpace.Component`.
 */
 ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
-    constructor(url = "sphere://newtab", style = {}, attributes = {}, events = {}) {
+    constructor(url = "sphere://newtab", privasphere = false, style = {}, attributes = {}, events = {}) {
         // @asset ../../assets/defaultFavicon.png
 
         super([
@@ -263,12 +272,13 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
         this.HTMLTagName = "li";
 
-        this.browserTab = new remote.BrowserView();
+        this.privasphere = privasphere;
+        this.url = this._specialToConventionalURL(url);
 
-        this.browserTab.webContents.loadURL(this._specialToConventionalURL(url));
+        var thisScope = this;
 
-        this.browserTabObject = remote.getGlobal("newTab")(remote.getCurrentWindow(), this._specialToConventionalURL(url), function(event, url) {
-            var newTab = new ui.models.tabSpace.Tab(url);
+        this.browserTabObject = remote.getGlobal("newTab")(remote.getCurrentWindow(), this._specialToConventionalURL(this.url), this.privasphere, function(event, url) {
+            var newTab = new ui.models.tabSpace.Tab(thisScope.url, thisScope.privasphere);
 
             event.newGuest = newTab.browserTab;
 
@@ -284,14 +294,11 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         this._browserTabWatcher = null;
         this._key = core.generateKey();
 
-        this.url = this._specialToConventionalURL(url);
         this.displayedURL = url;
         this.loading = true;
         this.title = this.url;
         this.favicon = "";
         this.selected = false;
-
-        var thisScope = this;
 
         this.browserTab.webContents.on("did-navigate", function() {
             thisScope._injectTabCode();
@@ -374,9 +381,9 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
             if (params.linkURL != "") { // If is a link
                 if (!windowing.isWindowed) {
                     menuItems.push({
-                        label: _("openLinkInNewTab"),
+                        label: thisScope.privasphere ? _("openLinkInNewPrivasphereTab") : _("openLinkInNewTab"),
                         click: function() {
-                            var newTab = new ui.models.tabSpace.Tab(params.linkURL);
+                            var newTab = new ui.models.tabSpace.Tab(params.linkURL, thisScope.privasphere);
 
                             tabSpaceActiveElements.tabs.push(newTab);
                             tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
@@ -480,7 +487,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
                 menuItems.push({
                     label: _("searchForOn", [params.selectionText, search.engines[search.selectedEngine].name]),
                     click: function() {
-                        var newTab = new ui.models.tabSpace.Tab(search.queryToURL(params.selectionText.trim()));
+                        var newTab = new ui.models.tabSpace.Tab(search.queryToURL(params.selectionText.trim()), thisScope.privasphere);
 
                         tabSpaceActiveElements.tabs.push(newTab);
                         tabSpaceActiveElements.tabs[tabSpaceActiveElements.tabs.length - 1].switch();
@@ -576,7 +583,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         // Convert a special sphere:// URL to a conventional one
 
         if (url == "sphere://newtab") {
-            return staticPages.newTab + "?lang=" + encodeURIComponent(ui.language);
+            return staticPages.newTab + "?lang=" + encodeURIComponent(ui.language) + "&privasphere=" + (this.privasphere ? "true" : "false");
         } else if (url == "sphere://settings") {
             return staticPages.settings + "?lang=" + encodeURIComponent(ui.language) + "&version=" + encodeURIComponent(remote.getGlobal("VERSION_NUMBER"));
         } else {
@@ -695,6 +702,12 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         this.attributes["tab"] = "";
         this.attributes["aria-role"] = "tab";
         this.attributes["key"] = this._key;
+
+        if (this.privasphere) {
+            this.attributes["privasphere"] = "";
+        } else {
+            delete this.attributes["privasphere"];
+        }
         
         clearInterval(this._browserTabWatcher);
 

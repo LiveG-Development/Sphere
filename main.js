@@ -40,7 +40,7 @@ global.tabInformation = {
     events: []
 };
 
-global.newTab = function(window, url, newTabCallback = function() {}) {
+global.newTab = function(window, url, privasphere, newTabCallback = function() {}) {
     global.newTabID++;
 
     var tab = new BrowserView({
@@ -51,7 +51,8 @@ global.newTab = function(window, url, newTabCallback = function() {}) {
             contextIsolation: true,
             preload: path.join(__dirname, "preload.js"),
             devTools: false,
-            nativeWindowOpen: false
+            nativeWindowOpen: false,
+            partition: privasphere ? "privasphere" : undefined
         }
     });
 

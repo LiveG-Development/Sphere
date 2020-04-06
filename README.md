@@ -92,6 +92,14 @@ Force the UI text mirroring direction to be the direction (either `ltr` for left
 
 > **Note:** This does not affect the direction of static pages as that is specified by the [`--lang`](#--lang) argument.
 
+### `--privasphere`
+```
+--privasphere
+            Cause the first tab to be a Privasphere tab.
+```
+
+Cause the first tab to be a Privasphere tab so that pages loaded in the tab are not recorded in Sphere's browsing history, and that site data from the tab will not be saved.
+
 ### `--url`
 ```
 --url       Load the page from the URL specified when Sphere has loaded.

@@ -7,6 +7,7 @@
 
         "closeTab": "Close tab",
         "newTab": "New tab",
+        "newPrivasphereTab": "New Privasphere tab",
         "newWindow": "New window",
         "goBack": "Go back",
         "goForward": "Go forward",
@@ -22,6 +23,7 @@
         "searchUsing": "Search the web using {0}...",
         "searchForOn": "Search for '{0}' on {1}",
         "openLinkInNewTab": "Open link in new tab",
+        "openLinkInNewPrivasphereTab": "Open link in new Privasphere tab",
         "copyLinkAddress": "Copy link address",
         "cut": "Cut",
         "copy": "Copy",
