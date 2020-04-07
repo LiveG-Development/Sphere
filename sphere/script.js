@@ -31,6 +31,7 @@ const https = require("https");
 // @import funcs/fullscreen/script
 // @import funcs/zoom/script
 // @import funcs/windowing/script
+// @import funcs/history/script
 
 // @import models/tabspace/model
 
@@ -382,6 +383,7 @@ ui.events.loaded(function() {
 
     setTimeout(function() {
         windowing.init();
+        historyControl.load();
 
         if (remote.getGlobal("arguments")["fullscreen"]) {
             fullscreen.enter();

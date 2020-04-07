@@ -56,7 +56,8 @@ var settingsInitialised = false;
 
 const SETTINGS_PAGES = {
     GENERAL: 0,
-    ABOUT: 1
+    HISTORY: 1,
+    ABOUT: -1
 };
 
 var selectedSettingsPage = SETTINGS_PAGES.GENERAL;
@@ -69,6 +70,7 @@ ui.screen = [
 function getSidebarContents() {
     var settingsPageInformation = [
         {id: SETTINGS_PAGES.GENERAL, name: _("general"), icon: "settings"},
+        {id: SETTINGS_PAGES.HISTORY, name: _("history"), icon: "history"},
         {id: SETTINGS_PAGES.ABOUT, name: _("about"), icon: "info"}
     ];
 
@@ -589,6 +591,47 @@ function showSettings() {
                     }
                 })
             ])
+        ];
+    }
+
+    if (selectedSettingsPage == SETTINGS_PAGES.HISTORY) {
+        var historyListingContainer = new GroupContainer();
+
+        // @asset assets/defaultFavicon.png
+
+        for (var i = 0; i < userData.history.listing.length; i++) {
+            historyListingContainer.children.unshift(new Container([
+                new Image(
+                    userData.favicons[userData.history.listing[i].url.split("?")[0].replace(/\/+$/, "")] || importer.generateLink(_assets["defaultFavicon.png"], "img/png"),
+                    "", {
+                        "width": "20px",
+                        "height": "20px",
+                        "margin-left": "5px",
+                        "margin-right": "5px",
+                        "object-fit": "contain",
+                        "vertical-align": "middle"
+                    }, {
+                        "aria-hidden": "true"
+                    }, {
+                        error: function(event) {
+                            event.target.src = importer.generateLink(_assets["defaultFavicon.png"], "image/png");
+                        }
+                    }
+                ),
+                new Link(
+                    userData.history.listing[i].title == null || userData.history.listing[i].title == undefined || userData.history.listing[i].title == "" ? userData.history.listing[i].url : userData.history.listing[i].title,
+                    userData.history.listing[i].url
+                )
+            ], 12, {
+                "overflow": "hidden",
+                "white-space": "nowrap",
+                "text-overflow": "ellipsis"
+            }));
+        }
+
+        settingsPageContents = [
+            new Heading(_("history")),
+            historyListingContainer
         ];
     }
 

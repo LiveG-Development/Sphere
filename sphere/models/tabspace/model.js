@@ -278,7 +278,7 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
         var thisScope = this;
 
         this.browserTabObject = remote.getGlobal("newTab")(remote.getCurrentWindow(), this._specialToConventionalURL(this.url), this.privasphere, function(event, url) {
-            var newTab = new ui.models.tabSpace.Tab(thisScope.url, thisScope.privasphere);
+            var newTab = new ui.models.tabSpace.Tab(url, thisScope.privasphere);
 
             event.newGuest = newTab.browserTab;
 
@@ -330,6 +330,15 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
 
         this.browserTab.webContents.on("dom-ready", function() {
             thisScope._injectTabCSS();
+
+            if (
+                !thisScope.privasphere &&
+                thisScope._removeProtocol(thisScope.url.split("?")[0]) != thisScope._removeProtocol(staticPages.newTab) &&
+                thisScope._removeProtocol(thisScope.url.split("?")[0]) != thisScope._removeProtocol(staticPages.error) &&
+                thisScope._removeProtocol(thisScope.url.split("?")[0]) != thisScope._removeProtocol(staticPages.settings)
+            ) {
+                historyControl.add(thisScope.url, thisScope.title);
+            }
         });
 
         this.browserTab.webContents.on("page-favicon-updated", function(event, favicons) {

@@ -33,6 +33,8 @@
         "general_modifySearchEngineQueryInfo": "In your query URL, all instances of <code>%s</code> will be replaced with your search term (encoded).",
         "general_newSearchEngine": "New search engine",
 
+        "history": "History",
+
         "about": "About",
         "about_logo": "Sphere logo",
         "about_name": "LiveG Sphere",
