@@ -599,34 +599,58 @@ function showSettings() {
 
         // @asset assets/defaultFavicon.png
 
-        for (var i = 0; i < userData.history.listing.length; i++) {
-            historyListingContainer.children.unshift(new Container([
-                new Image(
-                    userData.favicons[userData.history.listing[i].url.split("?")[0].replace(/\/+$/, "")] || importer.generateLink(_assets["defaultFavicon.png"], "img/png"),
-                    "", {
-                        "width": "20px",
-                        "height": "20px",
-                        "margin-left": "5px",
-                        "margin-right": "5px",
-                        "object-fit": "contain",
-                        "vertical-align": "middle"
-                    }, {
-                        "aria-hidden": "true"
-                    }, {
-                        error: function(event) {
-                            event.target.src = importer.generateLink(_assets["defaultFavicon.png"], "image/png");
+        if (userData.history.listing.length > 0) {
+            for (var i = 0; i < userData.history.listing.length; i++) {
+                historyListingContainer.children.unshift(new Container([
+                    new Image(
+                        userData.favicons[userData.history.listing[i].url.split("?")[0].replace(/\/+$/, "")] || importer.generateLink(_assets["defaultFavicon.png"], "img/png"),
+                        "", {
+                            "width": "20px",
+                            "height": "20px",
+                            "margin-left": "5px",
+                            "margin-right": "5px",
+                            "object-fit": "contain",
+                            "vertical-align": "middle"
+                        }, {
+                            "aria-hidden": "true"
+                        }, {
+                            error: function(event) {
+                                event.target.src = importer.generateLink(_assets["defaultFavicon.png"], "image/png");
+                            }
                         }
-                    }
-                ),
-                new Link(
-                    userData.history.listing[i].title == null || userData.history.listing[i].title == undefined || userData.history.listing[i].title == "" ? userData.history.listing[i].url : userData.history.listing[i].title,
-                    userData.history.listing[i].url
-                )
-            ], 12, {
-                "overflow": "hidden",
-                "white-space": "nowrap",
-                "text-overflow": "ellipsis"
-            }));
+                    ),
+                    new Link(
+                        userData.history.listing[i].title == null || userData.history.listing[i].title == undefined || userData.history.listing[i].title == "" ? userData.history.listing[i].url : userData.history.listing[i].title,
+                        userData.history.listing[i].url
+                    )
+                ], 12, {
+                    "max-width": "calc(100vw - 50px)",
+                    "overflow": "hidden",
+                    "white-space": "nowrap",
+                    "text-overflow": "ellipsis"
+                }));
+            }
+        } else {
+            historyListingContainer.children = [
+                new GroupContainer([new Icon("search")], {
+                    "margin-top": "20px",
+                    "margin-bottom": "0",
+                    "font-size": "80px"
+                }),
+                new Paragraph(_("history_noResults_title"), {
+                    "font-size": "var(--sizeH3)"
+                }),
+                new Paragraph(_("history_noResults_description"), {
+                    "margin-bottom": "20px",
+                    "margin-left": "10vw",
+                    "margin-right": "10vw"
+                })
+            ];
+
+            historyListingContainer.style = {
+                "color": "var(--extra)",
+                "text-align": "center"
+            };
         }
 
         settingsPageContents = [

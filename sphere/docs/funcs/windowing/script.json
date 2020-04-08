@@ -1,1 +1,1 @@
-{"windowing.init": {"params": [], "longDescription": "", "shortDescription": "Activate windowing mode, if applicable.", "return": {}}}
+{"windowing.init": {"return": {}, "params": [], "shortDescription": "Activate windowing mode, if applicable.", "longDescription": ""}}

@@ -34,6 +34,8 @@
         "general_newSearchEngine": "New search engine",
 
         "history": "History",
+        "history_noResults_title": "No history yet!",
+        "history_noResults_description": "Once you've visited a few pages on the internet, they will appear here. Don't want certain pages to show here? Browse in a Privasphere tab!",
 
         "about": "About",
         "about_logo": "Sphere logo",
