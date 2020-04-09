@@ -121,6 +121,9 @@ function showSettings() {
     ], {
         height: "200px"
     });
+    var historyClearDialog = new appLayout.Dialog([], {
+        height: "300px"
+    });
 
     // @asset assets/logo.png
 
@@ -595,11 +598,11 @@ function showSettings() {
     }
 
     if (selectedSettingsPage == SETTINGS_PAGES.HISTORY) {
-        var historyListingContainer = new GroupContainer();
-
         // @asset assets/defaultFavicon.png
 
         if (userData.history.listing.length > 0) {
+            var historyListingContainer = new GroupContainer();
+
             for (var i = 0; i < userData.history.listing.length; i++) {
                 historyListingContainer.children.unshift(new Container([
                     new Image(
@@ -630,8 +633,80 @@ function showSettings() {
                     "text-overflow": "ellipsis"
                 }));
             }
+
+            settingsPageContents = [
+                new Heading(_("history")),
+                new Card([
+                    new Container(_("history_clearDescription"), 10),
+                    new Container([
+                        new Button(_("history_clear"), false, {}, {}, {
+                            click: function() {
+                                var checkboxStyle = {
+                                    "bottom": "4px",
+                                    "height": "0"
+                                };
+
+                                var checkboxEvents = {
+                                    change: function() {
+                                        if (browsingHistoryCheckbox.selected || siteDataCheckbox.selected) {
+                                            dom.element("#historyClearButton").attribute("disabled").delete();
+                                        } else {
+                                            dom.element("#historyClearButton").attribute("disabled").set("");
+                                        }
+                                    }
+                                };
+
+                                var browsingHistoryCheckbox = new CheckboxInput("clearHistoryOptions", true, checkboxStyle, {}, checkboxEvents);
+                                var siteDataCheckbox = new CheckboxInput("clearHistoryOptions", false, checkboxStyle, {}, checkboxEvents);
+
+                                historyClearDialog.children = [
+                                    new appLayout.DialogTitle(_("history_clear")),
+                                    new appLayout.DialogContent([
+                                        new appLayout.ButtonedContent([
+                                            new Paragraph(_("history_clearSelectOptions")),
+                                            new Label([
+                                                browsingHistoryCheckbox,
+                                                new GroupContainer(_("history_clearSelectOptions_browsingHistory", [userData.history.listing.length]))
+                                            ]),
+                                            new Label([
+                                                siteDataCheckbox,
+                                                new GroupContainer(_("history_clearSelectOptions_siteData"))
+                                            ])
+                                        ]),
+                                        new appLayout.ButtonedFooter([
+                                            new Button(_("clear"), false, {}, {
+                                                "id": "historyClearButton"
+                                            }, {
+                                                click: function() {
+                                                    historyClearDialog.isOpen = false;
+
+                                                    ui.refresh();
+                                                }
+                                            }),
+                                            new Button(_("cancel"), true, {}, {}, {
+                                                click: function() {
+                                                    historyClearDialog.isOpen = false;
+
+                                                    ui.refresh();
+                                                }
+                                            })
+                                        ])
+                                    ])
+                                ];
+
+                                historyClearDialog.isOpen = true;
+
+                                ui.refresh();
+                            }
+                        })
+                    ], 2, {
+                        "text-align": ui.mirroringDirection == "rtl" ? "left" : "right"
+                    })
+                ]),
+                historyListingContainer
+            ];
         } else {
-            historyListingContainer.children = [
+            var historyNoResultsContainer = new GroupContainer([
                 new GroupContainer([new Icon("search")], {
                     "margin-top": "20px",
                     "margin-bottom": "0",
@@ -645,18 +720,16 @@ function showSettings() {
                     "margin-left": "10vw",
                     "margin-right": "10vw"
                 })
-            ];
-
-            historyListingContainer.style = {
+            ], {
                 "color": "var(--extra)",
                 "text-align": "center"
-            };
-        }
+            });
 
-        settingsPageContents = [
-            new Heading(_("history")),
-            historyListingContainer
-        ];
+            settingsPageContents = [
+                new Heading(_("history")),
+                historyNoResultsContainer
+            ];
+        }
     }
 
     if (selectedSettingsPage == SETTINGS_PAGES.ABOUT) {
@@ -690,7 +763,8 @@ function showSettings() {
         searchEngineManagementDialog,
         searchEngineDeletionDialog,
         searchEngineModificationDialog,
-        invalidURLDialog
+        invalidURLDialog,
+        historyClearDialog
     ];
 
     ui.refresh();
