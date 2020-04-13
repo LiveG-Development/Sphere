@@ -39,12 +39,14 @@
         "history_noResults_description": "Once you've visited a few pages on the internet, they will appear here. Don't want certain pages to show here? Browse in a Privasphere tab!",
         "history_clearDescription": "Need to clear your history? All of your history data and site settings can be deleted, but your internet service provider, employer or school may still have a record of the sites that you visit.",
         "history_clear": "Clear history",
+        "history_clearOther": "Clear other data",
         "history_clearSelectOptions": "Select what data you wish to clear.",
         "history_clearSelectOptions_browsingHistory": {
             "{0} == `1`": "Browsing history (1 item)",
             "{0} != `1`": "Browsing history ({0} items)"
         },
         "history_clearSelectOptions_siteData": "Site data (such as cookies and site local storage)",
+        "history_clearSelectOptions_cache": "Browser cache ({0} MB of cached content)",
 
         "about": "About",
         "about_logo": "Sphere logo",

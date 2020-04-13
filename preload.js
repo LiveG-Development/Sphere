@@ -70,6 +70,40 @@ contextBridge.exposeInMainWorld("_sphere", {
                     type: "_sphereUserData",
                     data: userData || {}
                 });
+            } else if (data.type == "getCacheSize") {
+                remote.getCurrentWindow().webContents.session.getCacheSize().then(function(size) {
+                    window.postMessage({
+                        type: "_sphereCacheSize",
+                        data: size
+                    });
+                });
+            } else if (data.type == "clearSessionData") {
+                var storages = [];
+
+                if (data.siteData) {
+                    storages.push(
+                        "cookies",
+                        "filesystem",
+                        "indexdb",
+                        "localstorage",
+                        "websql",
+                        "serviceworkers"
+                    );
+                }
+
+                if (data.cache) {
+                    storages.push(
+                        "appcache",
+                        "shadercache",
+                        "cachestorage"
+                    );
+
+                    remote.getCurrentWindow().webContents.session.clearCache();
+                }
+
+                remote.getCurrentWindow().webContents.session.clearStorageData({
+                    storages: storages
+                });
             } else {
                 ipcRenderer.send("_sphereTab", data);
             }

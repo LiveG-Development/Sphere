@@ -52,6 +52,7 @@ core.unpack(ui.components);
 core.unpack(ui.models);
 
 var userData = {};
+var cacheSize = 0;
 var settingsInitialised = false;
 
 const SETTINGS_PAGES = {
@@ -598,6 +599,82 @@ function showSettings() {
     }
 
     if (selectedSettingsPage == SETTINGS_PAGES.HISTORY) {
+        function activateHistoryClearDialog() {
+            var checkboxStyle = {
+                "bottom": "4px",
+                "height": "0"
+            };
+        
+            var checkboxEvents = {
+                change: function() {
+                    if (browsingHistoryCheckbox.selected || siteDataCheckbox.selected || cacheCheckbox.selected) {
+                        dom.element("#historyClearButton").attribute("disabled").delete();
+                    } else {
+                        dom.element("#historyClearButton").attribute("disabled").set("");
+                    }
+                }
+            };
+        
+            var browsingHistoryCheckbox = new CheckboxInput("clearHistoryOptions", true, checkboxStyle, {}, checkboxEvents);
+            var siteDataCheckbox = new CheckboxInput("clearHistoryOptions", false, checkboxStyle, {}, checkboxEvents);
+            var cacheCheckbox = new CheckboxInput("clearHistoryOptions", false, checkboxStyle, {}, checkboxEvents);
+        
+            historyClearDialog.children = [
+                new appLayout.DialogTitle(_("history_clear")),
+                new appLayout.DialogContent([
+                    new appLayout.ButtonedContent([
+                        new Paragraph(_("history_clearSelectOptions")),
+                        new Label([
+                            browsingHistoryCheckbox,
+                            new GroupContainer(_("history_clearSelectOptions_browsingHistory", [userData.history.listing.length]))
+                        ]),
+                        new Label([
+                            siteDataCheckbox,
+                            new GroupContainer(_("history_clearSelectOptions_siteData"))
+                        ]),
+                        new Label([
+                            cacheCheckbox,
+                            new GroupContainer(_("history_clearSelectOptions_cache", [
+                                Math.round((cacheSize / 1e6) * 10) / 10 // Round to at most 1 decimal place
+                            ]))
+                        ])
+                    ]),
+                    new appLayout.ButtonedFooter([
+                        new Button(_("clear"), false, {}, {
+                            "id": "historyClearButton"
+                        }, {
+                            click: function() {
+                                if (browsingHistoryCheckbox.selected) {
+                                    userData.history.listing = [];
+        
+                                    _setUserData(userData);
+                                }
+        
+                                if (siteDataCheckbox.selected || cacheCheckbox.selected) {
+                                    _clearSessionData(siteDataCheckbox.selected, cacheCheckbox.selected);
+                                }
+                                
+                                historyClearDialog.isOpen = false;
+        
+                                showSettings();
+                            }
+                        }),
+                        new Button(_("cancel"), true, {}, {}, {
+                            click: function() {
+                                historyClearDialog.isOpen = false;
+        
+                                ui.refresh();
+                            }
+                        })
+                    ])
+                ])
+            ];
+        
+            historyClearDialog.isOpen = true;
+        
+            ui.refresh();
+        }
+
         // @asset assets/defaultFavicon.png
 
         if (userData.history.listing.length > 0) {
@@ -640,64 +717,7 @@ function showSettings() {
                     new Container(_("history_clearDescription"), 10),
                     new Container([
                         new Button(_("history_clear"), false, {}, {}, {
-                            click: function() {
-                                var checkboxStyle = {
-                                    "bottom": "4px",
-                                    "height": "0"
-                                };
-
-                                var checkboxEvents = {
-                                    change: function() {
-                                        if (browsingHistoryCheckbox.selected || siteDataCheckbox.selected) {
-                                            dom.element("#historyClearButton").attribute("disabled").delete();
-                                        } else {
-                                            dom.element("#historyClearButton").attribute("disabled").set("");
-                                        }
-                                    }
-                                };
-
-                                var browsingHistoryCheckbox = new CheckboxInput("clearHistoryOptions", true, checkboxStyle, {}, checkboxEvents);
-                                var siteDataCheckbox = new CheckboxInput("clearHistoryOptions", false, checkboxStyle, {}, checkboxEvents);
-
-                                historyClearDialog.children = [
-                                    new appLayout.DialogTitle(_("history_clear")),
-                                    new appLayout.DialogContent([
-                                        new appLayout.ButtonedContent([
-                                            new Paragraph(_("history_clearSelectOptions")),
-                                            new Label([
-                                                browsingHistoryCheckbox,
-                                                new GroupContainer(_("history_clearSelectOptions_browsingHistory", [userData.history.listing.length]))
-                                            ]),
-                                            new Label([
-                                                siteDataCheckbox,
-                                                new GroupContainer(_("history_clearSelectOptions_siteData"))
-                                            ])
-                                        ]),
-                                        new appLayout.ButtonedFooter([
-                                            new Button(_("clear"), false, {}, {
-                                                "id": "historyClearButton"
-                                            }, {
-                                                click: function() {
-                                                    historyClearDialog.isOpen = false;
-
-                                                    ui.refresh();
-                                                }
-                                            }),
-                                            new Button(_("cancel"), true, {}, {}, {
-                                                click: function() {
-                                                    historyClearDialog.isOpen = false;
-
-                                                    ui.refresh();
-                                                }
-                                            })
-                                        ])
-                                    ])
-                                ];
-
-                                historyClearDialog.isOpen = true;
-
-                                ui.refresh();
-                            }
+                            click: activateHistoryClearDialog
                         })
                     ], 2, {
                         "text-align": ui.mirroringDirection == "rtl" ? "left" : "right"
@@ -719,6 +739,9 @@ function showSettings() {
                     "margin-bottom": "20px",
                     "margin-left": "10vw",
                     "margin-right": "10vw"
+                }),
+                new NavigationButton(_("history_clearOther"), "", {}, {}, {
+                    click: activateHistoryClearDialog
                 })
             ], {
                 "color": "var(--extra)",
@@ -775,6 +798,10 @@ window.addEventListener("message", function(event) {
         userData = event.data.data;
     }
 
+    if (event.data.type == "_sphereCacheSize") {
+        cacheSize = event.data.data;
+    }
+
     if (!settingsInitialised) {
         showSettings();
 
@@ -782,7 +809,7 @@ window.addEventListener("message", function(event) {
     }
 });
 
-// Get the latest user data so that there is less overwrite collisions
 setInterval(function() {
-    _getUserData();
+    _getUserData(); // Get the latest user data so that there is less overwrite collisions
+    _getCacheSize();
 }, 3000);

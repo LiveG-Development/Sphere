@@ -24,4 +24,23 @@ function _getUserData() {
     });
 }
 
+function _getCacheSize() {
+    window._sphere.send({
+        _sphereKey: "__KEY__", // The Sphere key will be injected here so that we know the message is genuine
+        id: __ID__, // The ID will be injected here so that we know which tab is sending the message
+        type: "getCacheSize"
+    });
+}
+
+function _clearSessionData(siteData = false, cache = false) {
+    window._sphere.send({
+        _sphereKey: "__KEY__", // The Sphere key will be injected here so that we know the message is genuine
+        id: __ID__, // The ID will be injected here so that we know which tab is sending the message
+        type: "clearSessionData",
+        siteData: siteData,
+        cache: cache
+    });
+}
+
 _getUserData();
+_getCacheSize();
