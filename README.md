@@ -98,7 +98,7 @@ Force the UI text mirroring direction to be the direction (either `ltr` for left
             Cause the first tab to be a Privasphere tab.
 ```
 
-Cause the first tab to be a Privasphere tab so that pages loaded in the tab are not recorded in Sphere's browsing history, and that site data from the tab will not be saved.
+Cause the first tab to be a Privasphere tab so that pages loaded in the tab are not recorded in Sphere's browsing history, and that all site data from the tab will not be saved.
 
 ### `--url`
 ```
