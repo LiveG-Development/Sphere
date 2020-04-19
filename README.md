@@ -29,7 +29,7 @@ build
 This should then build Sphere by using Zapr, build the documentation files also by using Zapr and finally run Electron via npm. If you want to specify command-line arguments that Sphere should use when it runs, just append them to the end of the command.
 
 ## Distributing Sphere
-To distribute Sphere for your device's platform, run at the command line in the project root directory if you're using Bash (for gDesk OS, Linux and macOS):
+To distribute Sphere for your current device's platform, run at the command line in the project root directory if you're using Bash (for gDesk OS, Linux and macOS):
 
 ```bash
 $ ./dist.sh
@@ -98,7 +98,7 @@ Force the UI text mirroring direction to be the direction (either `ltr` for left
             Cause the first tab to be a Privasphere tab.
 ```
 
-Cause the first tab to be a Privasphere tab so that pages loaded in the tab are not recorded in Sphere's browsing history, and that site data from the tab will not be saved.
+Cause the first tab to be a Privasphere tab so that pages loaded in the tab are not recorded in Sphere's browsing history, and that all site data from the tab will not be saved.
 
 ### `--url`
 ```
