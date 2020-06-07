@@ -11,6 +11,7 @@ Sphere is also going to be the app runtime for LiveG gDesk OS apps, allowing for
 In order to develop Sphere (and do things such as building Sphere), you'll need the following installed:
 * [Zapr](https://github.com/LiveG-Development/Zapr) (with Zapr added to your PATH)
 * [Python 3](https://www.python.org/downloads) (with the `py` utility added to your PATH)
+* [PIP](https://pypi.org/project/pip/) (can be installed on Linux with the `python3-pip` package)
 * [Node.js](https://nodejs.org/en/download) (with the `npm` utility added to your PATH)
 
 ## Building Sphere
