@@ -1,1 +1,1 @@
-{"fullscreen.enter": {"shortDescription": "Enter fullscreen, hiding Sphere's main UI.", "params": [], "return": {}, "longDescription": ""}, "fullscreen.leave": {"shortDescription": "Leave fullscreen, showing Sphere's main UI.", "params": [], "return": {}, "longDescription": ""}}
+{"fullscreen.leave": {"shortDescription": "Leave fullscreen, showing Sphere's main UI.", "params": [], "longDescription": "", "return": {}}, "fullscreen.enter": {"shortDescription": "Enter fullscreen, hiding Sphere's main UI.", "params": [], "longDescription": "", "return": {}}}
