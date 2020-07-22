@@ -32,8 +32,12 @@ platform._osMap = {
     aix: platform.osTypes.AIX
 };
 
-if (os.platform() in platform._osMap) {
-    platform.os = platform._osMap[os.platform()];
+if (fs.existsSync("/usr/share/liveg-info/name")) {
+    platform.os = platform.osTypes.LIVEG;
 } else {
-    platform.os = platform.osTypes.OTHER;
+    if (os.platform() in platform._osMap) {
+        platform.os = platform._osMap[os.platform()];
+    } else {
+        platform.os = platform.osTypes.OTHER;
+    }
 }

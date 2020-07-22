@@ -353,7 +353,7 @@ function saveUserData() {
     fs.writeFileSync(storagePath, JSON.stringify(userData));
 }
 
-function rewriteScreen() {
+function rewriteScreen(initialLoad = false) {
     if (!fullscreen.isFullscreen && !windowing.isWindowed) {
         ui.screen = [
             new tabSpace.TabRow([
@@ -368,6 +368,17 @@ function rewriteScreen() {
                 tabSpaceActiveElements.menuButton
             ])
         ];
+
+        if (initialLoad) {
+            dom.element().style.set("display", "none");
+        } else {
+            dom.element().style.set("display", "block");
+        }
+        
+        // Match background to be window's title bar colour
+        if (platform.os == platform.osTypes.LIVEG) {
+            dom.element().style.set("background-color", "#f3f3f3");
+        }
     } else {
         ui.screen = [];
     }
@@ -379,7 +390,7 @@ ui.events.loaded(function() {
     keyboardShortcuts.init();
     eventQueue.init();
 
-    rewriteScreen();
+    rewriteScreen(true);
 
     setTimeout(function() {
         windowing.init();

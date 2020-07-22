@@ -21,8 +21,8 @@ windowing.init = function() {
         windowing.isWindowed = true;
 
         remote.getGlobal("setTabspaceHeight")(0);
-
-        rewriteScreen();
-        ui.refresh();
     }
+    
+    rewriteScreen();
+    ui.refresh();
 };
