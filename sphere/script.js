@@ -399,5 +399,9 @@ ui.events.loaded(function() {
         if (remote.getGlobal("arguments")["fullscreen"]) {
             fullscreen.enter();
         }
+
+        if (windowing.isWindowed) {
+            keyboardShortcuts.shortcuts.focusPage.action();
+        }
     }, 500);
 });

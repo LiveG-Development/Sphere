@@ -28,6 +28,8 @@ fullscreen.enter = function() {
 
     rewriteScreen();
     ui.refresh();
+
+    keyboardShortcuts.shortcuts.focusPage.action();
 };
 
 /*
