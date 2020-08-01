@@ -15,7 +15,7 @@ In order to develop Sphere (and do things such as building Sphere), you'll need 
 * [Node.js](https://nodejs.org/en/download) (with the `npm` utility added to your PATH)
 
 ## Building Sphere
-To build and test Sphere, run at the command line in the project root directory if you're using Bash (for gDesk OS, Linux and macOS):
+To build and test Sphere, run this at the command line in the project root directory if you're using Bash (for gDesk OS, Linux and macOS):
 
 ```bash
 $ ./build.sh
@@ -30,7 +30,7 @@ build
 This should then build Sphere by using Zapr, build the documentation files also by using Zapr and finally run Electron via npm. If you want to specify command-line arguments that Sphere should use when it runs, just append them to the end of the command.
 
 ## Distributing Sphere
-To distribute Sphere for your current device's platform, run at the command line in the project root directory if you're using Bash (for gDesk OS, Linux and macOS):
+To distribute Sphere for your current device's platform, run this at the command line in the project root directory if you're using Bash (for gDesk OS, Linux and macOS):
 
 ```bash
 $ ./dist.sh
