@@ -405,3 +405,9 @@ ui.events.loaded(function() {
         }
     }, 500);
 });
+
+window.addEventListener("unload", function() {
+    while (tabSpaceActiveElements.tabs.length > 0) {
+        tabSpaceActiveElements.tabs[0].close();
+    }
+});

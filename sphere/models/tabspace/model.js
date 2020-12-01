@@ -688,9 +688,13 @@ ui.models.tabSpace.Tab = class extends ui.models.tabSpace.Component {
     }
 
     close() {
+        try {
+            if (!this.browserTab.webContents.isDestroyed()) {
+                this.browserTab.webContents.destroy();
+            }
+        } catch (e) {}
+
         remote.getCurrentWindow().removeBrowserView(this.browserTab);
-        
-        this.browserTab.destroy();
 
         this.browserTab = null;
 

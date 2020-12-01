@@ -48,6 +48,7 @@ global.newTab = function(window, url, privasphere, newTabCallback = function() {
             nodeIntegration: false,
             nodeIntegrationInSubFrames: false,
             nodeIntegrationInWorker: false,
+            enableRemoteModule: true,
             contextIsolation: true,
             preload: path.join(__dirname, "preload.js"),
             devTools: false,
@@ -88,6 +89,7 @@ global.newWindow = function() {
         webPreferences: {
             title: "Sphere",
             nodeIntegration: true,
+            enableRemoteModule: true,
             devTools: global.arguments["debug"] ? true : false
         },
         useContentSize: true
@@ -116,6 +118,11 @@ if (global.arguments["help"] || process.argv.indexOf("/?") > -1) {
 
     process.exit();
 } else {
+    app.userAgentFallback = app.userAgentFallback
+        .replace("Electron/" + process.versions.electron, "")
+        .replace("sphere/" + global.VERSION_NUMBER, "Sphere/" + global.VERSION_NUMBER)
+    ;
+
     app.on("ready", function() {
         ipcMain.on("_sphereTab", function(event, message) {
             if (message.event != null) {
