@@ -67,6 +67,7 @@ global.newTab = function(window, url, privasphere, newTabCallback = function() {
     tab.setBackgroundColor("#ffffff");
     tab.webContents.setVisualZoomLevelLimits(1, 3);
     tab.webContents.zoomFactor = 1;
+
     tab.webContents.loadURL(url);
 
     return {tab: tab, id: global.newTabID};
